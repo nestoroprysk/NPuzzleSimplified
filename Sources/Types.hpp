@@ -7,11 +7,13 @@ struct State;
 class IContainer;
 
 enum class Move { Left, Right, Up, Down };
-enum class ContainerType { Set };
+enum class ContainerType { Set, Queue };
 
 using Matrix = std::vector<std::vector<std::size_t>>;
 using HeuristicFunction = std::function<std::size_t(const Matrix&)>;
 using Comparator = std::function<bool(const State&, const State&)>;
+using HashFunction = std::function<std::size_t(const State&)>;
+using EqFunction = std::function<bool(const State&, const State&)>;
 using Solution = std::list<Move>;
 using RowMatrix = std::vector<std::size_t>;
 

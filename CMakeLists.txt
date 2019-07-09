@@ -13,6 +13,8 @@ set(NPuzzleDir ${CMAKE_CURRENT_SOURCE_DIR}/Sources)
 file(GLOB NPuzzleSources	${NPuzzleDir}/IContainer.hpp
 							${NPuzzleDir}/Set.hpp
 							${NPuzzleDir}/Set.cpp
+							${NPuzzleDir}/Queue.hpp
+							${NPuzzleDir}/Queue.cpp
 							${NPuzzleDir}/Solver.hpp
 							${NPuzzleDir}/Solver.cpp
 							${NPuzzleDir}/State.hpp

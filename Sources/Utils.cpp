@@ -1,5 +1,7 @@
 #include "Utils.hpp"
 
+#include "State.hpp"
+
 namespace {
 
 static constexpr auto g_moving_point = 0;
@@ -140,3 +142,20 @@ RowMatrix Utils::makeRow(const Matrix& i_matrix)
 			result.push_back(i_matrix[i][j]);
 	return result;
 };
+
+std::size_t Utils::hash(const State& i_state)
+{
+	return i_state.m_heuristic_cost;
+}
+
+bool Utils::eq(const State& i_lhs, const State& i_rhs)
+{
+	return !cmp(i_lhs, i_rhs) && !cmp(i_rhs, i_lhs);
+}
+
+bool Utils::cmp(const State& i_lhs, const State& i_rhs)
+{
+	return i_lhs.m_heuristic_cost < i_rhs.m_heuristic_cost
+		|| (i_lhs.m_heuristic_cost == i_rhs.m_heuristic_cost &&
+			i_lhs.m_distance < i_rhs.m_distance);
+}

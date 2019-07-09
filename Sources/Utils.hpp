@@ -19,10 +19,8 @@ std::size_t countInversions(const RowMatrix& i_input, const RowMatrix& i_solutio
 std::size_t countInversions(const Matrix& i_matrix, const RowMatrix& i_solution);
 RowMatrix makeRow(const Matrix& i_matrix);
 
-static const auto cmp = [](const auto& i_lhs, const auto& i_rhs){
-	return i_lhs.m_heuristic_cost < i_rhs.m_heuristic_cost
-		|| (i_lhs.m_heuristic_cost == i_rhs.m_heuristic_cost &&
-			i_lhs.m_distance < i_rhs.m_distance);
-};
+std::size_t hash(const State& i_state);
+bool eq(const State& i_lhs, const State& i_rhs);
+bool cmp(const State& i_lhs, const State& i_rhs);
 
 }
