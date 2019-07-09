@@ -3,6 +3,7 @@
 #include <ContainerCreator.hpp>
 #include <HeuristicFunctions.hpp>
 #include <Utils.hpp>
+#include <Tester.hpp>
 
 #include <iostream>
 
@@ -19,10 +20,10 @@ const auto print = [](const auto& i_matrix){
 	}
 };
 
-const auto check = [](const auto& i_solver, const auto& i_matrix, const auto i_solvable){
+const auto check = [](const auto& i_solver, const auto& i_matrix, const auto& i_desired_solution, const auto i_solvable){
 	try{
 	const auto opt_result = i_solver.solve(i_matrix);
-	if (opt_result || !i_solvable)
+	if ((!opt_result && !i_solvable) || (opt_result && Tester::isCorrectlySolved(i_matrix, i_desired_solution, *opt_result)))
 		std::cout << ":)" << std::endl;
 	else
 		std::cout << ":(" << std::endl;
@@ -55,7 +56,7 @@ int main()
 				{6, 0, 1},
 				{8, 3, 7}
 			};
-			check(solver, solvableTest, true);
+			check(solver, solvableTest, desiredSolution, true);
 		}
 		{
 			const auto unsolvableTest = Matrix{
@@ -63,7 +64,7 @@ int main()
 				{6, 7, 1},
 				{0, 4, 3}
 			};
-			check(solver, unsolvableTest, false);
+			check(solver, unsolvableTest, desiredSolution, false);
 		}
 	}
 		{
@@ -82,7 +83,7 @@ int main()
 				{6, 0, 1},
 				{8, 3, 7}
 			};
-			check(solver, solvableTest, true);
+			check(solver, solvableTest, desiredSolution, true);
 		}
 		{
 			const auto unsolvableTest = Matrix{
@@ -90,7 +91,7 @@ int main()
 				{6, 7, 1},
 				{0, 4, 3}
 			};
-			check(solver, unsolvableTest, false);
+			check(solver, unsolvableTest, desiredSolution, false);
 		}
 	}
 	{
@@ -110,7 +111,7 @@ int main()
 				{6, 0, 1},
 				{8, 3, 7}
 			};
-			check(solver, solvableTest, true);
+			check(solver, solvableTest, desiredSolution, true);
 		}
 	}
 	{
@@ -133,7 +134,7 @@ int main()
 				{15, 24,  3, 20, 11},
 				{22, 21, 17,  4,  2}
 			};
-			check(solver, solvableTest, true);
+			check(solver, solvableTest, desiredSolution, true);
 		}
 	}
 }

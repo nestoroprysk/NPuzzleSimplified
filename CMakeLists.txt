@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 # npuzzle library
 
-set(NPuzzleDir ${CMAKE_CURRENT_SOURCE_DIR}/Sources)
+set(NPuzzleDir ${CMAKE_CURRENT_SOURCE_DIR}/NPuzzleSources)
 
 file(GLOB NPuzzleSources	${NPuzzleDir}/IContainer.hpp
 							${NPuzzleDir}/Set.hpp
@@ -30,13 +30,36 @@ file(GLOB NPuzzleSources	${NPuzzleDir}/IContainer.hpp
 
 add_library(NPuzzle STATIC ${NPuzzleSources})
 
-# Runner executable
+# Tester library
 
-set(RunnerDir ${CMAKE_CURRENT_SOURCE_DIR}/Main)
-file(GLOB MainSources ${RunnerDir}/main.cpp)
+set(TesterDir ${CMAKE_CURRENT_SOURCE_DIR}/TesterSources)
 
-add_executable(Runner ${MainSources})
+file(GLOB TesterSources		${TesterDir}/Tester.hpp
+							${TesterDir}/Tester.cpp
+)
 
-target_link_libraries(Runner NPuzzle)
+add_library(Tester STATIC ${TesterSources})
 
-target_include_directories(Runner PUBLIC ${NPuzzleDir})
+target_include_directories(Tester PUBLIC ${NPuzzleDir})
+
+# Run executable
+
+set(RunnerDir ${CMAKE_CURRENT_SOURCE_DIR}/NPuzzleRunner)
+file(GLOB NPuzzleRunnerSources ${RunnerDir}/main.cpp)
+
+add_executable(Run ${NPuzzleRunnerSources})
+
+target_link_libraries(Run NPuzzle)
+
+target_include_directories(Run PUBLIC ${NPuzzleDir})
+
+# RunTests executable
+
+set(TestsRunnerDir ${CMAKE_CURRENT_SOURCE_DIR}/TestsRunner)
+file(GLOB TestsRunnerSources ${TestsRunnerDir}/main.cpp)
+
+add_executable(RunTests ${TestsRunnerSources})
+
+target_link_libraries(RunTests NPuzzle Tester)
+
+target_include_directories(RunTests PUBLIC ${NPuzzleDir} ${TesterDir})

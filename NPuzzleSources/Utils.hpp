@@ -8,7 +8,8 @@ namespace Utils{
 
 auto possibleMoves(Matrix const& i_state) -> std::unordered_set<Move>;
 bool isValid(Matrix const& i_state, Move i_move);
-Matrix move(Matrix const& i_state, Move i_move);
+Matrix move(const Matrix& i_state, Move i_move);
+Matrix& move(Matrix& io_state, Move i_move);
 Move inferMove(Matrix const& i_from, Matrix const& i_to);
 
 bool isSquare(const Matrix& i_matrix);

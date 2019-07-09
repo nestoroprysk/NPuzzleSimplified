@@ -6,11 +6,9 @@ namespace {
 
 static constexpr auto g_moving_point = 0;
 
-const auto swap = [](Matrix const& i_matrix, Point const a, Point const b) -> Matrix
+const auto swap = [](Matrix& io_matrix, Point const a, Point const b)
 {
-	auto result = i_matrix;
-	std::swap(result[a.i][a.j], result[b.i][b.j]);
-	return result;
+	std::swap(io_matrix[a.i][a.j], io_matrix[b.i][b.j]);
 };
 
 const auto movingPointCoordinates = [](const auto& i_matrix) -> Point
@@ -49,24 +47,36 @@ bool Utils::isValid(Matrix const& i_matrix, Move i_move)
 	return ms.find(i_move) != ms.cend();
 }
 
-Matrix Utils::move(Matrix const& i_matrix, Move i_move)
+Matrix Utils::move(const Matrix& i_matrix, Move i_move)
 {
-	if (!Utils::isValid(i_matrix, i_move))
+	auto result = i_matrix;
+	move(result, i_move);
+	return result;
+}
+
+Matrix& Utils::move(Matrix& io_matrix, Move i_move)
+{
+	if (!Utils::isValid(io_matrix, i_move))
 		throw std::logic_error("Invalid move");
-	const auto p = movingPointCoordinates(i_matrix);
+	const auto p = movingPointCoordinates(io_matrix);
 	switch (i_move)
 	{
 		case Move::Left:
-			return swap(i_matrix, p, {p.i, p.j - 1});
+			swap(io_matrix, p, {p.i, p.j - 1});
+			break;
 		case Move::Right:
-			return swap(i_matrix, p, {p.i, p.j + 1});
+			swap(io_matrix, p, {p.i, p.j + 1});
+			break;
 		case Move::Up:
-			return swap(i_matrix, p, {p.i - 1, p.j});
+			swap(io_matrix, p, {p.i - 1, p.j});
+			break;
 		case Move::Down:
-			return swap(i_matrix, p, {p.i + 1, p.j});
+			swap(io_matrix, p, {p.i + 1, p.j});
+			break;
 		default:
 			throw std::logic_error("Impossible move");
 	}
+	return io_matrix;
 }
 
 Move Utils::inferMove(Matrix const& i_from, Matrix const& i_to)

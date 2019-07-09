@@ -13,7 +13,7 @@ static constexpr auto g_bucket_count = 8;
 }
 
 Queue::Queue()
-	: m_queue(cmp)
+	: m_queue([](const auto& l, const auto& r){ return !cmp(l, r) && !eq(l, r); })
 	, m_set(g_bucket_count, hash, [](const auto& l, const auto& r){ return eq(l, r); })
 {
 }
