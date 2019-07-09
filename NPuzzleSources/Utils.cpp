@@ -28,6 +28,18 @@ const auto isInverted = [](const auto& i_solution, const auto l, const auto r){
 	return lPos > rPos;
 };
 
+std::list<Move> collectMovesImpl(const State& i_state,
+								 const StateSP& i_opt_predecessor,
+								 std::list<Move> o_result = std::list<Move>())
+{
+	if (i_opt_predecessor)
+	{
+		o_result.push_front(Utils::inferMove(Utils::data(*i_opt_predecessor), Utils::data(i_state)));
+		return collectMovesImpl(*i_opt_predecessor, Utils::predecessor(*i_opt_predecessor), std::move(o_result));
+	}
+	return o_result;
+}
+
 }
 
 auto Utils::possibleMoves(Matrix const& i_matrix) -> std::unordered_set<Move>
@@ -168,4 +180,48 @@ bool Utils::cmp(const State& i_lhs, const State& i_rhs)
 	return i_lhs.m_heuristic_cost < i_rhs.m_heuristic_cost
 		|| (i_lhs.m_heuristic_cost == i_rhs.m_heuristic_cost &&
 			i_lhs.m_distance < i_rhs.m_distance);
+}
+
+const Matrix& Utils::data(const State& i_state)
+{
+	if (!i_state.mp_data)
+		throw std::logic_error("data(s), initialized matrix expected");
+	return *i_state.mp_data;
+}
+
+std::vector<State> Utils::expand(const State& i_state, const HeuristicFunction& i_heuristic_function)
+{
+	const auto ms = possibleMoves(data(i_state));
+	auto result = std::vector<State>();
+	for (const auto m : ms){
+		auto matrix = move(data(i_state), m);
+		const auto cost = i_heuristic_function(matrix);
+		result.emplace_back(std::move(matrix), cost);
+	}
+	return result;
+}
+
+const std::size_t& Utils::h(State& i_state)
+{
+	return i_state.m_heuristic_cost;
+}
+
+std::size_t& Utils::g(State& i_state)
+{
+	return i_state.m_distance;
+}
+
+const StateSP& Utils::predecessor(const State& i_state)
+{
+	return i_state.mp_predecessor;
+}
+
+StateSP& Utils::predecessor(State& i_state)
+{
+	return i_state.mp_predecessor;
+}
+
+std::list<Move> Utils::collectMoves(const State& i_state)
+{
+	return collectMovesImpl(i_state, predecessor(i_state));
 }
