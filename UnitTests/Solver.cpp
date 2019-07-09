@@ -27,4 +27,5 @@ TEST_CASE("Basic Solver Test")
 	REQUIRE_NOTHROW(opt_result = solver.solve(solvableTest));
 	REQUIRE(opt_result);
 	REQUIRE(opt_result->size());
+	REQUIRE(Tester::isCorrectlySolved(solvableTest, desiredSolution, *opt_result));
 }

@@ -24,6 +24,7 @@ MaybeSolution Solver::solve(const Matrix& i_matrix) const
 	open->push(State(i_matrix, m_heuristic_function(i_matrix)));
 	auto it = 0;
 	while (!open->empty()){
+	    ++it;
 		auto e = open->top();
 		if (eq(data(e), m_desired_solution))
 			return std::make_unique<Solution>(collectMoves(e));
@@ -31,8 +32,8 @@ MaybeSolution Solver::solve(const Matrix& i_matrix) const
 		closed->push(e);
 		for (auto n : expand(e, m_heuristic_function)){
 			if (!open->contains(n) && !closed->contains(n)){
-				open->push(n);
 				predecessor(n) = std::make_shared<State>(e);
+                open->push(n);
 				g(n) = g(e) + g_step_cost;
 			}
 			else{
