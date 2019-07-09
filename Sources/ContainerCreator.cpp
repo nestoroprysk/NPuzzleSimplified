@@ -1,5 +1,4 @@
 #include "ContainerCreator.hpp"
-
 #include "Set.hpp"
 
 ContainerCreator::ContainerCreator(ContainerType i_type)

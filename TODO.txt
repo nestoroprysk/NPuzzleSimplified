@@ -1,4 +1,4 @@
-1. Add inversion count heuristic
+1. Add inversion count heuristic [DONE]
 2. Review code
 3. Add result checker
 4. Add unit tests

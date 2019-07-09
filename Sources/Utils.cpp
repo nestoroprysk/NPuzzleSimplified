@@ -119,6 +119,19 @@ std::size_t Utils::countInversions(const RowMatrix& i_input, const RowMatrix& i_
 	return result;
 }
 
+std::size_t Utils::countInversions(const Matrix& i_matrix, const RowMatrix& i_solution)
+{
+	auto result = 0;
+	for (std::size_t i = 0; i < i_solution.size(); ++i){
+		for (std::size_t j = i + 1; j < i_solution.size(); ++j){
+			if (isInverted(i_solution, i_matrix[i / i_matrix.size()][i % i_matrix.size()],
+					i_matrix[j / i_matrix.size()][j % i_matrix.size()]))
+				++result;
+		}
+	}
+	return result;
+}
+
 RowMatrix Utils::makeRow(const Matrix& i_matrix)
 {
 	auto result = RowMatrix();

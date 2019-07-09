@@ -1,4 +1,5 @@
 #include "HeuristicFunctions.hpp"
+#include "Utils.hpp"
 
 #include <string>
 
@@ -32,3 +33,8 @@ std::size_t Heuristic::manhattan(const Matrix& i_input, const Matrix& i_solution
 			result += distance({i, j}, expectedPosition(i_input[i][j], i_solution));
 	return result;
 };
+
+std::size_t Heuristic::inversions(const Matrix& i_input, const RowMatrix& i_solution)
+{
+	return Utils::countInversions(i_input, i_solution);
+}

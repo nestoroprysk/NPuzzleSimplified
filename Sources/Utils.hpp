@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Types.hpp"
+
 #include <unordered_set>
 
 namespace Utils{
@@ -15,6 +16,7 @@ bool eq(const Matrix& i_lhs, const Matrix& i_rhs);
 bool solvable(const Matrix& i_matrix, const Matrix& i_solution);
 
 std::size_t countInversions(const RowMatrix& i_input, const RowMatrix& i_solution);
+std::size_t countInversions(const Matrix& i_matrix, const RowMatrix& i_solution);
 RowMatrix makeRow(const Matrix& i_matrix);
 
 static const auto cmp = [](const auto& i_lhs, const auto& i_rhs){
