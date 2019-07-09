@@ -1,0 +1,25 @@
+1. Add inversion count heuristic
+2. Review code
+3. Add result checker
+4. Add unit tests
+5. Add random tests runner
+6. Add argc argv parser
+7. Add usage
+8. Add a few new containers
+9. Add open-closed states logger
+10. Add a measurement tool
+11. Add a matrix parser
+
+Note:
+- NPuzzle is a logic lib
+- Runner is an argc argv app
+- TestingFramework is a separate lib
+- UnitTests are a separate app
+- RandomTestsRunner is a separate app
+- Generator is a script
+
+Dependencies:
+- Runner <- NPuzzle
+- TestingFramework <- NPuzzle
+- UnitTests <- TestingFramework + NPuzzle
+- RandomTestsRunner <- Generator + TestingFramework
