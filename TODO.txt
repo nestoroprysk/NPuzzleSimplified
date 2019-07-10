@@ -9,6 +9,7 @@
 9. Add open-closed states logger
 10. Add a measurement tool
 11. Add a matrix parser
+12. Delete exceptions after impl is done
 
 Note:
 - NPuzzle is a logic lib

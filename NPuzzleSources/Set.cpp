@@ -6,7 +6,10 @@
 
 using namespace Utils;
 
-Set::Set() : m_data(cmp) {}
+Set::Set()
+	: m_data([](const auto& l, const auto& r){ return cmp(l, r); }) 
+{
+}
 
 void Set::push(const State& i_state)
 {
@@ -27,11 +30,7 @@ State Set::top() const
 
 bool Set::contains(const State& i_state) const
 {
-	const auto range = m_data.equal_range(i_state);
-	return std::any_of(range.first, range.second,
-		[&i_state](auto const& i_e){
-			return eq(*i_e.mp_data, *i_state.mp_data);
-	});
+	return m_data.find(i_state) != m_data.end();
 }
 
 void Set::pop()
@@ -45,16 +44,5 @@ void Set::pop(const State& i_state)
 {
 	if (!contains(i_state))
 		throw std::logic_error("pop(s), s not found");
-	auto nbItemsDeleted = 0;
-	auto range = m_data.equal_range(i_state);
-	for (auto i = range.first; i != range.second;){
-		if (eq(*i->mp_data, *i_state.mp_data)){
-			i = m_data.erase(i);
-			++nbItemsDeleted;
-		}
-		else
-			++i;
-	}
-	if (nbItemsDeleted != 1)
-		throw std::logic_error("pop(s), only one s expected, got [" + std::to_string(nbItemsDeleted) + "]");
+	m_data.erase(m_data.find(i_state));
 }

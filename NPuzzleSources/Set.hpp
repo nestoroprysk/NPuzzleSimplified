@@ -17,5 +17,5 @@ public:
 	virtual void pop() override;
 	virtual void pop(const State& i_state) override;
 private:
-	std::multiset<State, Comparator> m_data;
+	std::set<State, Comparator> m_data;
 };

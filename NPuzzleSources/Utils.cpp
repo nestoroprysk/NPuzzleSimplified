@@ -165,21 +165,32 @@ RowMatrix Utils::makeRow(const Matrix& i_matrix)
 	return result;
 };
 
-std::size_t Utils::hash(const State& i_state)
-{
-	return i_state.m_heuristic_cost;
-}
-
 bool Utils::eq(const State& i_lhs, const State& i_rhs)
 {
 	return !cmp(i_lhs, i_rhs) && !cmp(i_rhs, i_lhs);
 }
 
+bool Utils::cmp(const Matrix& i_lhs, const Matrix& i_rhs)
+{
+	const auto valid = isSquare(i_lhs) && isSquare(i_rhs) &&
+		i_rhs.size() == i_rhs.size();
+	if (!valid)
+		throw std::logic_error("Invalid cmp arguments");
+	for (auto i = 0; i < i_lhs.size(); ++i)
+		for (auto j = 0; j < i_lhs.size(); ++j)
+			if (i_lhs[i][j] != i_rhs[i][j])
+				return i_lhs[i][j] < i_rhs[i][j];
+	return false;
+}
+
 bool Utils::cmp(const State& i_lhs, const State& i_rhs)
 {
-	return i_lhs.m_heuristic_cost < i_rhs.m_heuristic_cost
-		|| (i_lhs.m_heuristic_cost == i_rhs.m_heuristic_cost &&
-			i_lhs.m_distance < i_rhs.m_distance);
+	return i_lhs.m_heuristic_cost < i_rhs.m_heuristic_cost ||
+		(i_lhs.m_heuristic_cost == i_rhs.m_heuristic_cost &&
+			i_lhs.m_distance < i_rhs.m_distance) ||
+			(i_lhs.m_heuristic_cost == i_rhs.m_heuristic_cost &&
+				i_lhs.m_distance == i_rhs.m_distance &&
+					cmp(data(i_lhs), data(i_rhs)));
 }
 
 const Matrix& Utils::data(const State& i_state)
