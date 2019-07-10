@@ -22,11 +22,9 @@ MaybeSolution Solver::solve(const Matrix& i_matrix) const
 	auto open = m_container_creator.create();
 	auto closed = m_container_creator.create();
 	open->push(State(i_matrix, m_heuristic_function(i_matrix)));
-	auto it = 0;
 	while (!open->empty()){
-	    ++it;
 		auto e = open->top();
-		if (eq(data(e), m_desired_solution))
+		if (!h(e) && eq(data(e), m_desired_solution))
 			return std::make_unique<Solution>(collectMoves(e));
 		open->pop();
 		closed->push(e);

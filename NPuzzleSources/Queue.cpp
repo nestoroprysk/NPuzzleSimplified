@@ -6,82 +6,37 @@
 
 using namespace Utils;
 
-namespace {
-
-static constexpr auto g_bucket_count = 8;
-
-}
-
 Queue::Queue()
-	: m_queue([](const auto& l, const auto& r){ return !cmp(l, r) && !eq(l, r); })
-	, m_set(g_bucket_count, hash, [](const auto& l, const auto& r){ return eq(l, r); })
 {
+	throw "Unimplemented";
 }
 
 void Queue::push(const State& i_state)
 {
-	m_queue.push(i_state);
-	m_set.insert(i_state);
+	throw "Unimplemented";
 }
 
 bool Queue::empty() const
 {
-	return m_set.empty();
+	throw "Unimplemented";
 }
 
 State Queue::top() const
 {
-	if (empty())
-		throw std::logic_error("top() on an empty Container");
-	while (true){
-		const auto& s = m_queue.top();
-		const auto previouslyDeleted = m_set.find(s) == m_set.end();
-		if (previouslyDeleted){
-			m_queue.pop();
-		}
-		else{
-			return s;
-		}
-	}
+	throw "Unimplemented";
 }
 
 bool Queue::contains(const State& i_state) const
 {
-	const auto range = m_set.equal_range(i_state);
-	return std::any_of(range.first, range.second,
-		[&i_state](auto const& i_e){
-			// TODO: use data()
-			return eq(*i_e.mp_data, *i_state.mp_data);
-	});
+	throw "Unimplemented";
 }
 
 void Queue::pop()
 {
-	if (empty())
-		throw std::logic_error("pop() on an empty Container");
-	while (true){
-		const auto& s = m_queue.top();
-		const auto previouslyDeleted = m_set.find(s) == m_set.end();
-		if (previouslyDeleted){
-			m_queue.pop();
-		}
-		else{
-			m_set.erase(s);
-			m_queue.pop();
-			return;
-		}
-	}
+	throw "Unimplemented";
 }
 
 void Queue::pop(const State& i_state)
 {
-	if (!contains(i_state))
-		throw std::logic_error("pop(s), s not found");
-	const auto range = m_set.equal_range(i_state);
-	for (auto i = range.first; i != range.second; ++i){
-		if (eq(*i->mp_data, *i_state.mp_data)){
-			m_set.erase(i);
-			return;
-		}
-	}
+	throw "Unimplemented";
 }

@@ -7,6 +7,7 @@
 namespace Utils{
 
 static constexpr auto g_step_cost = 1;
+static constexpr auto g_bucket_count = 8;
 
 auto possibleMoves(Matrix const& i_state) -> std::unordered_set<Move>;
 bool isValid(Matrix const& i_state, Move i_move);
