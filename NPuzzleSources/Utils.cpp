@@ -165,11 +165,6 @@ RowMatrix Utils::makeRow(const Matrix& i_matrix)
 	return result;
 };
 
-bool Utils::eq(const State& i_lhs, const State& i_rhs)
-{
-	return !cmp(i_lhs, i_rhs) && !cmp(i_rhs, i_lhs);
-}
-
 bool Utils::cmp(const Matrix& i_lhs, const Matrix& i_rhs)
 {
 	const auto valid = isSquare(i_lhs) && isSquare(i_rhs) &&

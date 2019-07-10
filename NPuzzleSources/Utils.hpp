@@ -24,7 +24,6 @@ std::size_t countInversions(const RowMatrix& i_input, const RowMatrix& i_solutio
 std::size_t countInversions(const Matrix& i_matrix, const RowMatrix& i_solution);
 RowMatrix makeRow(const Matrix& i_matrix);
 
-bool eq(const State& i_lhs, const State& i_rhs);
 bool cmp(const State& i_lhs, const State& i_rhs);
 
 const Matrix& data(const State& i_state);
