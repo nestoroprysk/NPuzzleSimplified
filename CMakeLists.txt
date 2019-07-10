@@ -28,6 +28,7 @@ file(GLOB NPuzzleSources	${NPuzzleDir}/IContainer.hpp
 				 			${NPuzzleDir}/ContainerCreator.cpp
 				 			${NPuzzleDir}/HeuristicFunctions.hpp
 				 			${NPuzzleDir}/HeuristicFunctions.cpp
+				 			${NPuzzleDir}/Matrix.hpp
 )
 
 add_library(NPuzzle STATIC ${NPuzzleSources})

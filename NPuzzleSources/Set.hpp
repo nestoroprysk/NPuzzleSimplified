@@ -6,7 +6,7 @@
 
 #include <set>
 
-class Set : public IContainer
+class Set final : public IContainer
 {
 public:
 	Set();

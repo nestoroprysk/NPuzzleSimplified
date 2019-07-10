@@ -4,6 +4,6 @@
 
 namespace Tester{
 
-bool isCorrectlySolved(const Matrix& i_initial, const Matrix& i_desired, const Solution& i_solution);
+bool isCorrectlySolved(const MatrixSP& ip_initial, const MatrixSP& ip_desired, const Solution& i_solution);
 
 }

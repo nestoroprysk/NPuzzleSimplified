@@ -4,7 +4,7 @@
 #include "Types.hpp"
 #include "State.hpp"
 
-class Queue : public IContainer
+class Queue final : public IContainer
 {
 public:
 	Queue();

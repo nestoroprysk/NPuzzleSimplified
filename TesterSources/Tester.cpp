@@ -7,18 +7,18 @@ namespace {
 
 using It = Solution::const_iterator;
 
-bool isCorrectlySolvedImpl(Matrix& i_state, const Matrix& i_desired, It const& i_it, It const& i_end)
+bool isCorrectlySolvedImpl(MatrixSP& ip_state, const MatrixSP& ip_desired, It const& i_it, It const& i_end)
 {
 	if (i_it == i_end)
-		return Utils::eq(i_state, i_desired);
-	Utils::move(i_state, *i_it);
-	return isCorrectlySolvedImpl(i_state, i_desired, std::next(i_it), i_end);
+		return Utils::eq(ip_state, ip_desired);
+	Utils::move(ip_state, *i_it);
+	return isCorrectlySolvedImpl(ip_state, ip_desired, std::next(i_it), i_end);
 }
 
 }
 
-bool Tester::isCorrectlySolved(const Matrix& i_initial, const Matrix& i_desired, const Solution& i_solution)
+bool Tester::isCorrectlySolved(const MatrixSP& ip_initial, const MatrixSP& ip_desired, const Solution& i_solution)
 {
-	auto input = i_initial;
-	return isCorrectlySolvedImpl(input, i_desired, i_solution.cbegin(), i_solution.cend());
+	auto p_input = ip_initial;
+	return isCorrectlySolvedImpl(p_input, ip_desired, i_solution.cbegin(), i_solution.cend());
 }
