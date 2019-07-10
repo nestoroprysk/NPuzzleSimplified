@@ -114,8 +114,8 @@ bool Utils::eq(const Matrix& i_lhs, const Matrix& i_rhs)
 		i_rhs.size() == i_rhs.size();
 	if (!valid)
 		throw std::logic_error("Invalid eq arguments");
-	for (auto i = 0; i < i_lhs.size(); ++i)
-		for (auto j = 0; j < i_lhs.size(); ++j)
+	for (std::size_t i = 0; i < i_lhs.size(); ++i)
+		for (std::size_t j = 0; j < i_lhs.size(); ++j)
 			if (i_lhs[i][j] != i_rhs[i][j])
 				return false;
 	return true;
@@ -159,8 +159,8 @@ std::size_t Utils::countInversions(const Matrix& i_matrix, const RowMatrix& i_so
 RowMatrix Utils::makeRow(const Matrix& i_matrix)
 {
 	auto result = RowMatrix();
-	for (auto i = 0; i < i_matrix.size(); ++i)
-		for (auto j = 0; j < i_matrix.size(); ++j)
+	for (std::size_t i = 0; i < i_matrix.size(); ++i)
+		for (std::size_t j = 0; j < i_matrix.size(); ++j)
 			result.push_back(i_matrix[i][j]);
 	return result;
 };
@@ -171,8 +171,8 @@ bool Utils::cmp(const Matrix& i_lhs, const Matrix& i_rhs)
 		i_rhs.size() == i_rhs.size();
 	if (!valid)
 		throw std::logic_error("Invalid cmp arguments");
-	for (auto i = 0; i < i_lhs.size(); ++i)
-		for (auto j = 0; j < i_lhs.size(); ++j)
+	for (std::size_t i = 0; i < i_lhs.size(); ++i)
+		for (std::size_t j = 0; j < i_lhs.size(); ++j)
 			if (i_lhs[i][j] != i_rhs[i][j])
 				return i_lhs[i][j] < i_rhs[i][j];
 	return false;

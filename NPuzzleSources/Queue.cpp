@@ -11,7 +11,7 @@ Queue::Queue()
 	throw "Unimplemented";
 }
 
-void Queue::push(const State& i_state)
+void Queue::push(const State&)
 {
 	throw "Unimplemented";
 }
@@ -26,7 +26,7 @@ State Queue::top() const
 	throw "Unimplemented";
 }
 
-bool Queue::contains(const State& i_state) const
+bool Queue::contains(const State&) const
 {
 	throw "Unimplemented";
 }
@@ -36,7 +36,7 @@ void Queue::pop()
 	throw "Unimplemented";
 }
 
-void Queue::pop(const State& i_state)
+void Queue::pop(const State&)
 {
 	throw "Unimplemented";
 }
