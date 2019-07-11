@@ -2,9 +2,11 @@
 
 #include "Types.hpp"
 
-namespace Heuristic {
+template <std::size_t N>
+struct Heuristic
+{
+static std::size_t manhattan(const Matrix<N>& i_matrix, const Matrix<N>& i_solution);
+static std::size_t inversions(const Matrix<N>& i_matrix, const Matrix<N>& i_solution);
 
-std::size_t manhattan(const MatrixSP& ip_matrix, const MatrixSP& ip_solution);
-std::size_t inversions(const MatrixSP& ip_matrix, const RowMatrix& i_solution);
-
-}
+Heuristic() = delete;
+};

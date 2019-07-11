@@ -3,15 +3,16 @@
 #include "Types.hpp"
 #include "ContainerCreator.hpp"
 
+template <std::size_t N>
 class Solver
 {
 public:
-	Solver(const MatrixSP& i_desired_solution,
-		const HeuristicFunction& i_heuristic_function,
-		const ContainerCreator& i_container_creator);
-	MaybeSolution solve(const MatrixSP& ip_matrix) const;
+	Solver(const Matrix<N>& i_desired_solution,
+		const HeuristicFunction<N>& i_heuristic_function,
+		const ContainerCreator<N>& i_container_creator);
+	MaybeSolution solve(const Matrix<N>& i_matrix) const;
 private:
-	const MatrixSP mp_desired_solution;
-	const HeuristicFunction m_heuristic_function;
-	const ContainerCreator m_container_creator;
+	const Matrix<N> m_desired_solution;
+	const HeuristicFunction<N> m_heuristic_function;
+	const ContainerCreator<N> m_container_creator;
 };

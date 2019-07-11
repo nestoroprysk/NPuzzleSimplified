@@ -4,32 +4,59 @@
 
 #include <unordered_set>
 
-namespace Utils{
+#define EXPLICITLY_INSTANTIATE_STRUCT_IMPL(T, N) \
+template struct T<N>
+
+#define EXPLICITLY_INSTANTIATE_STRUCT(T) \
+EXPLICITLY_INSTANTIATE_STRUCT_IMPL(T, 3); \
+EXPLICITLY_INSTANTIATE_STRUCT_IMPL(T, 4); \
+EXPLICITLY_INSTANTIATE_STRUCT_IMPL(T, 5)
+
+#define EXPLICITLY_INSTANTIATE_CLASS_IMPL(T, N) \
+template class T<N>
+
+#define EXPLICITLY_INSTANTIATE_CLASS(T) \
+EXPLICITLY_INSTANTIATE_CLASS_IMPL(T, 3); \
+EXPLICITLY_INSTANTIATE_CLASS_IMPL(T, 4); \
+EXPLICITLY_INSTANTIATE_CLASS_IMPL(T, 5)
+
+template <std::size_t N>
+struct Utils
+{
+
+using MatrixNxN = Matrix<N>;
 
 static constexpr auto g_step_cost = 1;
+static constexpr auto g_moving_point = 0;
 
-auto possibleMoves(MatrixSP const& ip_state) -> std::unordered_set<Move>;
-bool isValid(MatrixSP const& ip_state, Move i_move);
-MatrixSP move(const MatrixSP& ip_state, Move i_move);
-MatrixSP& move(MatrixSP& iop_state, Move i_move);
-Move inferMove(MatrixSP const& ip_from, MatrixSP const& ip_to);
+static auto possibleMoves(const MatrixNxN& i_state) -> std::unordered_set<Move>;
+static bool isValid(const MatrixNxN& i_state, Move i_move);
+static MatrixSP<N> move(const MatrixSP<N>& ip_matrix, Move i_move);
+static Matrix<N> move(const Matrix<N>& i_matrix, Move i_move);
+static void moveInput(Matrix<N>& io_matrix, Move i_move);
+static Move inferMove(MatrixNxN const& i_from, MatrixNxN const& i_to);
 
-bool eq(const MatrixSP& ip_lhs, const MatrixSP& ip_rhs);
-bool cmp(const MatrixSP& ip_lhs, const MatrixSP& ip_rhs);
-bool solvable(const MatrixSP& ip_matrix, const MatrixSP& ip_solution);
+static bool eq(const MatrixNxN& ip_lhs, const MatrixNxN& ip_rhs);
+static bool cmp(const MatrixNxN& ip_lhs, const MatrixNxN& ip_rhs);
+static bool solvable(const MatrixNxN& ip_matrix, const MatrixNxN& ip_solution);
 
-std::size_t countInversions(const RowMatrix& i_input, const RowMatrix& i_solution);
-std::size_t countInversions(const MatrixSP& ip_matrix, const RowMatrix& i_solution);
-RowMatrix makeRow(const MatrixSP& ip_matrix);
+static std::size_t countInversions(const MatrixNxN& i_input, const MatrixNxN& i_solution);
 
-bool cmp(const State& i_lhs, const State& i_rhs);
+static bool cmp(const State<N>& i_lhs, const State<N>& i_rhs);
 
-const MatrixSP& data(const State& i_state);
-std::vector<State> expand(const State& i_state, const HeuristicFunction& i_heuristic_function);
-const std::size_t& h(State& i_state);
-std::size_t& g(State& i_state);
-const StateSP& predecessor(const State& i_state);
-StateSP& predecessor(State& i_state);
-std::list<Move> collectMoves(const State& i_state);
+static const MatrixNxN& data(const State<N>& i_state);
+static std::vector<State<N>> expand(const State<N>& i_state, const HeuristicFunction<N>& i_heuristic_function);
+static const std::size_t& h(State<N>& i_state);
+static std::size_t& g(State<N>& i_state);
+static const StateSP<N>& predecessor(const State<N>& i_state);
+static StateSP<N>& predecessor(State<N>& i_state);
+static std::list<Move> collectMoves(const State<N>& i_state);
 
-}
+static bool isInverted(const MatrixNxN& i_solution, const char l, const char r);
+static std::list<Move> collectMovesImpl(const State<N>& i_state,
+								 const StateSP<N>& i_opt_predecessor,
+								 std::list<Move> o_result = std::list<Move>());
+
+Utils() = delete;
+
+};

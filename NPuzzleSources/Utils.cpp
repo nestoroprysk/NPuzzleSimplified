@@ -1,172 +1,129 @@
 #include "Utils.hpp"
 #include "State.hpp"
-#include "Matrix.hpp"
 
-namespace {
-
-static constexpr auto g_moving_point = 0;
-
-const auto swap = [](MatrixSP& iop_matrix, Point const a, Point const b)
+// TODO: test
+template <std::size_t N>
+auto Utils<N>::possibleMoves(const MatrixNxN& i_matrix) -> std::unordered_set<Move>
 {
-	std::swap(iop_matrix->at(a.i, a.j), iop_matrix->at(b.i, b.j));
-};
-
-const auto movingPointCoordinates = [](const auto& ip_matrix) -> Point
-{
-	for (std::size_t i = 0; i < ip_matrix->size(); ++i)
-		for (std::size_t j = 0; j < ip_matrix->size(); ++j)
-			if (ip_matrix->at(i, j) == g_moving_point)
-				return {i, j};
-	throw std::logic_error("No moving point found");
-};
-
-const auto isInverted = [](const auto& i_solution, const auto l, const auto r){
-	const auto lPos = std::find(i_solution.cbegin(), i_solution.cend(), l);
-	const auto rPos = std::find(i_solution.cbegin(), i_solution.cend(), r);
-	if (lPos == rPos || lPos == i_solution.cend() || rPos == i_solution.cend())
-		throw std::logic_error("isInverted(), invalid input");
-	return lPos > rPos;
-};
-
-std::list<Move> collectMovesImpl(const State& i_state,
-								 const StateSP& i_opt_predecessor,
-								 std::list<Move> o_result = std::list<Move>())
-{
-	if (i_opt_predecessor)
-	{
-		o_result.push_front(Utils::inferMove(Utils::data(*i_opt_predecessor), Utils::data(i_state)));
-		return collectMovesImpl(*i_opt_predecessor, Utils::predecessor(*i_opt_predecessor), std::move(o_result));
-	}
-	return o_result;
-}
-
-}
-
-auto Utils::possibleMoves(MatrixSP const& ip_matrix) -> std::unordered_set<Move>
-{
-	std::unordered_set<Move> result;
-	const auto p = movingPointCoordinates(ip_matrix);
-	if (p.i != 0) result.insert(Move::Up);
-	if (p.i != ip_matrix->size() - 1) result.insert(Move::Down);
-	if (p.j != 0) result.insert(Move::Left);
-	if (p.j != ip_matrix->size() - 1) result.insert(Move::Right);
+	auto result = std::unordered_set<Move>();
+	const auto movingPointIndex = std::distance(i_matrix.cbegin(),
+		std::find(i_matrix.cbegin(), i_matrix.cend(), g_moving_point));
+	if (movingPointIndex % N != 0)
+		result.insert(Move::Left);
+	if (movingPointIndex % N != N - 1)
+		result.insert(Move::Right);
+	if (movingPointIndex / N != 0)
+		result.insert(Move::Up);
+	if (movingPointIndex / N != N - 1)
+		result.insert(Move::Down);
 	return result;
 }
 
-bool Utils::isValid(MatrixSP const& ip_matrix, Move i_move)
+template <std::size_t N>
+bool Utils<N>::isValid(const MatrixNxN& i_matrix, Move i_move)
 {
-	const auto ms = Utils::possibleMoves(ip_matrix);
+	const auto ms = Utils<N>::possibleMoves(i_matrix);
 	return ms.find(i_move) != ms.cend();
 }
 
-MatrixSP Utils::move(const MatrixSP& ip_matrix, Move i_move)
+template <std::size_t N>
+MatrixSP<N> Utils<N>::move(const MatrixSP<N>& ip_matrix, Move i_move)
 {
-	auto p_result = ip_matrix->clone();
-	move(p_result, i_move);
+	if (!ip_matrix)
+		throw std::logic_error("move(), initialized matrix expected");
+	auto p_result = std::make_shared<Matrix<N>>(*ip_matrix);
+	moveInput(*p_result, i_move);
 	return p_result;
 }
 
-MatrixSP& Utils::move(MatrixSP& iop_matrix, Move i_move)
+template <std::size_t N>
+Matrix<N> Utils<N>::move(const Matrix<N>& i_matrix, Move i_move)
 {
-	if (!Utils::isValid(iop_matrix, i_move))
-		throw std::logic_error("Invalid move");
-	const auto p = movingPointCoordinates(iop_matrix);
-	switch (i_move)
-	{
-		case Move::Left:
-			swap(iop_matrix, p, {p.i, p.j - 1});
-			break;
-		case Move::Right:
-			swap(iop_matrix, p, {p.i, p.j + 1});
-			break;
-		case Move::Up:
-			swap(iop_matrix, p, {p.i - 1, p.j});
-			break;
-		case Move::Down:
-			swap(iop_matrix, p, {p.i + 1, p.j});
-			break;
-		default:
-			throw std::logic_error("Impossible move");
-	}
-	return iop_matrix;
+	auto result = i_matrix;
+	moveInput(result, i_move);
+	return result;
 }
 
-Move Utils::inferMove(MatrixSP const& ip_from, MatrixSP const& ip_to)
+template <std::size_t N>
+void Utils<N>::moveInput(Matrix<N>& io_matrix, Move i_move)
 {
-	if (eq(ip_from, ip_to))
+	if (!isValid(io_matrix, i_move))
+		throw std::logic_error("moveInput(), invalid move");
+	const auto movingPointIndex = std::distance(io_matrix.cbegin(),
+		std::find(io_matrix.cbegin(), io_matrix.cend(), g_moving_point));
+	switch (i_move){
+		case Move::Left:
+			std::swap(io_matrix[movingPointIndex], io_matrix[movingPointIndex - 1]);
+			break;
+		case Move::Right:
+			std::swap(io_matrix[movingPointIndex], io_matrix[movingPointIndex + 1]);
+			break;
+		case Move::Up:
+			std::swap(io_matrix[movingPointIndex], io_matrix[movingPointIndex - N]);
+			break;
+		case Move::Down:
+			std::swap(io_matrix[movingPointIndex], io_matrix[movingPointIndex + N]);
+			break;
+		default:
+			throw std::logic_error("Invalid move type");
+	}
+}
+
+template <std::size_t N>
+Move Utils<N>::inferMove(MatrixNxN const& i_from, MatrixNxN const& i_to)
+{
+	// TODO: make move cheaper
+	if (eq(i_from, i_to))
 		throw std::logic_error("Unequal matrices expected");
-	for (auto const m : Utils::possibleMoves(ip_from))
-		if (eq(Utils::move(ip_from, m), ip_to))
+	for (auto const m : Utils<N>::possibleMoves(i_from))
+		if (eq(Utils<N>::move(i_from, m), i_to))
 			return m;
 	throw std::logic_error("Impossible to reach the state in a single move");
 }
 
-bool Utils::eq(const MatrixSP& ip_lhs, const MatrixSP& ip_rhs)
+template <std::size_t N>
+bool Utils<N>::eq(const MatrixNxN& i_lhs, const MatrixNxN& i_rhs)
 {
-	for (std::size_t i = 0; i < ip_lhs->size(); ++i)
-		for (std::size_t j = 0; j < ip_lhs->size(); ++j)
-			if (ip_lhs->at(i, j) != ip_rhs->at(i, j))
-				return false;
+	for (std::size_t i = 0; i < N * N; ++i)
+		if (i_lhs[i] != i_rhs[i])
+			return false;
 	return true;
 }
 
-bool Utils::solvable(const MatrixSP& ip_matrix, const MatrixSP& ip_solution)
+template <std::size_t N>
+bool Utils<N>::solvable(const MatrixNxN& i_matrix, const MatrixNxN& i_solution)
 {
-	if (ip_matrix->size() % 2 != 0){
-		return countInversions(makeRow(ip_matrix), makeRow(ip_solution)) % 2 == 0; 
+	if (N % 2 != 0){
+		return countInversions(i_matrix, i_solution) % 2 == 0;
 	}
 	else{
 		throw "Unimplemented";
 	}
 }
 
-// TODO: refactor
-std::size_t Utils::countInversions(const RowMatrix& i_input, const RowMatrix& i_solution)
+template <std::size_t N>
+std::size_t Utils<N>::countInversions(const MatrixNxN& i_matrix, const MatrixNxN& i_solution)
 {
+	// TODO: test
 	auto result = 0;
-	for (std::size_t i = 0; i < i_input.size(); ++i){
-		for (std::size_t j = i + 1; j < i_input.size(); ++j){
-			if (isInverted(i_solution, i_input[i], i_input[j]))
+	for (std::size_t i = 0; i < i_solution.size(); ++i)
+		for (std::size_t j = i + 1; j < i_solution.size(); ++j)
+			if (isInverted(i_solution, i_matrix[i], i_matrix[j]))
 				++result;
-		}
-	}
 	return result;
 }
 
-std::size_t Utils::countInversions(const MatrixSP& ip_matrix, const RowMatrix& i_solution)
+template <std::size_t N>
+bool Utils<N>::cmp(const MatrixNxN& i_lhs, const MatrixNxN& i_rhs)
 {
-	auto result = 0;
-	for (std::size_t i = 0; i < i_solution.size(); ++i){
-		for (std::size_t j = i + 1; j < i_solution.size(); ++j){
-			if (isInverted(i_solution, ip_matrix->at(i / ip_matrix->size(), i % ip_matrix->size()),
-					ip_matrix->at(j / ip_matrix->size(), j % ip_matrix->size())))
-				++result;
-		}
-	}
-	return result;
-}
-
-// TODO: delete
-RowMatrix Utils::makeRow(const MatrixSP& ip_matrix)
-{
-	auto result = RowMatrix();
-	for (std::size_t i = 0; i < ip_matrix->size(); ++i)
-		for (std::size_t j = 0; j < ip_matrix->size(); ++j)
-			result.push_back(ip_matrix->at(i, j));
-	return result;
-};
-
-// TODO: refactor so as to cache better
-bool Utils::cmp(const MatrixSP& ip_lhs, const MatrixSP& ip_rhs)
-{
-	for (std::size_t i = 0; i < ip_lhs->size(); ++i)
-		for (std::size_t j = 0; j < ip_rhs->size(); ++j)
-			if (ip_lhs->at(i, j) != ip_rhs->at(i, j))
-				return ip_lhs->at(i, j) < ip_rhs->at(i, j);
+	for (std::size_t i = 0; i < N * N; ++i)
+		if (i_lhs[i] != i_rhs[i])
+			return i_lhs[i] < i_rhs[i];
 	return false;
 }
 
-bool Utils::cmp(const State& i_lhs, const State& i_rhs)
+template <std::size_t N>
+bool Utils<N>::cmp(const State<N>& i_lhs, const State<N>& i_rhs)
 {
 	return i_lhs.m_heuristic_cost < i_rhs.m_heuristic_cost ||
 		(i_lhs.m_heuristic_cost == i_rhs.m_heuristic_cost &&
@@ -176,46 +133,79 @@ bool Utils::cmp(const State& i_lhs, const State& i_rhs)
 					cmp(data(i_lhs), data(i_rhs)));
 }
 
-const MatrixSP& Utils::data(const State& i_state)
+template <std::size_t N>
+auto Utils<N>::data(const State<N>& i_state) -> const MatrixNxN&
 {
 	if (!i_state.mp_data)
 		throw std::logic_error("data(s), initialized matrix expected");
-	return i_state.mp_data;
+	return *i_state.mp_data;
 }
 
-std::vector<State> Utils::expand(const State& i_state, const HeuristicFunction& i_heuristic_function)
+template <std::size_t N>
+std::vector<State<N>> Utils<N>::expand(const State<N>& i_state, const HeuristicFunction<N>& i_heuristic_function)
 {
+	// TODO: provide cache
 	const auto ms = possibleMoves(data(i_state));
-	auto result = std::vector<State>();
+	auto result = std::vector<State<N>>();
 	for (const auto m : ms){
-		auto p_matrix = move(data(i_state), m);
-		const auto cost = i_heuristic_function(p_matrix);
-		result.emplace_back(std::move(p_matrix), cost);
+		auto p_matrix = move(i_state.mp_data, m);
+		const auto cost = i_heuristic_function(*p_matrix);
+		result.emplace_back(p_matrix, cost);
 	}
 	return result;
 }
 
-const std::size_t& Utils::h(State& i_state)
+template <std::size_t N>
+const std::size_t& Utils<N>::h(State<N>& i_state)
 {
 	return i_state.m_heuristic_cost;
 }
 
-std::size_t& Utils::g(State& i_state)
+template <std::size_t N>
+std::size_t& Utils<N>::g(State<N>& i_state)
 {
 	return i_state.m_distance;
 }
 
-const StateSP& Utils::predecessor(const State& i_state)
+template <std::size_t N>
+const StateSP<N>& Utils<N>::predecessor(const State<N>& i_state)
 {
 	return i_state.mp_predecessor;
 }
 
-StateSP& Utils::predecessor(State& i_state)
+template <std::size_t N>
+StateSP<N>& Utils<N>::predecessor(State<N>& i_state)
 {
 	return i_state.mp_predecessor;
 }
 
-std::list<Move> Utils::collectMoves(const State& i_state)
+template <std::size_t N>
+std::list<Move> Utils<N>::collectMoves(const State<N>& i_state)
 {
 	return collectMovesImpl(i_state, predecessor(i_state));
 }
+
+template <std::size_t N>
+bool Utils<N>::isInverted(const MatrixNxN& i_solution, const char l, const char r)
+{
+	const auto lPos = std::find(i_solution.cbegin(), i_solution.cend(), l);
+	const auto rPos = std::find(i_solution.cbegin(), i_solution.cend(), r);
+	if (lPos == rPos || lPos == i_solution.cend() || rPos == i_solution.cend())
+		throw std::logic_error("isInverted(), invalid input");
+	return lPos > rPos;
+}
+
+template <std::size_t N>
+std::list<Move> Utils<N>::collectMovesImpl(const State<N>& i_state,
+								 const StateSP<N>& i_opt_predecessor,
+								 std::list<Move> o_result)
+{
+	if (i_opt_predecessor)
+	{
+		o_result.push_front(Utils<N>::inferMove(Utils<N>::data(*i_opt_predecessor), Utils<N>::data(i_state)));
+		return collectMovesImpl(*i_opt_predecessor, Utils<N>::predecessor(*i_opt_predecessor), std::move(o_result));
+	}
+	return o_result;
+}
+
+EXPLICITLY_INSTANTIATE_STRUCT(Utils);

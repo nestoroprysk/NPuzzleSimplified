@@ -15,8 +15,6 @@ set(NPuzzleDir ${CMAKE_CURRENT_SOURCE_DIR}/NPuzzleSources)
 file(GLOB NPuzzleSources	${NPuzzleDir}/IContainer.hpp
 							${NPuzzleDir}/Set.hpp
 							${NPuzzleDir}/Set.cpp
-							${NPuzzleDir}/Queue.hpp
-							${NPuzzleDir}/Queue.cpp
 							${NPuzzleDir}/Solver.hpp
 							${NPuzzleDir}/Solver.cpp
 							${NPuzzleDir}/State.hpp
@@ -28,7 +26,6 @@ file(GLOB NPuzzleSources	${NPuzzleDir}/IContainer.hpp
 				 			${NPuzzleDir}/ContainerCreator.cpp
 				 			${NPuzzleDir}/HeuristicFunctions.hpp
 				 			${NPuzzleDir}/HeuristicFunctions.cpp
-				 			${NPuzzleDir}/Matrix.hpp
 )
 
 add_library(NPuzzle STATIC ${NPuzzleSources})

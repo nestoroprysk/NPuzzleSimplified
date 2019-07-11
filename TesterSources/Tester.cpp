@@ -7,18 +7,23 @@ namespace {
 
 using It = Solution::const_iterator;
 
-bool isCorrectlySolvedImpl(MatrixSP& ip_state, const MatrixSP& ip_desired, It const& i_it, It const& i_end)
+template <std::size_t N>
+bool isCorrectlySolvedImpl(const Matrix<N>& i_matrix, const Matrix<N>& i_desired, It const& i_it, It const& i_end)
 {
 	if (i_it == i_end)
-		return Utils::eq(ip_state, ip_desired);
-	Utils::move(ip_state, *i_it);
-	return isCorrectlySolvedImpl(ip_state, ip_desired, std::next(i_it), i_end);
+		return Utils<N>::eq(i_matrix, i_desired);
+	// TODO: make move cheaper
+	return isCorrectlySolvedImpl<N>(Utils<N>::move(i_matrix, *i_it), i_desired, std::next(i_it), i_end);
 }
 
 }
 
-bool Tester::isCorrectlySolved(const MatrixSP& ip_initial, const MatrixSP& ip_desired, const Solution& i_solution)
+template <std::size_t N>
+bool Tester<N>::isCorrectlySolved(const Matrix<N>& i_initial, const Matrix<N>& i_desired, const Solution& i_solution)
 {
-	auto p_input = ip_initial;
-	return isCorrectlySolvedImpl(p_input, ip_desired, i_solution.cbegin(), i_solution.cend());
+	return isCorrectlySolvedImpl<N>(i_initial, i_desired, i_solution.cbegin(), i_solution.cend());
 }
+
+template struct Tester<3>;
+template struct Tester<4>;
+template struct Tester<5>;

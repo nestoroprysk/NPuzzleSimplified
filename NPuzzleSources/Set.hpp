@@ -6,16 +6,17 @@
 
 #include <set>
 
-class Set final : public IContainer
+template <std::size_t N>
+class Set final : public IContainer<N>
 {
 public:
 	Set();
-	virtual void push(const State& i_state) override;
+	virtual void push(const State<N>& i_state) override;
 	virtual bool empty() const override;
-	virtual State top() const override;
-	virtual bool contains(const State& i_state) const override;
+	virtual State<N> top() const override;
+	virtual bool contains(const State<N>& i_state) const override;
 	virtual void pop() override;
-	virtual void pop(const State& i_state) override;
+	virtual void pop(const State<N>& i_state) override;
 private:
-	std::set<State, Comparator> m_data;
+	std::set<State<N>, Comparator<N>> m_data;
 };

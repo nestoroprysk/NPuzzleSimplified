@@ -4,45 +4,55 @@
 
 #include <string>
 
-using namespace Utils;
-
-Set::Set()
-	: m_data([](const auto& l, const auto& r){ return cmp(l, r); }) 
+template <std::size_t N>
+Set<N>::Set()
+	: m_data([](const auto& l, const auto& r)
+		{ return Utils<N>::cmp(l, r); })
 {
 }
 
-void Set::push(const State& i_state)
+template <std::size_t N>
+void Set<N>::push(const State<N>& i_state)
 {
 	m_data.insert(i_state);
 }
 
-bool Set::empty() const
+template <std::size_t N>
+bool Set<N>::empty() const
 {
 	return m_data.empty();
 }
 
-State Set::top() const
+template <std::size_t N>
+State<N> Set<N>::top() const
 {
 	if (empty())
 		throw std::logic_error("top() on an empty Container");
 	return *m_data.cbegin();
 }
 
-bool Set::contains(const State& i_state) const
+template <std::size_t N>
+bool Set<N>::contains(const State<N>& i_state) const
 {
+	// TODO: provide hash lookup
 	return m_data.find(i_state) != m_data.end();
 }
 
-void Set::pop()
+template <std::size_t N>
+void Set<N>::pop()
 {
 	if (empty())
 		throw std::logic_error("pop() on an empty Container");
 	m_data.erase(m_data.begin());
 }
 
-void Set::pop(const State& i_state)
+template <std::size_t N>
+void Set<N>::pop(const State<N>& i_state)
 {
 	if (!contains(i_state))
 		throw std::logic_error("pop(s), s not found");
 	m_data.erase(m_data.find(i_state));
 }
+
+
+EXPLICITLY_INSTANTIATE_CLASS(Set);

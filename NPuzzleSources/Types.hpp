@@ -2,25 +2,39 @@
 
 #include <vector>
 #include <list>
+#include <array>
 
+template <std::size_t N>
 struct State;
-class IContainer;
-class IMatrix;
 
-enum class Move { Left, Right, Up, Down };
-enum class ContainerType { Set, Queue };
+template <std::size_t N>
+class IContainer;
+
+enum class Move {
+    Left, Right, Up, Down
+};
+enum class ContainerType {
+    Set, Queue
+};
 
 using Solution = std::list<Move>;
-using RowMatrix = std::vector<std::size_t>;
-using MatrixSP = std::shared_ptr<IMatrix>;
-using StateSP = std::shared_ptr<State>;
-using MaybeSolution = std::unique_ptr<Solution>;
-using IContainerUP = std::unique_ptr<IContainer>;
-using HeuristicFunction = std::function<std::size_t(const MatrixSP&)>;
-using Comparator = std::function<bool(const State&, const State&)>;
 
-struct Point
-{
-	std::size_t i = 0;
-	std::size_t j = 0;
-};
+template <std::size_t N>
+using Matrix = std::array<char, N * N>;
+
+template <std::size_t N>
+using MatrixSP = std::shared_ptr<Matrix<N>>;
+
+template <std::size_t N>
+using StateSP = std::shared_ptr<State<N>>;
+
+using MaybeSolution = std::unique_ptr<Solution>;
+
+template <std::size_t N>
+using IContainerUP = std::unique_ptr<IContainer<N>>;
+
+template <std::size_t N>
+using HeuristicFunction = std::function<std::size_t(const Matrix<N> &)>;
+
+template <std::size_t N>
+using Comparator = std::function<bool(const State<N> &, const State<N> &)>;

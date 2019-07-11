@@ -12,6 +12,7 @@
 12. Delete exceptions after impl is done
 13. use std::array instead of a matrix
 14. Make template functions instead of IMatrix
+15. Try templates in hpp files
 
 Note:
 - NPuzzle is a logic lib

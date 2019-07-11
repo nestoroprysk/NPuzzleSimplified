@@ -3,44 +3,46 @@
 #include "IContainer.hpp"
 #include "State.hpp"
 
-using namespace Utils;
-
-Solver::Solver(const MatrixSP& ip_desired_solution,
-		const HeuristicFunction& i_heuristic_function,
-		const ContainerCreator& i_container_creator)
-	: mp_desired_solution(ip_desired_solution)
+template <std::size_t N>
+Solver<N>::Solver(const Matrix<N>& i_desired_solution,
+		const HeuristicFunction<N>& i_heuristic_function,
+		const ContainerCreator<N>& i_container_creator)
+	: m_desired_solution(i_desired_solution)
 	, m_heuristic_function(i_heuristic_function)
 	, m_container_creator(i_container_creator)
 {
 }
 
-MaybeSolution Solver::solve(const MatrixSP& ip_matrix) const
+template <std::size_t N>
+MaybeSolution Solver<N>::solve(const Matrix<N>& i_matrix) const
 {
-	using namespace Utils;
-	if (!solvable(ip_matrix, mp_desired_solution))
+	if (!Utils<N>::solvable(i_matrix, m_desired_solution))
 		return {};
-	auto open = m_container_creator.create();
-	auto closed = m_container_creator.create();
-	open->push(State(ip_matrix, m_heuristic_function(ip_matrix)));
-	while (!open->empty()){
-		auto e = open->top();
-		if (!h(e) && eq(data(e), mp_desired_solution))
-			return std::make_unique<Solution>(collectMoves(e));
-		open->pop();
-		closed->push(e);
-		for (auto n : expand(e, m_heuristic_function)){
-			if (!open->contains(n) && !closed->contains(n)){
-				predecessor(n) = std::make_shared<State>(e);
-				open->push(n);
-				g(n) = g(e) + g_step_cost;
+	auto p_open = m_container_creator.create();
+	auto p_closed = m_container_creator.create();
+	auto& open = *p_open;
+	auto& closed = *p_closed;
+	open.push(State<N>(std::make_shared<Matrix<N>>(i_matrix), m_heuristic_function(i_matrix)));
+	while (!open.empty()){
+		auto e = open.top();
+		if (!Utils<N>::h(e) && Utils<N>::eq(Utils<N>::data(e), m_desired_solution))
+			return std::make_unique<Solution>(Utils<N>::collectMoves(e));
+		open.pop();
+		closed.push(e);
+		for (auto n : Utils<N>::expand(e, m_heuristic_function)){
+			if (!open.contains(n) && !closed.contains(n)){
+				Utils<N>::predecessor(n) = std::make_shared<State<N>>(e);
+				open.push(n);
+				Utils<N>::g(n) = Utils<N>::g(e) + Utils<N>::g_step_cost;
 			}
 			else{
-				if (g(n) + h(n) < g(e) + g_step_cost + h(e)){
-					g(n) = g(e) + g_step_cost;
-					predecessor(n) = std::make_shared<State>(e);
-					if (closed->contains(n)){
-						closed->pop(n);
-						open->push(n);
+				if (Utils<N>::g(n) + Utils<N>::h(n) <
+						Utils<N>::g(e) + Utils<N>::g_step_cost + Utils<N>::h(e)){
+					Utils<N>::g(n) = Utils<N>::g(e) + Utils<N>::g_step_cost;
+					Utils<N>::predecessor(n) = std::make_shared<State<N>>(e);
+					if (closed.contains(n)){
+						closed.pop(n);
+						open.push(n);
 					}
 				}
 			}
@@ -48,3 +50,5 @@ MaybeSolution Solver::solve(const MatrixSP& ip_matrix) const
 	}
 	return {};
 }
+
+EXPLICITLY_INSTANTIATE_CLASS(Solver);
