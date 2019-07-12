@@ -24,6 +24,8 @@ file(GLOB NPuzzleSources	${NPuzzleDir}/Set.hpp
 				 			${NPuzzleDir}/HeuristicFunctions.cpp
 				 			${NPuzzleDir}/Hash.hpp
 				 			${NPuzzleDir}/Queue.hpp
+				 			${NPuzzleDir}/Matrix.hpp
+				 			${NPuzzleDir}/Move.hpp
 )
 
 add_library(NPuzzle STATIC ${NPuzzleSources})

@@ -1,8 +1,9 @@
 #pragma once
 
+#include "Matrix.hpp"
+
 #include <vector>
 #include <list>
-#include <array>
 #include <unordered_map>
 
 template <std::size_t N>
@@ -11,14 +12,7 @@ struct State;
 template <std::size_t N>
 class IContainer;
 
-enum class Move {
-    Left, Right, Up, Down
-};
-
 using Solution = std::list<Move>;
-
-template <std::size_t N>
-using Matrix = std::array<char, N * N>;
 
 template <std::size_t N>
 using MatrixSP = std::shared_ptr<Matrix<N>>;

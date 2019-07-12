@@ -27,13 +27,10 @@ struct Utils
 using MatrixNxN = Matrix<N>;
 
 static constexpr auto g_step_cost = 1;
-static constexpr auto g_moving_point = 0;
 
 static auto possibleMoves(const MatrixNxN& i_state) -> std::unordered_set<Move>;
-static bool isValid(const MatrixNxN& i_state, Move i_move);
 static MatrixSP<N> move(const MatrixSP<N>& ip_matrix, Move i_move);
 static Matrix<N> move(const Matrix<N>& i_matrix, Move i_move);
-static void moveInput(Matrix<N>& io_matrix, Move i_move);
 static Move inferMove(MatrixNxN const& i_from, MatrixNxN const& i_to);
 
 static bool eq(const MatrixNxN& ip_lhs, const MatrixNxN& ip_rhs);
