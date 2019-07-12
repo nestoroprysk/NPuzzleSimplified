@@ -1,6 +1,21 @@
 #include "Utils.hpp"
 #include "State.hpp"
 
+namespace {
+
+Move oppositeMove(Move i_move)
+{
+	switch (i_move){
+		case Move::Left: return Move::Right;
+		case Move::Right: return Move::Left;
+		case Move::Up: return Move::Down;
+		case Move::Down: return Move::Up;
+		default: throw std::logic_error("oppositeMove(), invalid move type");
+	}
+}
+
+}
+
 // TODO: test
 template <std::size_t N>
 auto Utils<N>::possibleMoves(const MatrixNxN& i_matrix) -> std::unordered_set<Move>
@@ -37,12 +52,16 @@ Matrix<N> Utils<N>::move(const Matrix<N>& i_matrix, Move i_move)
 template <std::size_t N>
 Move Utils<N>::inferMove(MatrixNxN const& i_from, MatrixNxN const& i_to)
 {
-	// TODO: make move cheaper
-	if (eq(i_from, i_to))
-		throw std::logic_error("Unequal matrices expected");
-	for (auto const m : Utils<N>::possibleMoves(i_from))
-		if (eq(Utils<N>::move(i_from, m), i_to))
-			return m;
+	auto& matrix = const_cast<MatrixNxN&>(i_from);
+	for (auto const m : Utils<N>::possibleMoves(i_from)) {
+	    const auto reverseMove = oppositeMove(m);
+	    matrix.move(m);
+        if (eq(matrix, i_to)){
+        	matrix.move(reverseMove);
+            return m;
+        }
+        matrix.move(reverseMove);
+    }
 	throw std::logic_error("Impossible to reach the state in a single move");
 }
 
@@ -89,7 +108,6 @@ auto Utils<N>::data(const State<N>& i_state) -> const MatrixNxN&
 template <std::size_t N>
 std::vector<State<N>> Utils<N>::expand(const State<N>& i_state, const HeuristicFunction<N>& i_heuristic_function)
 {
-	// TODO: provide cache
 	const auto ms = possibleMoves(data(i_state));
 	auto result = std::vector<State<N>>();
 	for (const auto m : ms){
