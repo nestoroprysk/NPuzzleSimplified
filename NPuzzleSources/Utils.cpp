@@ -100,8 +100,6 @@ std::size_t Utils<N>::countInversions(const MatrixNxN& i_matrix, const ValueToPo
 template <std::size_t N>
 auto Utils<N>::data(const State<N>& i_state) -> const MatrixNxN&
 {
-	if (!i_state.mp_data)
-		throw std::logic_error("data(s), initialized matrix expected");
 	return *i_state.mp_data;
 }
 
