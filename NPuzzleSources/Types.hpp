@@ -13,9 +13,6 @@ class IContainer;
 enum class Move {
     Left, Right, Up, Down
 };
-enum class ContainerType {
-    Set, QueueOnVector
-};
 
 using Solution = std::list<Move>;
 

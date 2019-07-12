@@ -16,14 +16,11 @@ file(GLOB NPuzzleSources	${NPuzzleDir}/IContainer.hpp
 							${NPuzzleDir}/Set.hpp
 							${NPuzzleDir}/Set.cpp
 							${NPuzzleDir}/Solver.hpp
-							${NPuzzleDir}/Solver.cpp
 							${NPuzzleDir}/State.hpp
 							${NPuzzleDir}/State.cpp
 							${NPuzzleDir}/Types.hpp
 							${NPuzzleDir}/Utils.hpp
 				 			${NPuzzleDir}/Utils.cpp
-							${NPuzzleDir}/ContainerCreator.hpp
-				 			${NPuzzleDir}/ContainerCreator.cpp
 				 			${NPuzzleDir}/HeuristicFunctions.hpp
 				 			${NPuzzleDir}/HeuristicFunctions.cpp
 				 			${NPuzzleDir}/Hash.hpp

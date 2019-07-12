@@ -13,6 +13,7 @@
 13. use std::array instead of a matrix
 14. Make template functions instead of IMatrix
 15. Try templates in hpp files
+16. Research better hash
 
 Note:
 - NPuzzle is a logic lib

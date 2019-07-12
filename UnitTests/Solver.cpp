@@ -1,200 +1,145 @@
 #include "catch.hpp"
 
-#include <Types.hpp>
 #include <Solver.hpp>
-#include <ContainerCreator.hpp>
 #include <HeuristicFunctions.hpp>
-#include <Utils.hpp>
+#include <Set.hpp>
+#include <Queue.hpp>
 #include <Tester.hpp>
 
-TEST_CASE("Basic 3x3 Solver Test")
+#include <deque>
+
+namespace {
+
+template <std::size_t N, typename Container>
+void test(const Matrix<N>& i_input, const Matrix<N>& i_result,
+		const HeuristicFunction<N>& i_heuristic_function)
 {
-	static constexpr auto n = 3;
-	const auto desiredSolution = Matrix<n>{
-		1, 2, 3,
-		8, 0, 4,
-		7, 6, 5
-	};
-	const auto heuristicFunction = [&desiredSolution](const auto& i_matrix)
-			{ return Heuristic<n>::manhattan(i_matrix, desiredSolution); };
-	const auto containerCreator = ContainerCreator<n>(ContainerType::Set);
-	const auto solver = Solver<n>(desiredSolution, heuristicFunction, containerCreator);
-	const auto solvableTest = Matrix<n>{
+	const auto solver = Solver<N, Container>(i_result, i_heuristic_function);
+	auto opt_result = MaybeSolution();
+	REQUIRE_NOTHROW(opt_result = solver.solve(i_input));
+	REQUIRE(opt_result);
+	REQUIRE(opt_result->size());
+	REQUIRE(Tester<N>::isCorrectlySolved(i_input, i_result, *opt_result));
+}
+
+}
+
+TEST_CASE("<3x3><Set><Manhattan>")
+{
+	static constexpr auto N = 3;
+	const auto input = Matrix<N>{
 		5, 2, 4,
 		6, 0, 1,
 		8, 3, 7
 	};
-	auto opt_result = MaybeSolution();
-	REQUIRE_NOTHROW(opt_result = solver.solve(solvableTest));
-	REQUIRE(opt_result);
-	REQUIRE(opt_result->size());
-	REQUIRE(Tester<n>::isCorrectlySolved(solvableTest, desiredSolution, *opt_result));
+	const auto result = Matrix<N>{
+		1, 2, 3,
+		8, 0, 4,
+		7, 6, 5
+	};
+	const auto h = [&result](const auto& i_matrix)
+			{ return Heuristic<N>::manhattan(i_matrix, result); };
+	test<N, Set<N>>(input, result, h);
 }
 
-TEST_CASE("Basic 5x5 Solver Test I Set")
+TEST_CASE("<3x3><Set><Inversions>")
 {
-	static constexpr auto n = 5;
-	const auto desiredSolution = Matrix<n>{
+	static constexpr auto N = 3;
+	const auto input = Matrix<N>{
+		5, 2, 4,
+		6, 0, 1,
+		8, 3, 7
+	};
+	const auto result = Matrix<N>{
+		1, 2, 3,
+		8, 0, 4,
+		7, 6, 5
+	};
+	const auto h = [&result](const auto& i_matrix)
+			{ return Heuristic<N>::inversions(i_matrix, result); };
+	test<N, Set<N>>(input, result, h);
+}
+
+TEST_CASE("<3x3><QueueOnVector><Manhattan>")
+{
+	static constexpr auto N = 3;
+	const auto input = Matrix<N>{
+		5, 2, 4,
+		6, 0, 1,
+		8, 3, 7
+	};
+	const auto result = Matrix<N>{
+		1, 2, 3,
+		8, 0, 4,
+		7, 6, 5
+	};
+	const auto h = [&result](const auto& i_matrix)
+			{ return Heuristic<N>::manhattan(i_matrix, result); };
+	test<N, Queue<N, std::vector<State<N>>>>(input, result, h);
+}
+
+TEST_CASE("<5x5><Set><Manhattan>")
+{
+	static constexpr auto N = 5;
+	const auto result = Matrix<N>{
 		 1,   2,  3,  4,  5,
 		 16, 17, 18, 19,  6,
 		 15, 24,  0, 20,  7,
 		 14, 23, 22, 21,  8,
 		 13, 12, 11, 10,  9
 	};
-	const auto heuristicFunction = [&desiredSolution](const auto& i_matrix)
-			{ return Heuristic<n>::manhattan(i_matrix, desiredSolution); };
-	const auto containerCreator = ContainerCreator<n>(ContainerType::Set);
-	const auto solver = Solver<n>(desiredSolution, heuristicFunction, containerCreator);
-	const auto solvableTest = Matrix<n>{
+	const auto input = Matrix<N>{
 		 4,  12, 21,  6,  3,
 		 7,   8, 13,  1, 16,
 		 24, 20, 17,  2,  0,
 		 9,  23, 19, 18, 10,
 		 22,  5, 11, 14, 15
 	};
-	auto opt_result = MaybeSolution();
-	REQUIRE_NOTHROW(opt_result = solver.solve(solvableTest));
-	REQUIRE(opt_result);
-	REQUIRE(opt_result->size());
-	REQUIRE(Tester<n>::isCorrectlySolved(solvableTest, desiredSolution, *opt_result));
+	const auto h = [&result](const auto& i_matrix)
+			{ return Heuristic<N>::manhattan(i_matrix, result); };
+	test<N, Set<N>>(input, result, h);
 }
 
-TEST_CASE("Basic 5x5 Solver Test II Set")
+TEST_CASE("<5x5><QueueOnVector><Manhattan>")
 {
-	static constexpr auto n = 5;
-	const auto desiredSolution = Matrix<n>{
+	static constexpr auto N = 5;
+	const auto result = Matrix<N>{
 		 1,   2,  3,  4,  5,
 		 16, 17, 18, 19,  6,
 		 15, 24,  0, 20,  7,
 		 14, 23, 22, 21,  8,
 		 13, 12, 11, 10,  9
 	};
-	const auto heuristicFunction = [&desiredSolution](const auto& i_matrix)
-			{ return Heuristic<n>::manhattan(i_matrix, desiredSolution); };
-	const auto containerCreator = ContainerCreator<n>(ContainerType::Set);
-	const auto solver = Solver<n>(desiredSolution, heuristicFunction, containerCreator);
-	const auto solvableTest = Matrix<n>{
-		 8, 23,  0, 14, 18,
-		 7, 16, 17, 15, 22,
-		 1,  2, 13,  4, 12,
-		10,  6, 19,  9, 21,
-		20,  3,  5, 24, 11
-	};
-	auto opt_result = MaybeSolution();
-	REQUIRE_NOTHROW(opt_result = solver.solve(solvableTest));
-	REQUIRE(opt_result);
-	REQUIRE(opt_result->size());
-	REQUIRE(Tester<n>::isCorrectlySolved(solvableTest, desiredSolution, *opt_result));
-}
-
-TEST_CASE("Basic 5x5 Solver Test III Set")
-{
-	static constexpr auto n = 5;
-	const auto desiredSolution = Matrix<n>{
-		 1,   2,  3,  4,  5,
-		 16, 17, 18, 19,  6,
-		 15, 24,  0, 20,  7,
-		 14, 23, 22, 21,  8,
-		 13, 12, 11, 10,  9
-	};
-	const auto heuristicFunction = [&desiredSolution](const auto& i_matrix)
-			{ return Heuristic<n>::manhattan(i_matrix, desiredSolution); };
-	const auto containerCreator = ContainerCreator<n>(ContainerType::Set);
-	const auto solver = Solver<n>(desiredSolution, heuristicFunction, containerCreator);
-	const auto solvableTest = Matrix<n>{
-		 5,  7, 20,  8,  2,
-		11, 19, 23, 17, 24,
-		16, 15, 18, 13, 22,
-		21,  3,  4,  9, 10,
-		14,  6,  0,  1, 12
-	};
-	auto opt_result = MaybeSolution();
-	REQUIRE_NOTHROW(opt_result = solver.solve(solvableTest));
-	REQUIRE(opt_result);
-	REQUIRE(opt_result->size());
-	REQUIRE(Tester<n>::isCorrectlySolved(solvableTest, desiredSolution, *opt_result));
-}
-
-TEST_CASE("Basic 5x5 Solver Test I QueueOnVector")
-{
-	static constexpr auto n = 5;
-	const auto desiredSolution = Matrix<n>{
-		 1,   2,  3,  4,  5,
-		 16, 17, 18, 19,  6,
-		 15, 24,  0, 20,  7,
-		 14, 23, 22, 21,  8,
-		 13, 12, 11, 10,  9
-	};
-	const auto heuristicFunction = [&desiredSolution](const auto& i_matrix)
-			{ return Heuristic<n>::manhattan(i_matrix, desiredSolution); };
-	const auto containerCreator = ContainerCreator<n>(ContainerType::QueueOnVector);
-	const auto solver = Solver<n>(desiredSolution, heuristicFunction, containerCreator);
-	const auto solvableTest = Matrix<n>{
+	const auto input = Matrix<N>{
 		 4,  12, 21,  6,  3,
 		 7,   8, 13,  1, 16,
 		 24, 20, 17,  2,  0,
 		 9,  23, 19, 18, 10,
 		 22,  5, 11, 14, 15
 	};
-	auto opt_result = MaybeSolution();
-	REQUIRE_NOTHROW(opt_result = solver.solve(solvableTest));
-	REQUIRE(opt_result);
-	REQUIRE(opt_result->size());
-	REQUIRE(Tester<n>::isCorrectlySolved(solvableTest, desiredSolution, *opt_result));
+	const auto h = [&result](const auto& i_matrix)
+			{ return Heuristic<N>::manhattan(i_matrix, result); };
+	test<N, Queue<N, std::vector<State<N>>>>(input, result, h);
 }
 
-TEST_CASE("Basic 5x5 Solver Test II QueueOnVector")
+TEST_CASE("<5x5><QueueOnDequeue><Manhattan>")
 {
-	static constexpr auto n = 5;
-	const auto desiredSolution = Matrix<n>{
+	static constexpr auto N = 5;
+	const auto result = Matrix<N>{
 		 1,   2,  3,  4,  5,
 		 16, 17, 18, 19,  6,
 		 15, 24,  0, 20,  7,
 		 14, 23, 22, 21,  8,
 		 13, 12, 11, 10,  9
 	};
-	const auto heuristicFunction = [&desiredSolution](const auto& i_matrix)
-			{ return Heuristic<n>::manhattan(i_matrix, desiredSolution); };
-	const auto containerCreator = ContainerCreator<n>(ContainerType::QueueOnVector);
-	const auto solver = Solver<n>(desiredSolution, heuristicFunction, containerCreator);
-	const auto solvableTest = Matrix<n>{
-		 8, 23,  0, 14, 18,
-		 7, 16, 17, 15, 22,
-		 1,  2, 13,  4, 12,
-		10,  6, 19,  9, 21,
-		20,  3,  5, 24, 11
+	const auto input = Matrix<N>{
+		 4,  12, 21,  6,  3,
+		 7,   8, 13,  1, 16,
+		 24, 20, 17,  2,  0,
+		 9,  23, 19, 18, 10,
+		 22,  5, 11, 14, 15
 	};
-	auto opt_result = MaybeSolution();
-	REQUIRE_NOTHROW(opt_result = solver.solve(solvableTest));
-	REQUIRE(opt_result);
-	REQUIRE(opt_result->size());
-	REQUIRE(Tester<n>::isCorrectlySolved(solvableTest, desiredSolution, *opt_result));
-}
-
-TEST_CASE("Basic 5x5 Solver Test III QueueOnVector")
-{
-	static constexpr auto n = 5;
-	const auto desiredSolution = Matrix<n>{
-		 1,   2,  3,  4,  5,
-		 16, 17, 18, 19,  6,
-		 15, 24,  0, 20,  7,
-		 14, 23, 22, 21,  8,
-		 13, 12, 11, 10,  9
-	};
-	const auto heuristicFunction = [&desiredSolution](const auto& i_matrix)
-			{ return Heuristic<n>::manhattan(i_matrix, desiredSolution); };
-	const auto containerCreator = ContainerCreator<n>(ContainerType::QueueOnVector);
-	const auto solver = Solver<n>(desiredSolution, heuristicFunction, containerCreator);
-	const auto solvableTest = Matrix<n>{
-		 5,  7, 20,  8,  2,
-		11, 19, 23, 17, 24,
-		16, 15, 18, 13, 22,
-		21,  3,  4,  9, 10,
-		14,  6,  0,  1, 12
-	};
-	auto opt_result = MaybeSolution();
-	REQUIRE_NOTHROW(opt_result = solver.solve(solvableTest));
-	REQUIRE(opt_result);
-	REQUIRE(opt_result->size());
-	REQUIRE(Tester<n>::isCorrectlySolved(solvableTest, desiredSolution, *opt_result));
+	const auto h = [&result](const auto& i_matrix)
+			{ return Heuristic<N>::manhattan(i_matrix, result); };
+	test<N, Queue<N, std::deque<State<N>>>>(input, result, h);
 }

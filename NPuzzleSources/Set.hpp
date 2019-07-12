@@ -7,14 +7,14 @@
 #include <set>
 
 template <std::size_t N>
-class Set final : public IContainer<N>
+class Set
 {
 public:
 	Set();
-	virtual void push(const State<N>& i_state) override;
-	virtual bool empty() const override;
-	virtual State<N> top() const override;
-	virtual void pop() override;
+	void push(const State<N>& i_state);
+	bool empty() const;
+	State<N> top() const;
+	void pop();
 private:
 	std::set<State<N>, Comparator<N>> m_data;
 };
