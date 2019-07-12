@@ -9,8 +9,6 @@ public:
 	virtual void push(const State<N>& i_state) = 0;
 	virtual bool empty() const = 0;
 	virtual State<N> top() const = 0;
-	virtual bool contains(const State<N>& i_state) const = 0;
 	virtual void pop() = 0;
-	virtual void pop(const State<N>& i_state) = 0;
 	virtual ~IContainer(){}
 };

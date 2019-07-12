@@ -32,27 +32,11 @@ State<N> Set<N>::top() const
 }
 
 template <std::size_t N>
-bool Set<N>::contains(const State<N>& i_state) const
-{
-	// TODO: provide hash lookup
-	return m_data.find(i_state) != m_data.end();
-}
-
-template <std::size_t N>
 void Set<N>::pop()
 {
 	if (empty())
 		throw std::logic_error("pop() on an empty Container");
 	m_data.erase(m_data.begin());
 }
-
-template <std::size_t N>
-void Set<N>::pop(const State<N>& i_state)
-{
-	if (!contains(i_state))
-		throw std::logic_error("pop(s), s not found");
-	m_data.erase(m_data.find(i_state));
-}
-
 
 EXPLICITLY_INSTANTIATE_CLASS(Set);

@@ -33,6 +33,7 @@ class Hash
 public:
 	bool contains(const State<N>& i_state) const;
 	void push(const State<N>& i_state);
+	void pop(const State<N>& i_state);
 private:
 	using HashFunctionType = std::function<std::size_t(const State<N>&)>;
 	using EqFunctionType = std::function<bool(const State<N>&, const State<N>&)>;
@@ -53,4 +54,10 @@ template <std::size_t N>
 void Hash<N>::push(const State<N>& i_state)
 {
 	m_data.insert(i_state);
+}
+
+template <std::size_t N>
+void Hash<N>::pop(const State<N>& i_state)
+{
+	m_data.erase(i_state);
 }
