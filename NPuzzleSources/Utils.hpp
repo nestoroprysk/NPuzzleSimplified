@@ -37,11 +37,13 @@ static void moveInput(Matrix<N>& io_matrix, Move i_move);
 static Move inferMove(MatrixNxN const& i_from, MatrixNxN const& i_to);
 
 static bool eq(const MatrixNxN& ip_lhs, const MatrixNxN& ip_rhs);
+template <typename Order>
 static bool cmp(const MatrixNxN& ip_lhs, const MatrixNxN& ip_rhs);
 static bool solvable(const MatrixNxN& ip_matrix, const MatrixNxN& ip_solution);
 
 static std::size_t countInversions(const MatrixNxN& i_input, const MatrixNxN& i_solution);
 
+template <typename Order>
 static bool cmp(const State<N>& i_lhs, const State<N>& i_rhs);
 
 static const MatrixNxN& data(const State<N>& i_state);
@@ -60,3 +62,73 @@ static std::list<Move> collectMovesImpl(const State<N>& i_state,
 Utils() = delete;
 
 };
+
+namespace Detail {
+
+template <std::size_t N, typename Order>
+struct Comparator{
+static bool compare(const Matrix<N>&, const Matrix<N>&){
+	throw std::logic_error("compare(), Greater, Less, GreaterOrEqual, or LessOrEqual expected");
+}
+};
+
+template <std::size_t N>
+struct Comparator<N, Greater>{
+static bool compare(const Matrix<N>& i_lhs, const Matrix<N>& i_rhs){
+	for (std::size_t i = 0; i < N * N; ++i)
+		if (i_lhs[i] != i_rhs[i])
+			return i_lhs[i] > i_rhs[i];
+	return false;
+}
+};
+
+template <std::size_t N>
+struct Comparator<N, Less>{
+static bool compare(const Matrix<N>& i_lhs, const Matrix<N>& i_rhs){
+	for (std::size_t i = 0; i < N * N; ++i)
+		if (i_lhs[i] != i_rhs[i])
+			return i_lhs[i] < i_rhs[i];
+	return false;
+}
+};
+
+template <std::size_t N>
+struct Comparator<N, GreaterOrEqual>{
+static bool compare(const Matrix<N>& i_lhs, const Matrix<N>& i_rhs){
+	for (std::size_t i = 0; i < N * N; ++i)
+		if (i_lhs[i] != i_rhs[i])
+			return i_lhs[i] > i_rhs[i];
+	return true;
+}
+};
+
+template <std::size_t N>
+struct Comparator<N, LessOrEqual>{
+static bool compare(const Matrix<N>& i_lhs, const Matrix<N>& i_rhs){
+	for (std::size_t i = 0; i < N * N; ++i)
+		if (i_lhs[i] != i_rhs[i])
+			return i_lhs[i] < i_rhs[i];
+	return true;
+}
+};
+
+}
+
+template <std::size_t N>
+template <typename Order>
+bool Utils<N>::cmp(const MatrixNxN& i_lhs, const MatrixNxN& i_rhs)
+{
+	return Detail::Comparator<N, Order>::compare(i_lhs, i_rhs);
+}
+
+template <std::size_t N>
+template <typename Order>
+bool Utils<N>::cmp(const State<N>& i_lhs, const State<N>& i_rhs)
+{
+	return i_lhs.m_heuristic_cost < i_rhs.m_heuristic_cost ||
+		(i_lhs.m_heuristic_cost == i_rhs.m_heuristic_cost &&
+			i_lhs.m_distance < i_rhs.m_distance) ||
+			(i_lhs.m_heuristic_cost == i_rhs.m_heuristic_cost &&
+				i_lhs.m_distance == i_rhs.m_distance &&
+					cmp<Order>(data(i_lhs), data(i_rhs)));
+}

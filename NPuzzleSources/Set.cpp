@@ -7,7 +7,7 @@
 template <std::size_t N>
 Set<N>::Set()
 	: m_data([](const auto& l, const auto& r)
-		{ return Utils<N>::cmp(l, r); })
+		{ return Utils<N>::template cmp<Less>(l, r); })
 {
 }
 

@@ -14,7 +14,7 @@ enum class Move {
     Left, Right, Up, Down
 };
 enum class ContainerType {
-    Set, Queue
+    Set, QueueOnVector
 };
 
 using Solution = std::list<Move>;
@@ -38,3 +38,8 @@ using HeuristicFunction = std::function<std::size_t(const Matrix<N> &)>;
 
 template <std::size_t N>
 using Comparator = std::function<bool(const State<N> &, const State<N> &)>;
+
+struct Less{};
+struct Greater{};
+struct LessOrEqual{};
+struct GreaterOrEqual{};

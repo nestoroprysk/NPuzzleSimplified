@@ -2,6 +2,7 @@
 
 #include "Types.hpp"
 
+// TODO: make Container a template argument
 template <std::size_t N>
 class IContainer
 {

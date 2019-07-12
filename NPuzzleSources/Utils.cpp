@@ -114,26 +114,6 @@ std::size_t Utils<N>::countInversions(const MatrixNxN& i_matrix, const MatrixNxN
 }
 
 template <std::size_t N>
-bool Utils<N>::cmp(const MatrixNxN& i_lhs, const MatrixNxN& i_rhs)
-{
-	for (std::size_t i = 0; i < N * N; ++i)
-		if (i_lhs[i] != i_rhs[i])
-			return i_lhs[i] < i_rhs[i];
-	return false;
-}
-
-template <std::size_t N>
-bool Utils<N>::cmp(const State<N>& i_lhs, const State<N>& i_rhs)
-{
-	return i_lhs.m_heuristic_cost < i_rhs.m_heuristic_cost ||
-		(i_lhs.m_heuristic_cost == i_rhs.m_heuristic_cost &&
-			i_lhs.m_distance < i_rhs.m_distance) ||
-			(i_lhs.m_heuristic_cost == i_rhs.m_heuristic_cost &&
-				i_lhs.m_distance == i_rhs.m_distance &&
-					cmp(data(i_lhs), data(i_rhs)));
-}
-
-template <std::size_t N>
 auto Utils<N>::data(const State<N>& i_state) -> const MatrixNxN&
 {
 	if (!i_state.mp_data)
