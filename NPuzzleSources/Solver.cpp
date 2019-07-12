@@ -2,6 +2,7 @@
 #include "Utils.hpp"
 #include "IContainer.hpp"
 #include "State.hpp"
+#include "Hash.hpp"
 
 template <std::size_t N>
 Solver<N>::Solver(const Matrix<N>& i_desired_solution,
@@ -23,6 +24,7 @@ MaybeSolution Solver<N>::solve(const Matrix<N>& i_matrix) const
 	auto& open = *p_open;
 	auto& closed = *p_closed;
 	open.push(State<N>(std::make_shared<Matrix<N>>(i_matrix), m_heuristic_function(i_matrix)));
+	auto created_states_container = Hash<N>();
 	while (!open.empty()){
 		auto e = open.top();
 		if (!Utils<N>::h(e) && Utils<N>::eq(Utils<N>::data(e), m_desired_solution))
@@ -30,7 +32,7 @@ MaybeSolution Solver<N>::solve(const Matrix<N>& i_matrix) const
 		open.pop();
 		closed.push(e);
 		for (auto n : Utils<N>::expand(e, m_heuristic_function)){
-			if (!open.contains(n) && !closed.contains(n)){
+			if (!created_states_container.contains(n)){
 				Utils<N>::predecessor(n) = std::make_shared<State<N>>(e);
 				open.push(n);
 				Utils<N>::g(n) = Utils<N>::g(e) + Utils<N>::g_step_cost;
@@ -46,6 +48,7 @@ MaybeSolution Solver<N>::solve(const Matrix<N>& i_matrix) const
 					}
 				}
 			}
+			created_states_container.push(n);
 		}
 	}
 	return {};
