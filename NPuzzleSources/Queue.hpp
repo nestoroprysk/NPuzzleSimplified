@@ -1,19 +1,18 @@
 #pragma once
 
-#include "IContainer.hpp"
 #include "Types.hpp"
 #include "State.hpp"
 
 #include <queue>
 
 template <std::size_t N, typename Container>
-class Queue final : public IContainer<N>
+class Queue final
 {
 public:
-	virtual void push(const State<N>& i_state) override;
-	virtual bool empty() const override;
-	virtual State<N> top() const override;
-	virtual void pop() override;
+	void push(const State<N>& i_state);
+	bool empty() const;
+	State<N> top() const;
+	void pop();
 private:
 	using QueueType = std::priority_queue<State<N>, Container, Comparator<N>>;
 	QueueType m_data = QueueType([](const auto i_lhs, const auto i_rhs)
