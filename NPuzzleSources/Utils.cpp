@@ -6,6 +6,7 @@ template <std::size_t N>
 auto Utils<N>::possibleMoves(const MatrixNxN& i_matrix) -> std::unordered_set<Move>
 {
 	auto result = std::unordered_set<Move>();
+	// TODO: make constant
 	const auto movingPointIndex = std::distance(i_matrix.cbegin(),
 		std::find(i_matrix.cbegin(), i_matrix.cend(), g_moving_point));
 	if (movingPointIndex % N != 0)
@@ -49,6 +50,7 @@ void Utils<N>::moveInput(Matrix<N>& io_matrix, Move i_move)
 {
 	if (!isValid(io_matrix, i_move))
 		throw std::logic_error("moveInput(), invalid move");
+	// TODO: make constant
 	const auto movingPointIndex = std::distance(io_matrix.cbegin(),
 		std::find(io_matrix.cbegin(), io_matrix.cend(), g_moving_point));
 	switch (i_move){
@@ -94,7 +96,7 @@ template <std::size_t N>
 bool Utils<N>::solvable(const MatrixNxN& i_matrix, const MatrixNxN& i_solution)
 {
 	if (N % 2 != 0){
-		return countInversions(i_matrix, i_solution) % 2 == 0;
+		return countInversions(i_matrix, map(i_solution)) % 2 == 0;
 	}
 	else{
 		throw "Unimplemented";
@@ -102,13 +104,13 @@ bool Utils<N>::solvable(const MatrixNxN& i_matrix, const MatrixNxN& i_solution)
 }
 
 template <std::size_t N>
-std::size_t Utils<N>::countInversions(const MatrixNxN& i_matrix, const MatrixNxN& i_solution)
+std::size_t Utils<N>::countInversions(const MatrixNxN& i_matrix, const ValueToPosition& i_mapper)
 {
 	// TODO: test
 	auto result = 0;
-	for (std::size_t i = 0; i < i_solution.size(); ++i)
-		for (std::size_t j = i + 1; j < i_solution.size(); ++j)
-			if (isInverted(i_solution, i_matrix[i], i_matrix[j]))
+	for (std::size_t i = 0; i < N * N; ++i)
+		for (std::size_t j = i + 1; j < N * N; ++j)
+			if (isInverted(i_mapper, i_matrix[i], i_matrix[j]))
 				++result;
 	return result;
 }
@@ -166,13 +168,9 @@ std::list<Move> Utils<N>::collectMoves(const State<N>& i_state)
 }
 
 template <std::size_t N>
-bool Utils<N>::isInverted(const MatrixNxN& i_solution, const char l, const char r)
+bool Utils<N>::isInverted(const ValueToPosition& i_mapper, const char l, const char r)
 {
-	const auto lPos = std::find(i_solution.cbegin(), i_solution.cend(), l);
-	const auto rPos = std::find(i_solution.cbegin(), i_solution.cend(), r);
-	if (lPos == rPos || lPos == i_solution.cend() || rPos == i_solution.cend())
-		throw std::logic_error("isInverted(), invalid input");
-	return lPos > rPos;
+	return i_mapper.at(l) > i_mapper.at(r);
 }
 
 template <std::size_t N>
@@ -186,6 +184,15 @@ std::list<Move> Utils<N>::collectMovesImpl(const State<N>& i_state,
 		return collectMovesImpl(*i_opt_predecessor, Utils<N>::predecessor(*i_opt_predecessor), std::move(o_result));
 	}
 	return o_result;
+}
+
+template <std::size_t N>
+ValueToPosition Utils<N>::map(const Matrix<N>& i_solution)
+{
+	ValueToPosition result;
+	for (std::size_t i = 0; i < N * N; ++i)
+		result[i_solution[i]] = i;
+	return result;
 }
 
 EXPLICITLY_INSTANTIATE_STRUCT(Utils);

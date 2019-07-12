@@ -41,7 +41,7 @@ template <typename Order>
 static bool cmp(const MatrixNxN& ip_lhs, const MatrixNxN& ip_rhs);
 static bool solvable(const MatrixNxN& ip_matrix, const MatrixNxN& ip_solution);
 
-static std::size_t countInversions(const MatrixNxN& i_input, const MatrixNxN& i_solution);
+static std::size_t countInversions(const MatrixNxN& i_input, const ValueToPosition& i_mapper);
 
 template <typename Order>
 static bool cmp(const State<N>& i_lhs, const State<N>& i_rhs);
@@ -54,10 +54,11 @@ static const StateSP<N>& predecessor(const State<N>& i_state);
 static StateSP<N>& predecessor(State<N>& i_state);
 static std::list<Move> collectMoves(const State<N>& i_state);
 
-static bool isInverted(const MatrixNxN& i_solution, const char l, const char r);
+static bool isInverted(const ValueToPosition& i_mapper, const char l, const char r);
 static std::list<Move> collectMovesImpl(const State<N>& i_state,
 								 const StateSP<N>& i_opt_predecessor,
 								 std::list<Move> o_result = std::list<Move>());
+static ValueToPosition map(const Matrix<N>& i_solution);
 
 Utils() = delete;
 

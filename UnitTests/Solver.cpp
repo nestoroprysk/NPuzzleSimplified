@@ -37,8 +37,8 @@ TEST_CASE("<3x3><Set><Manhattan>")
 		8, 0, 4,
 		7, 6, 5
 	};
-	const auto h = [&result](const auto& i_matrix)
-			{ return Heuristic<N>::manhattan(i_matrix, result); };
+	const auto h = [f = Heuristic<N>(result)](const auto& i_matrix)
+			{ return f.manhattan(i_matrix); };
 	test<N, Set<N>>(input, result, h);
 }
 
@@ -55,8 +55,8 @@ TEST_CASE("<3x3><Set><Inversions>")
 		8, 0, 4,
 		7, 6, 5
 	};
-	const auto h = [&result](const auto& i_matrix)
-			{ return Heuristic<N>::inversions(i_matrix, result); };
+	const auto h = [f = Heuristic<N>(result)](const auto& i_matrix)
+			{ return f.inversions(i_matrix); };
 	test<N, Set<N>>(input, result, h);
 }
 
@@ -73,8 +73,8 @@ TEST_CASE("<3x3><QueueOnVector><Manhattan>")
 		8, 0, 4,
 		7, 6, 5
 	};
-	const auto h = [&result](const auto& i_matrix)
-			{ return Heuristic<N>::manhattan(i_matrix, result); };
+	const auto h = [f = Heuristic<N>(result)](const auto& i_matrix)
+			{ return f.manhattan(i_matrix); };
 	test<N, Queue<N, std::vector<State<N>>>>(input, result, h);
 }
 
@@ -95,8 +95,8 @@ TEST_CASE("<5x5><Set><Manhattan>")
 		 9,  23, 19, 18, 10,
 		 22,  5, 11, 14, 15
 	};
-	const auto h = [&result](const auto& i_matrix)
-			{ return Heuristic<N>::manhattan(i_matrix, result); };
+	const auto h = [f = Heuristic<N>(result)](const auto& i_matrix)
+			{ return f.manhattan(i_matrix); };
 	test<N, Set<N>>(input, result, h);
 }
 
@@ -117,8 +117,8 @@ TEST_CASE("<5x5><QueueOnVector><Manhattan>")
 		 9,  23, 19, 18, 10,
 		 22,  5, 11, 14, 15
 	};
-	const auto h = [&result](const auto& i_matrix)
-			{ return Heuristic<N>::manhattan(i_matrix, result); };
+	const auto h = [f = Heuristic<N>(result)](const auto& i_matrix)
+			{ return f.manhattan(i_matrix); };
 	test<N, Queue<N, std::vector<State<N>>>>(input, result, h);
 }
 
@@ -139,7 +139,7 @@ TEST_CASE("<5x5><QueueOnDequeue><Manhattan>")
 		 9,  23, 19, 18, 10,
 		 22,  5, 11, 14, 15
 	};
-	const auto h = [&result](const auto& i_matrix)
-			{ return Heuristic<N>::manhattan(i_matrix, result); };
+	const auto h = [f = Heuristic<N>(result)](const auto& i_matrix)
+			{ return f.manhattan(i_matrix); };
 	test<N, Queue<N, std::deque<State<N>>>>(input, result, h);
 }

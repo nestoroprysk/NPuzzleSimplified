@@ -3,10 +3,17 @@
 #include "Types.hpp"
 
 template <std::size_t N>
-struct Heuristic
+class Heuristic
 {
-static std::size_t manhattan(const Matrix<N>& i_matrix, const Matrix<N>& i_solution);
-static std::size_t inversions(const Matrix<N>& i_matrix, const Matrix<N>& i_solution);
+public:
+	Heuristic(const Matrix<N>& i_solution);
+	std::size_t manhattan(const Matrix<N>& i_matrix) const;
+	std::size_t inversions(const Matrix<N>& i_matrix) const;
 
-Heuristic() = delete;
+private:
+	std::size_t distanceX(const Matrix<N>& i_matrix, const std::size_t i) const;
+	std::size_t distanceY(const Matrix<N>& i_matrix, const std::size_t i) const;
+
+private:
+	ValueToPosition m_mapper;
 };

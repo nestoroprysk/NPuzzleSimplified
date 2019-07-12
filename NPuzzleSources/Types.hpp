@@ -3,6 +3,7 @@
 #include <vector>
 #include <list>
 #include <array>
+#include <unordered_map>
 
 template <std::size_t N>
 struct State;
@@ -35,6 +36,8 @@ using HeuristicFunction = std::function<std::size_t(const Matrix<N> &)>;
 
 template <std::size_t N>
 using Comparator = std::function<bool(const State<N> &, const State<N> &)>;
+
+using ValueToPosition = std::unordered_map<char, std::size_t>;
 
 struct Less{};
 struct Greater{};
