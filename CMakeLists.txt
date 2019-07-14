@@ -23,8 +23,10 @@ file(GLOB NPuzzleSources	${NPuzzleDir}/Set.hpp
 	 			${NPuzzleDir}/HeuristicFunctions.hpp
 	 			${NPuzzleDir}/HeuristicFunctions.cpp
 	 			${NPuzzleDir}/Hash.hpp
+	 			${NPuzzleDir}/Hash.cpp
 	 			${NPuzzleDir}/Queue.hpp
 	 			${NPuzzleDir}/Matrix.hpp
+	 			${NPuzzleDir}/Matrix.cpp
 	 			${NPuzzleDir}/Move.hpp
 )
 

@@ -1,109 +1,88 @@
 #pragma once
 
 #include "Types.hpp"
+#include "State.hpp"
 
 #include <unordered_set>
 
-#define EXPLICITLY_INSTANTIATE_STRUCT_IMPL(T, N) \
-template struct T<N>
-
-#define EXPLICITLY_INSTANTIATE_STRUCT(T) \
-EXPLICITLY_INSTANTIATE_STRUCT_IMPL(T, 3); \
-EXPLICITLY_INSTANTIATE_STRUCT_IMPL(T, 4); \
-EXPLICITLY_INSTANTIATE_STRUCT_IMPL(T, 5)
-
-#define EXPLICITLY_INSTANTIATE_CLASS_IMPL(T, N) \
-template class T<N>
-
-#define EXPLICITLY_INSTANTIATE_CLASS(T) \
-EXPLICITLY_INSTANTIATE_CLASS_IMPL(T, 3); \
-EXPLICITLY_INSTANTIATE_CLASS_IMPL(T, 4); \
-EXPLICITLY_INSTANTIATE_CLASS_IMPL(T, 5)
-
-template <std::size_t N>
-struct Utils
-{
-
-using MatrixNxN = Matrix<N>;
+namespace Utils {
 
 static constexpr auto g_step_cost = 1;
 
-static auto possibleMoves(const MatrixNxN& i_state) -> std::unordered_set<Move>;
-static MatrixSP<N> move(const MatrixSP<N>& ip_matrix, Move i_move);
-static Matrix<N> move(const Matrix<N>& i_matrix, Move i_move);
-static Move inferMove(MatrixNxN const& i_from, MatrixNxN const& i_to);
+auto possibleMoves(const Matrix& i_state) -> std::unordered_set<Move>;
+MatrixSP move(const MatrixSP& ip_matrix, Move i_move);
+Matrix move(const Matrix& i_matrix, Move i_move);
+Move inferMove(Matrix const& i_from, Matrix const& i_to);
 
-static bool eq(const MatrixNxN& ip_lhs, const MatrixNxN& ip_rhs);
+bool eq(const Matrix& ip_lhs, const Matrix& ip_rhs);
 template <typename Order>
-static bool cmp(const MatrixNxN& ip_lhs, const MatrixNxN& ip_rhs);
-static bool solvable(const MatrixNxN& ip_matrix, const MatrixNxN& ip_solution);
+bool cmp(const Matrix& ip_lhs, const Matrix& ip_rhs);
+bool solvable(const Matrix& ip_matrix, const Matrix& ip_solution);
 
-static std::size_t countInversions(const MatrixNxN& i_input, const ValueToPosition& i_mapper);
+std::size_t countInversions(const Matrix& i_input, const ValueToPosition& i_mapper);
 
 template <typename Order>
-static bool cmp(const State<N>& i_lhs, const State<N>& i_rhs);
+bool cmp(const State& i_lhs, const State& i_rhs);
 
-static const MatrixNxN& data(const State<N>& i_state);
-static std::vector<State<N>> expand(const State<N>& i_state, const HeuristicFunction<N>& i_heuristic_function);
-static const std::size_t& h(State<N>& i_state);
-static std::size_t& g(State<N>& i_state);
-static const StateSP<N>& predecessor(const State<N>& i_state);
-static StateSP<N>& predecessor(State<N>& i_state);
-static std::list<Move> collectMoves(const State<N>& i_state);
+const Matrix& data(const State& i_state);
+std::vector<State> expand(const State& i_state, const HeuristicFunction& i_heuristic_function);
+const std::size_t& h(State& i_state);
+std::size_t& g(State& i_state);
+const StateSP& predecessor(const State& i_state);
+StateSP& predecessor(State& i_state);
+std::list<Move> collectMoves(const State& i_state);
 
-static bool isInverted(const ValueToPosition& i_mapper, const char l, const char r);
-static std::list<Move> collectMovesImpl(const State<N>& i_state,
-								 const StateSP<N>& i_opt_predecessor,
+bool isInverted(const ValueToPosition& i_mapper, const char l, const char r);
+std::list<Move> collectMovesImpl(const State& i_state,
+								 const StateSP& i_opt_predecessor,
 								 std::list<Move> o_result = std::list<Move>());
-static ValueToPosition map(const Matrix<N>& i_solution);
-
-Utils() = delete;
+ValueToPosition map(const Matrix& i_solution);
 
 };
 
 namespace Detail {
 
-template <std::size_t N, typename Order>
+template <typename Order>
 struct Comparator{
-static bool compare(const Matrix<N>&, const Matrix<N>&){
+static bool compare(const Matrix&, const Matrix&){
 	throw std::logic_error("compare(), Greater, Less, GreaterOrEqual, or LessOrEqual expected");
 }
 };
 
-template <std::size_t N>
-struct Comparator<N, Greater>{
-static bool compare(const Matrix<N>& i_lhs, const Matrix<N>& i_rhs){
-	for (std::size_t i = 0; i < N * N; ++i)
+template <>
+struct Comparator<Greater>{
+static bool compare(const Matrix& i_lhs, const Matrix& i_rhs){
+	for (std::size_t i = 0; i < i_lhs.sizeSquared(); ++i)
 		if (i_lhs[i] != i_rhs[i])
 			return i_lhs[i] > i_rhs[i];
 	return false;
 }
 };
 
-template <std::size_t N>
-struct Comparator<N, Less>{
-static bool compare(const Matrix<N>& i_lhs, const Matrix<N>& i_rhs){
-	for (std::size_t i = 0; i < N * N; ++i)
+template <>
+struct Comparator<Less>{
+static bool compare(const Matrix& i_lhs, const Matrix& i_rhs){
+	for (std::size_t i = 0; i < i_lhs.sizeSquared(); ++i)
 		if (i_lhs[i] != i_rhs[i])
 			return i_lhs[i] < i_rhs[i];
 	return false;
 }
 };
 
-template <std::size_t N>
-struct Comparator<N, GreaterOrEqual>{
-static bool compare(const Matrix<N>& i_lhs, const Matrix<N>& i_rhs){
-	for (std::size_t i = 0; i < N * N; ++i)
+template <>
+struct Comparator<GreaterOrEqual>{
+static bool compare(const Matrix& i_lhs, const Matrix& i_rhs){
+	for (std::size_t i = 0; i < i_lhs.sizeSquared(); ++i)
 		if (i_lhs[i] != i_rhs[i])
 			return i_lhs[i] > i_rhs[i];
 	return true;
 }
 };
 
-template <std::size_t N>
-struct Comparator<N, LessOrEqual>{
-static bool compare(const Matrix<N>& i_lhs, const Matrix<N>& i_rhs){
-	for (std::size_t i = 0; i < N * N; ++i)
+template <>
+struct Comparator<LessOrEqual>{
+static bool compare(const Matrix& i_lhs, const Matrix& i_rhs){
+	for (std::size_t i = 0; i < i_lhs.sizeSquared(); ++i)
 		if (i_lhs[i] != i_rhs[i])
 			return i_lhs[i] < i_rhs[i];
 	return true;
@@ -112,16 +91,14 @@ static bool compare(const Matrix<N>& i_lhs, const Matrix<N>& i_rhs){
 
 }
 
-template <std::size_t N>
 template <typename Order>
-bool Utils<N>::cmp(const MatrixNxN& i_lhs, const MatrixNxN& i_rhs)
+bool Utils::cmp(const Matrix& i_lhs, const Matrix& i_rhs)
 {
-	return Detail::Comparator<N, Order>::compare(i_lhs, i_rhs);
+	return Detail::Comparator<Order>::compare(i_lhs, i_rhs);
 }
 
-template <std::size_t N>
 template <typename Order>
-bool Utils<N>::cmp(const State<N>& i_lhs, const State<N>& i_rhs)
+bool Utils::cmp(const State& i_lhs, const State& i_rhs)
 {
 	return i_lhs.m_heuristic_cost < i_rhs.m_heuristic_cost ||
 		(i_lhs.m_heuristic_cost == i_rhs.m_heuristic_cost &&

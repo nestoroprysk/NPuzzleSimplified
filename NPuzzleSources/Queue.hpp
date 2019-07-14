@@ -5,40 +5,40 @@
 
 #include <queue>
 
-template <std::size_t N, typename Container>
+template <typename Container>
 class Queue final
 {
 public:
-	void push(const State<N>& i_state);
+	void push(const State& i_state);
 	bool empty() const;
-	State<N> top() const;
+	State top() const;
 	void pop();
 private:
-	using QueueType = std::priority_queue<State<N>, Container, Comparator<N>>;
+	using QueueType = std::priority_queue<State, Container, Comparator>;
 	QueueType m_data = QueueType([](const auto i_lhs, const auto i_rhs)
-			{ return !Utils<N>::template cmp<Less>(i_lhs, i_rhs); });
+			{ return !Utils::template cmp<Less>(i_lhs, i_rhs); });
 };
 
-template <std::size_t N, typename Container>
-void Queue<N, Container>::push(const State<N>& i_state)
+template <typename Container>
+void Queue<Container>::push(const State& i_state)
 {
 	m_data.push(i_state);
 }
 
-template <std::size_t N, typename Container>
-bool Queue<N, Container>::empty() const
+template <typename Container>
+bool Queue<Container>::empty() const
 {
 	return m_data.empty();
 }
 
-template <std::size_t N, typename Container>
-State<N> Queue<N, Container>::top() const
+template <typename Container>
+State Queue<Container>::top() const
 {
 	return m_data.top();
 }
 
-template <std::size_t N, typename Container>
-void Queue<N, Container>::pop()
+template <typename Container>
+void Queue<Container>::pop()
 {
 	m_data.pop();
 }
