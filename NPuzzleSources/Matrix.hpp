@@ -8,8 +8,7 @@ template <std::size_t N>
 class Matrix
 {
 public:
-	template <typename... Args>
-	Matrix(Args... i_args);
+	Matrix(std::array<char, N * N> i_args);
 	std::size_t operator[](const std::size_t i) const;
 	std::size_t getMovingPointIndex() const;
 	void move(Move i_move);
@@ -19,13 +18,11 @@ private:
 };
 
 template <std::size_t N>
-template <typename... Args>
-Matrix<N>::Matrix(Args... i_args)
-	: m_data{static_cast<char>(i_args)...}
+Matrix<N>::Matrix(std::array<char, N * N> i_args)
+	: m_data(std::move(i_args))
 	, m_moving_point_index(std::distance(m_data.cbegin(),
 		std::find(m_data.cbegin(), m_data.cend(), 0)))
 {
-	static_assert(sizeof...(i_args) == N * N);
 }
 
 template <std::size_t N>

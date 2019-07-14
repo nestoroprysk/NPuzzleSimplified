@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.12)
 
 project(NPuzzle)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 14)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wextra")
 
@@ -13,19 +13,19 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wextra")
 set(NPuzzleDir ${CMAKE_CURRENT_SOURCE_DIR}/NPuzzleSources)
 
 file(GLOB NPuzzleSources	${NPuzzleDir}/Set.hpp
-							${NPuzzleDir}/Set.cpp
-							${NPuzzleDir}/Solver.hpp
-							${NPuzzleDir}/State.hpp
-							${NPuzzleDir}/State.cpp
-							${NPuzzleDir}/Types.hpp
-							${NPuzzleDir}/Utils.hpp
-				 			${NPuzzleDir}/Utils.cpp
-				 			${NPuzzleDir}/HeuristicFunctions.hpp
-				 			${NPuzzleDir}/HeuristicFunctions.cpp
-				 			${NPuzzleDir}/Hash.hpp
-				 			${NPuzzleDir}/Queue.hpp
-				 			${NPuzzleDir}/Matrix.hpp
-				 			${NPuzzleDir}/Move.hpp
+				${NPuzzleDir}/Set.cpp
+				${NPuzzleDir}/Solver.hpp
+				${NPuzzleDir}/State.hpp
+				${NPuzzleDir}/State.cpp
+				${NPuzzleDir}/Types.hpp
+				${NPuzzleDir}/Utils.hpp
+	 			${NPuzzleDir}/Utils.cpp
+	 			${NPuzzleDir}/HeuristicFunctions.hpp
+	 			${NPuzzleDir}/HeuristicFunctions.cpp
+	 			${NPuzzleDir}/Hash.hpp
+	 			${NPuzzleDir}/Queue.hpp
+	 			${NPuzzleDir}/Matrix.hpp
+	 			${NPuzzleDir}/Move.hpp
 )
 
 add_library(NPuzzle STATIC ${NPuzzleSources})
@@ -35,7 +35,7 @@ add_library(NPuzzle STATIC ${NPuzzleSources})
 set(TesterDir ${CMAKE_CURRENT_SOURCE_DIR}/TesterSources)
 
 file(GLOB TesterSources		${TesterDir}/Tester.hpp
-							${TesterDir}/Tester.cpp
+				${TesterDir}/Tester.cpp
 )
 
 add_library(Tester STATIC ${TesterSources})
@@ -67,9 +67,9 @@ target_include_directories(RunTests PUBLIC ${NPuzzleDir} ${TesterDir})
 # RunUnitTests executable
 
 set(UnitTestsDir ${CMAKE_CURRENT_SOURCE_DIR}/UnitTests)
-file(GLOB UnitTestsSources  ${UnitTestsDir}/main.cpp
-							${UnitTestsDir}/Utils.cpp
-							${UnitTestsDir}/Solver.cpp
+file(GLOB UnitTestsSources      ${UnitTestsDir}/main.cpp
+        			${UnitTestsDir}/Utils.cpp
+        			${UnitTestsDir}/Solver.cpp
 )
 
 add_executable(RunUnitTests ${UnitTestsSources})
