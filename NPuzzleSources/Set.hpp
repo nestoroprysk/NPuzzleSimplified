@@ -5,14 +5,15 @@
 
 #include <set>
 
+template <std::size_t N>
 class Set
 {
 public:
 	Set();
-	void push(const State& i_state);
+	void push(const State<N>& i_state);
 	bool empty() const;
-	State top() const;
+	State<N> top() const;
 	void pop();
 private:
-	std::set<State, Comparator> m_data;
+	std::set<State<N>, Comparator<N>> m_data;
 };

@@ -4,32 +4,39 @@
 
 #include <string>
 
-Set::Set()
+template <std::size_t N>
+Set<N>::Set()
 	: m_data([](const auto& l, const auto& r)
-		{ return Utils::template cmp<Less>(l, r); })
+		{ return Utils<N>::template cmp<Less>(l, r); })
 {
 }
 
-void Set::push(const State& i_state)
+template <std::size_t N>
+void Set<N>::push(const State<N>& i_state)
 {
 	m_data.insert(i_state);
 }
 
-bool Set::empty() const
+template <std::size_t N>
+bool Set<N>::empty() const
 {
 	return m_data.empty();
 }
 
-State Set::top() const
+template <std::size_t N>
+State<N> Set<N>::top() const
 {
 	if (empty())
 		throw std::logic_error("top() on an empty Container");
 	return *m_data.cbegin();
 }
 
-void Set::pop()
+template <std::size_t N>
+void Set<N>::pop()
 {
 	if (empty())
 		throw std::logic_error("pop() on an empty Container");
 	m_data.erase(m_data.begin());
 }
+
+EXPLICITLY_INSTANTIATE_CLASS(Set);

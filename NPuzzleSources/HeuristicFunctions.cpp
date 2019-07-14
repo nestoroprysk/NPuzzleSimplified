@@ -1,6 +1,8 @@
 #include "HeuristicFunctions.hpp"
 #include "Utils.hpp"
 
+#include <string>
+
 namespace {
 
 std::size_t diff(const std::size_t a, const std::size_t b)
@@ -10,35 +12,42 @@ std::size_t diff(const std::size_t a, const std::size_t b)
 
 }
 
-Heuristic::Heuristic(const Matrix& i_solution)
-	: m_mapper(Utils::map(i_solution))
+template <std::size_t N>
+Heuristic<N>::Heuristic(const Matrix<N>& i_solution)
+	: m_mapper(Utils<N>::map(i_solution))
 {
 }
 
 // TODO: test
-std::size_t Heuristic::manhattan(const Matrix& i_matrix) const
+template <std::size_t N>
+std::size_t Heuristic<N>::manhattan(const Matrix<N>& i_matrix) const
 {
 	auto result = std::size_t(0);
-	for (std::size_t i = 0; i < i_matrix.sizeSquared(); ++i)
+	for (std::size_t i = 0; i < N * N; ++i)
 		result += distanceX(i_matrix, i) + distanceY(i_matrix, i);
 	return result;
 }
 
-std::size_t Heuristic::inversions(const Matrix& i_input) const
+template <std::size_t N>
+std::size_t Heuristic<N>::inversions(const Matrix<N>& i_input) const
 {
-	return Utils::countInversions(i_input, m_mapper);
+	return Utils<N>::countInversions(i_input, m_mapper);
 }
 
-std::size_t Heuristic::distanceX(const Matrix& i_matrix, const std::size_t i) const
+template <std::size_t N>
+std::size_t Heuristic<N>::distanceX(const Matrix<N>& i_matrix, const std::size_t i) const
 {
-	const auto xPosActual = i % i_matrix.size();
-	const auto xPosExpected = m_mapper.at(i_matrix[i]) % i_matrix.size();
+	const auto xPosActual = i % N;
+	const auto xPosExpected = m_mapper.at(i_matrix[i]) % N;
 	return diff(xPosActual, xPosExpected);
 }
 
-std::size_t Heuristic::distanceY(const Matrix& i_matrix, const std::size_t i) const
+template <std::size_t N>
+std::size_t Heuristic<N>::distanceY(const Matrix<N>& i_matrix, const std::size_t i) const
 {
-	const auto yPosActual = i / i_matrix.size();
-	const auto yPosExpected =  m_mapper.at(i_matrix[i]) / i_matrix.size();
+	const auto yPosActual = i / N;
+	const auto yPosExpected =  m_mapper.at(i_matrix[i]) / N;
 	return diff(yPosActual, yPosExpected);
 }
+
+EXPLICITLY_INSTANTIATE_CLASS(Heuristic);

@@ -2,6 +2,9 @@
 
 #include <Types.hpp>
 
-namespace Tester {
-bool isCorrectlySolved(Matrix i_initial, const Matrix& i_desired, const Solution& i_solution);
-}
+template <std::size_t N>
+struct Tester
+{
+static bool isCorrectlySolved(const Matrix<N>& i_initial, const Matrix<N>& i_desired, const Solution& i_solution);
+Tester() = delete;
+};
