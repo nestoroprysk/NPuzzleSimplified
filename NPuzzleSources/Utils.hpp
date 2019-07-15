@@ -7,6 +7,7 @@
 namespace Utils {
 
 static constexpr auto g_step_cost = 1;
+static constexpr auto g_bucket_count = 8;
 
 auto possibleMoves(const Matrix& i_state) -> std::unordered_set<Move>;
 MatrixSP move(const MatrixSP& ip_matrix, Move i_move);
@@ -19,6 +20,7 @@ bool solvable(const Matrix& ip_matrix, const Matrix& ip_solution);
 
 std::size_t countInversions(const Matrix& i_input, const ValueToPosition& i_mapper);
 
+bool eq(const State& i_lhs, const State& i_rhs);
 bool cmp(const State& i_lhs, const State& i_rhs);
 
 const Matrix& data(const State& i_state);

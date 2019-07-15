@@ -100,6 +100,12 @@ std::size_t Utils::countInversions(const Matrix& i_matrix, const ValueToPosition
 	return result;
 }
 
+bool Utils::eq(const State& i_lhs, const State& i_rhs)
+{
+	return i_lhs.m_heuristic_cost == i_rhs.m_heuristic_cost
+		&& Utils::eq(Utils::data(i_lhs), Utils::data(i_rhs));
+}
+
 bool Utils::cmp(const State& i_lhs, const State& i_rhs)
 {
 	return i_lhs.m_heuristic_cost < i_rhs.m_heuristic_cost ||

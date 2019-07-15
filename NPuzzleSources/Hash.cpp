@@ -2,22 +2,10 @@
 #include "Utils.hpp"
 #include "State.hpp"
 
-namespace Detail {
-
-static constexpr auto g_bucket_count = 8;
-
-bool eq(const State& i_lhs, const State& i_rhs)
-{
-	return i_lhs.m_heuristic_cost == i_rhs.m_heuristic_cost
-		&& Utils::eq(Utils::data(i_lhs), Utils::data(i_rhs));
-}
-
-}
-
 Hash::Hash()
-	: m_data(Detail::g_bucket_count,
+	: m_data(Utils::g_bucket_count,
 			[h = std::hash<std::string>()](const auto& i_state){ return h(Utils::data(i_state).data()); },
-			[](const auto& i_lhs, const auto& i_rhs){ return Detail::eq(i_lhs, i_rhs); })
+			[](const auto& i_lhs, const auto& i_rhs){ return Utils::eq(i_lhs, i_rhs); })
 {
 }
 
