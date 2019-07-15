@@ -23,7 +23,7 @@ template <std::size_t N>
 std::size_t Heuristic<N>::manhattan(const Matrix<N>& i_matrix) const
 {
 	auto result = std::size_t(0);
-	for (std::size_t i = 0; i < N * N; ++i)
+	for (std::size_t i = 0; i < i_matrix.sizeSquared(); ++i)
 		result += distanceX(i_matrix, i) + distanceY(i_matrix, i);
 	return result;
 }
@@ -37,16 +37,16 @@ std::size_t Heuristic<N>::inversions(const Matrix<N>& i_input) const
 template <std::size_t N>
 std::size_t Heuristic<N>::distanceX(const Matrix<N>& i_matrix, const std::size_t i) const
 {
-	const auto xPosActual = i % N;
-	const auto xPosExpected = m_mapper.at(i_matrix[i]) % N;
+	const auto xPosActual = i % i_matrix.size();
+	const auto xPosExpected = m_mapper.at(i_matrix[i]) % i_matrix.size();
 	return diff(xPosActual, xPosExpected);
 }
 
 template <std::size_t N>
 std::size_t Heuristic<N>::distanceY(const Matrix<N>& i_matrix, const std::size_t i) const
 {
-	const auto yPosActual = i / N;
-	const auto yPosExpected =  m_mapper.at(i_matrix[i]) / N;
+	const auto yPosActual = i / i_matrix.size();
+	const auto yPosExpected =  m_mapper.at(i_matrix[i]) / i_matrix.size();
 	return diff(yPosActual, yPosExpected);
 }
 

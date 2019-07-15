@@ -2,6 +2,7 @@
 
 #include "Utils.hpp"
 #include <unordered_set>
+#include <string>
 
 namespace Detail {
 
@@ -10,12 +11,8 @@ static constexpr auto g_bucket_count = 8;
 template <std::size_t N>
 std::size_t hash(const State<N>& i_state)
 {
-	std::hash<char> hasher;
-	auto result = std::size_t(0);;
-	const auto& array = Utils<N>::data(i_state);
-	for(std::size_t i = 0; i < N * N; ++i)
-		result = (result << 1) ^ hasher(array[i]);
-	return result;
+	std::hash<std::string> hash;
+	return hash(Utils<N>::data(i_state).data());
 }
 
 template <std::size_t N>

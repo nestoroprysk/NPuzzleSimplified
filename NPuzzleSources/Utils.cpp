@@ -22,13 +22,13 @@ auto Utils<N>::possibleMoves(const MatrixNxN& i_matrix) -> std::unordered_set<Mo
 {
 	auto result = std::unordered_set<Move>();
 	const auto movingPointIndex = i_matrix.getMovingPointIndex();
-	if (movingPointIndex % N != 0)
+	if (movingPointIndex % i_matrix.size() != 0)
 		result.insert(Move::Left);
-	if (movingPointIndex % N != N - 1)
+	if (movingPointIndex % i_matrix.size() != i_matrix.size() - 1)
 		result.insert(Move::Right);
-	if (movingPointIndex / N != 0)
+	if (movingPointIndex / i_matrix.size() != 0)
 		result.insert(Move::Up);
-	if (movingPointIndex / N != N - 1)
+	if (movingPointIndex / i_matrix.size() != i_matrix.size() - 1)
 		result.insert(Move::Down);
 	return result;
 }
@@ -68,7 +68,7 @@ Move Utils<N>::inferMove(MatrixNxN const& i_from, MatrixNxN const& i_to)
 template <std::size_t N>
 bool Utils<N>::eq(const MatrixNxN& i_lhs, const MatrixNxN& i_rhs)
 {
-	for (std::size_t i = 0; i < N * N; ++i)
+	for (std::size_t i = 0; i < i_lhs.sizeSquared(); ++i)
 		if (i_lhs[i] != i_rhs[i])
 			return false;
 	return true;
@@ -77,7 +77,7 @@ bool Utils<N>::eq(const MatrixNxN& i_lhs, const MatrixNxN& i_rhs)
 template <std::size_t N>
 bool Utils<N>::solvable(const MatrixNxN& i_matrix, const MatrixNxN& i_solution)
 {
-	if (N % 2 != 0){
+	if (i_matrix.size() % 2 != 0){
 		return countInversions(i_matrix, map(i_solution)) % 2 == 0;
 	}
 	else{
@@ -90,8 +90,8 @@ std::size_t Utils<N>::countInversions(const MatrixNxN& i_matrix, const ValueToPo
 {
 	// TODO: test
 	auto result = 0;
-	for (std::size_t i = 0; i < N * N; ++i)
-		for (std::size_t j = i + 1; j < N * N; ++j)
+	for (std::size_t i = 0; i < i_matrix.sizeSquared(); ++i)
+		for (std::size_t j = i + 1; j < i_matrix.sizeSquared(); ++j)
 			if (isInverted(i_mapper, i_matrix[i], i_matrix[j]))
 				++result;
 	return result;
@@ -169,7 +169,7 @@ template <std::size_t N>
 ValueToPosition Utils<N>::map(const Matrix<N>& i_solution)
 {
 	ValueToPosition result;
-	for (std::size_t i = 0; i < N * N; ++i)
+	for (std::size_t i = 0; i < i_solution.sizeSquared(); ++i)
 		result[i_solution[i]] = i;
 	return result;
 }
