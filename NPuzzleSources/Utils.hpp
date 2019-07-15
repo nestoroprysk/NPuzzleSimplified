@@ -38,6 +38,3 @@ std::list<Move> collectMovesImpl(const State& i_state,
 ValueToPosition map(const Matrix& i_solution);
 
 };
-
-
-

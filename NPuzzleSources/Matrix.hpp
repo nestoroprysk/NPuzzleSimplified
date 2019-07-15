@@ -19,4 +19,3 @@ private:
 	std::size_t m_moving_point_index;
 	std::size_t m_size;
 };
-
