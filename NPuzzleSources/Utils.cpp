@@ -106,16 +106,6 @@ bool Utils::eq(const State& i_lhs, const State& i_rhs)
 		&& Utils::eq(Utils::data(i_lhs), Utils::data(i_rhs));
 }
 
-bool Utils::cmp(const State& i_lhs, const State& i_rhs)
-{
-	return i_lhs.m_heuristic_cost < i_rhs.m_heuristic_cost ||
-		(i_lhs.m_heuristic_cost == i_rhs.m_heuristic_cost &&
-			i_lhs.m_distance < i_rhs.m_distance) ||
-			(i_lhs.m_heuristic_cost == i_rhs.m_heuristic_cost &&
-				i_lhs.m_distance == i_rhs.m_distance &&
-					cmp(data(i_lhs), data(i_rhs)));
-}
-
 auto Utils::data(const State& i_state) -> const Matrix&
 {
 	return *i_state.mp_data;

@@ -16,11 +16,8 @@ using StateSP = std::shared_ptr<State>;
 using MaybeSolution = std::unique_ptr<Solution>;
 using IContainerUP = std::unique_ptr<IContainer>;
 using HeuristicFunction = std::function<std::size_t(const Matrix&)>;
-using Comparator = std::function<bool(const State&, const State&)>;
 
 using ValueToPosition = std::unordered_map<char, std::size_t>;
 
 struct Less{};
-struct Greater{};
-struct LessOrEqual{};
-struct GreaterOrEqual{};
+struct NotLess{};

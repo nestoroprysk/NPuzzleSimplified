@@ -29,6 +29,7 @@ file(GLOB NPuzzleSources	${NPuzzleDir}/Set.hpp
 	 			${NPuzzleDir}/Matrix.cpp
 	 			${NPuzzleDir}/Move.hpp
 	 			${NPuzzleDir}/SolverConfiguration.hpp
+	 			${NPuzzleDir}/Comparator.hpp
 )
 
 add_library(NPuzzle STATIC ${NPuzzleSources})

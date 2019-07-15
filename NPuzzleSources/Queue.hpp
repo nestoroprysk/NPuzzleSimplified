@@ -2,22 +2,29 @@
 
 #include "Types.hpp"
 #include "State.hpp"
+#include "Comparator.hpp"
 
 #include <queue>
 
 template <typename Container>
-class Queue final
+class Queue
 {
 public:
+	Queue(Comparator<NotLess> i_cmp);
 	void push(const State& i_state);
 	bool empty() const;
 	State top() const;
 	void pop();
 private:
-	using QueueType = std::priority_queue<State, Container, Comparator>;
-	QueueType m_data = QueueType([](const auto i_lhs, const auto i_rhs)
-			{ return !Utils::cmp(i_lhs, i_rhs); });
+	using QueueType = std::priority_queue<State, Container, Comparator<NotLess>>;
+	QueueType m_data;
 };
+
+template <typename Container>
+Queue<Container>::Queue(Comparator<NotLess> i_cmp)
+	: m_data(std::move(i_cmp))
+{
+}
 
 template <typename Container>
 void Queue<Container>::push(const State& i_state)

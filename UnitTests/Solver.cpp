@@ -43,3 +43,24 @@ TEST_CASE("<3x3><Set><Manhattan>")
 	}}};
 	test<Set>(configuration, input);
 }
+
+TEST_CASE("<3x3><Queue><Manhattan>")
+{
+	const auto desired_solution = Matrix{{{
+		1, 2, 3,
+		8, 0, 4,
+		7, 6, 5
+	}}};
+	const auto h = [f = Heuristic(desired_solution)](const auto& i_matrix)
+			{ return f.manhattan(i_matrix); };
+	const auto heuristic_function_weight = double(1);
+	const auto distance_weight = double(0);
+	const auto configuration = SolverConfiguration{desired_solution, h,
+		heuristic_function_weight, distance_weight};
+	const auto input = Matrix{{{
+		5, 2, 4,
+		6, 0, 1,
+		8, 3, 7
+	}}};
+	test<Queue<std::vector<State>>>(configuration, input);
+}

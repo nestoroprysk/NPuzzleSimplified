@@ -21,7 +21,6 @@ bool solvable(const Matrix& ip_matrix, const Matrix& ip_solution);
 std::size_t countInversions(const Matrix& i_input, const ValueToPosition& i_mapper);
 
 bool eq(const State& i_lhs, const State& i_rhs);
-bool cmp(const State& i_lhs, const State& i_rhs);
 
 const Matrix& data(const State& i_state);
 std::vector<State> expand(const State& i_state, const HeuristicFunction& i_heuristic_function);
@@ -37,4 +36,4 @@ std::list<Move> collectMovesImpl(const State& i_state,
 								 std::list<Move> o_result = std::list<Move>());
 ValueToPosition map(const Matrix& i_solution);
 
-};
+}
