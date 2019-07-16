@@ -16,6 +16,6 @@ public:
 	std::size_t sizeSquared() const;
 private:
 	std::string m_data;
-	std::size_t m_moving_point_index;
-	std::size_t m_size;
+	std::size_t m_moving_point_index = 0;
+	std::size_t m_size = 0;
 };

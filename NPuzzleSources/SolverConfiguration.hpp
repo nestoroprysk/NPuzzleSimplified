@@ -1,9 +1,11 @@
 #pragma once
 
 #include "Types.hpp"
+#include <string>
 
 struct SolverConfiguration
 {
+	const std::string m_name;
 	const Matrix m_desired_solution;
 	const HeuristicFunction m_heuristic_function;
 	const double m_heuristic_function_weight;

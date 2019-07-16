@@ -3,7 +3,6 @@
 #include "Types.hpp"
 
 #include <unordered_set>
-#include <string>
 
 class Hash
 {
@@ -12,6 +11,7 @@ public:
 	bool contains(const State& i_state) const;
 	void push(const State& i_state);
 	void pop(const State& i_state);
+	std::size_t size() const;
 private:
 	using HashFunctionType = std::function<std::size_t(const State&)>;
 	using EqFunctionType = std::function<bool(const State&, const State&)>;

@@ -2,7 +2,6 @@
 
 #include "SolverConfiguration.hpp"
 #include "Utils.hpp"
-#include "State.hpp"
 
 template <typename Order>
 class Comparator

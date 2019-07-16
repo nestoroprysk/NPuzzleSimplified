@@ -23,3 +23,8 @@ void Hash::pop(const State& i_state)
 {
 	m_data.erase(i_state);
 }
+
+std::size_t Hash::size() const
+{
+	return m_data.size();
+}

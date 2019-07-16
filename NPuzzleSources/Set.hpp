@@ -14,6 +14,7 @@ public:
 	bool empty() const;
 	State top() const;
 	void pop();
+	std::size_t size() const;
 private:
 	std::set<State, Comparator<Less>> m_data;
 };

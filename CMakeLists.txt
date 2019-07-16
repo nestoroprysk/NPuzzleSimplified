@@ -30,6 +30,7 @@ file(GLOB NPuzzleSources	${NPuzzleDir}/Set.hpp
 	 			${NPuzzleDir}/Move.hpp
 	 			${NPuzzleDir}/SolverConfiguration.hpp
 	 			${NPuzzleDir}/Comparator.hpp
+	 			${NPuzzleDir}/Result.hpp
 )
 
 add_library(NPuzzle STATIC ${NPuzzleSources})

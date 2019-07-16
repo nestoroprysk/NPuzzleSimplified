@@ -15,6 +15,7 @@ public:
 	bool empty() const;
 	State top() const;
 	void pop();
+	std::size_t size() const;
 private:
 	using QueueType = std::priority_queue<State, Container, Comparator<NotLess>>;
 	QueueType m_data;
@@ -48,4 +49,10 @@ template <typename Container>
 void Queue<Container>::pop()
 {
 	m_data.pop();
+}
+
+template <typename Container>
+std::size_t Queue<Container>::size() const
+{
+	return m_data.size();
 }

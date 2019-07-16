@@ -1,8 +1,6 @@
 #include "HeuristicFunctions.hpp"
 #include "Utils.hpp"
 
-#include <string>
-
 namespace {
 
 std::size_t diff(const std::size_t a, const std::size_t b)

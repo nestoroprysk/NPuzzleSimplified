@@ -25,3 +25,8 @@ void Set::pop()
 {
 	m_data.erase(m_data.begin());
 }
+
+std::size_t Set::size() const
+{
+	return m_data.size();
+}
