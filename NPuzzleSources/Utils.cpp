@@ -122,9 +122,11 @@ std::vector<State> Utils::expand(const State& i_state, const HeuristicFunction& 
 {
 	const auto ms = possibleMoves(data(i_state));
 	auto result = std::vector<State>();
+	const auto& matrix = data(i_state);
+	const auto heuristicCost = i_state.m_heuristic_cost;
 	for (const auto m : ms){
 		auto p_matrix = move(i_state.mp_data, m);
-		const auto cost = i_heuristic_function(*p_matrix);
+		const auto cost = updateCost(matrix, *p_matrix, i_heuristic_function, heuristicCost);
 		result.emplace_back(p_matrix, cost);
 	}
 	return result;
@@ -178,4 +180,26 @@ ValueToPosition Utils::map(const Matrix& i_solution)
 	for (std::size_t i = 0; i < i_solution.sizeSquared(); ++i)
 		result[i_solution[i]] = i;
 	return result;
+}
+
+std::size_t Utils::accumulateHeuristicCost(const Matrix& i_matrix, const HeuristicFunction& i_h)
+{
+	auto result = std::size_t(0);
+	for (std::size_t i = 0; i < i_matrix.sizeSquared(); ++i)
+		result += i_h(i_matrix, i);
+	return result;
+}
+
+// TODO: test
+std::size_t Utils::updateCost(const Matrix& i_old, const Matrix& i_new,
+		const HeuristicFunction& i_heuristic_function, const std::size_t i_old_cost)
+{
+	const auto oldCost = i_old_cost;
+	const auto oldMovingPointIndex = i_old.getMovingPointIndex();
+	const auto newMovingPointIndex = i_new.getMovingPointIndex();
+	const auto oldCostA = i_heuristic_function(i_old, oldMovingPointIndex);
+	const auto oldCostB = i_heuristic_function(i_old, newMovingPointIndex);
+	const auto newCostA = i_heuristic_function(i_new, oldMovingPointIndex);
+	const auto newCostB = i_heuristic_function(i_new, newMovingPointIndex);
+	return oldCost - oldCostA + newCostA - oldCostB + newCostB;
 }

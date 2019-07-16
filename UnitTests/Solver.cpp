@@ -35,8 +35,8 @@ TEST_CASE("<3x3><Set><Manhattan><h=1><g=1>")
 		8, 0, 4,
 		7, 6, 5
 	}}};
-	const auto h = [f = Heuristic(desired_solution)](const auto& i_matrix)
-			{ return f.manhattan(i_matrix); };
+	const auto h = [f = Manhattan(desired_solution)](const auto& i_matrix, const std::size_t i)
+			{ return f(i_matrix, i); };
 	const auto heuristic_function_weight = double(1);
 	const auto distance_weight = double(1);
 	const auto configuration = SolverConfiguration{"Test 0", desired_solution, h,
@@ -56,8 +56,8 @@ TEST_CASE("<3x3><QueueOnVector><Manhattan><h=1><g=1>")
 		8, 0, 4,
 		7, 6, 5
 	}}};
-	const auto h = [f = Heuristic(desired_solution)](const auto& i_matrix)
-			{ return f.manhattan(i_matrix); };
+	const auto h = [f = Manhattan(desired_solution)](const auto& i_matrix, const std::size_t i)
+			{ return f(i_matrix, i); };
 	const auto heuristic_function_weight = double(1);
 	const auto distance_weight = double(1);
 	const auto configuration = SolverConfiguration{"Test 1", desired_solution, h,
@@ -77,11 +77,11 @@ TEST_CASE("<3x3><QueueOnDeque><Manhattan><h=1><g=1>")
 		8, 0, 4,
 		7, 6, 5
 	}}};
-	const auto h = [f = Heuristic(desired_solution)](const auto& i_matrix)
-			{ return f.manhattan(i_matrix); };
+	const auto h = [f = Manhattan(desired_solution)](const auto& i_matrix, const std::size_t i)
+			{ return f(i_matrix, i); };
 	const auto heuristic_function_weight = double(1);
 	const auto distance_weight = double(1);
-	const auto configuration = SolverConfiguration{"Test 2", desired_solution, h,
+	const auto configuration = SolverConfiguration{"Test 1", desired_solution, h,
 		heuristic_function_weight, distance_weight};
 	const auto input = Matrix{{{
 		5, 2, 4,

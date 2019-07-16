@@ -42,7 +42,8 @@ Result<Container> Solver<Container>::solve(const Matrix& i_matrix) const
 	auto open = Container(m_configuration);
 	auto open_states_hash = Hash();
 	auto closed_states_hash = Hash();
-	open.push(State(std::make_shared<Matrix>(i_matrix), m_configuration.m_heuristic_function(i_matrix)));
+	open.push(State(std::make_shared<Matrix>(i_matrix),
+		accumulateHeuristicCost(i_matrix, m_configuration.m_heuristic_function)));
 	open_states_hash.push(open.top());
 	while (!open.empty()){
 		++number_of_selected_states;
