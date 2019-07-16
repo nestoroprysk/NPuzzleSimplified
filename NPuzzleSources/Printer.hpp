@@ -63,7 +63,7 @@ void Printer<Container>::printConfig(std::ostream& o_stream, const SolverConfigu
 	o_stream << "Test name: " << i_config.m_name << std::endl;
 	o_stream << "Desired solution:" << std::endl;
 	printMatrix(o_stream, i_config.m_desired_solution); o_stream << std::endl;
-	// print heuristic
+	o_stream << "Heuristic function: " << i_config.m_heuristic_function_name << std::endl;
 	o_stream << "Heuristic function weight: " << i_config.m_heuristic_function_weight << std::endl;
 	o_stream << "Distance weight: " << i_config.m_distance_weight;
 }

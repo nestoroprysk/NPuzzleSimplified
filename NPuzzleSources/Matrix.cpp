@@ -12,7 +12,7 @@ Matrix::Matrix(std::string i_args)
 
 std::size_t Matrix::operator[](const std::size_t i) const
 {
-	return m_data[i];
+	return static_cast<std::size_t>(m_data[i]);
 }
 
 std::size_t Matrix::getMovingPointIndex() const

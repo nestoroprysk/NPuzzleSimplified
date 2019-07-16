@@ -1,16 +1,28 @@
 #pragma once
 
 #include "Types.hpp"
+#include <string>
 
 class Manhattan
 {
 public:
 	Manhattan(const Matrix& i_solution);
 	std::size_t operator()(const Matrix& i_matrix, const std::size_t i) const;
+	std::string getName() const;
 private:
 	std::size_t distanceX(const Matrix& i_matrix, const std::size_t i) const;
 	std::size_t distanceY(const Matrix& i_matrix, const std::size_t i) const;
 
 private:
-	ValueToPosition m_mapper;
+	const ValueToPosition m_mapper;
+};
+
+class CountCorrectPositions
+{
+public:
+	CountCorrectPositions(const Matrix& i_solution);
+	std::size_t operator()(const Matrix& i_matrix, const std::size_t i) const;
+	std::string getName() const;
+private:
+	const Matrix m_solution;
 };

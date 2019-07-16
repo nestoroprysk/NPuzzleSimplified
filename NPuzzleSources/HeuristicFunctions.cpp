@@ -34,3 +34,24 @@ std::size_t Manhattan::distanceY(const Matrix& i_matrix, const std::size_t i) co
 	const auto yPosExpected =  m_mapper.at(i_matrix[i]) / i_matrix.size();
 	return diff(yPosActual, yPosExpected);
 }
+
+std::string Manhattan::getName() const
+{
+	return "Manhattan";
+}
+
+CountCorrectPositions::CountCorrectPositions(const Matrix& i_solution)
+	: m_solution(i_solution)
+{
+}
+
+// TODO: test
+std::size_t CountCorrectPositions::operator()(const Matrix& i_matrix, const std::size_t i) const
+{
+	return m_solution[i] != i_matrix[i];
+}
+
+std::string CountCorrectPositions::getName() const
+{
+	return "CountCorrectPositions";
+}
