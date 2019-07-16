@@ -17,10 +17,10 @@ private:
 	const ValueToPosition m_mapper;
 };
 
-class CountCorrectPositions
+class IsInCorrectPositions
 {
 public:
-	CountCorrectPositions(const Matrix& i_solution);
+	IsInCorrectPositions(const Matrix& i_solution);
 	std::size_t operator()(const Matrix& i_matrix, const std::size_t i) const;
 	std::string getName() const;
 private:

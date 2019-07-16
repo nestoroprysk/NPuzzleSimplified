@@ -40,19 +40,19 @@ std::string Manhattan::getName() const
 	return "Manhattan";
 }
 
-CountCorrectPositions::CountCorrectPositions(const Matrix& i_solution)
+IsInCorrectPositions::IsInCorrectPositions(const Matrix& i_solution)
 	: m_solution(i_solution)
 {
 }
 
-std::size_t CountCorrectPositions::operator()(const Matrix& i_matrix, const std::size_t i) const
+std::size_t IsInCorrectPositions::operator()(const Matrix& i_matrix, const std::size_t i) const
 {
 	return m_solution[i] != i_matrix[i];
 }
 
-std::string CountCorrectPositions::getName() const
+std::string IsInCorrectPositions::getName() const
 {
-	return "CountCorrectPositions";
+	return "IsInCorrectPositions";
 }
 
 IsNearCorrectPosition::IsNearCorrectPosition(const Matrix& i_solution)

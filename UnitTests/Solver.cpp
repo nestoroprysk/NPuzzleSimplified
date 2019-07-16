@@ -72,14 +72,14 @@ TEST_CASE("<3x3><QueueOnVector><Manhattan><h=1><g=1>")
 	test<Queue<std::vector<State>>>(configuration, input);
 }
 
-TEST_CASE("<3x3><QueueOnDeque><CountCorrectPositions><h=1><g=1>")
+TEST_CASE("<3x3><QueueOnDeque><IsInCorrectPositions><h=1><g=1>")
 {
 	const auto desired_solution = Matrix{{{
 		1, 2, 3,
 		8, 0, 4,
 		7, 6, 5
 	}}};
-	const auto heuristic_function = CountCorrectPositions(desired_solution);
+	const auto heuristic_function = IsInCorrectPositions(desired_solution);
 	const auto h = [&heuristic_function](const auto& i_matrix, const std::size_t i)
 			{ return heuristic_function(i_matrix, i); };
 	const auto heuristic_function_weight = double(1);
