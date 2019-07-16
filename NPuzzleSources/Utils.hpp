@@ -2,8 +2,6 @@
 
 #include "Types.hpp"
 
-#include <unordered_set>
-
 struct SolverConfiguration;
 
 namespace Utils {
@@ -11,7 +9,7 @@ namespace Utils {
 static constexpr auto g_step_cost = 1;
 static constexpr auto g_bucket_count = 8;
 
-auto possibleMoves(const Matrix& i_state) -> std::unordered_set<Move>;
+auto possibleMoves(const Matrix& i_state) -> std::vector<Move>;
 MatrixSP move(const MatrixSP& ip_matrix, Move i_move);
 Matrix move(const Matrix& i_matrix, Move i_move);
 Move inferMove(Matrix const& i_from, Matrix const& i_to);

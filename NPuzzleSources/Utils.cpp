@@ -11,18 +11,18 @@ class Queue;
 class Set;
 
 // TODO: test
-auto Utils::possibleMoves(const Matrix& i_matrix) -> std::unordered_set<Move>
+auto Utils::possibleMoves(const Matrix& i_matrix) -> std::vector<Move>
 {
-	auto result = std::unordered_set<Move>();
+	auto result = std::vector<Move>();
 	const auto movingPointIndex = i_matrix.getMovingPointIndex();
 	if (movingPointIndex % i_matrix.size() != 0)
-		result.insert(Move::Left);
+		result.push_back(Move::Left);
 	if (movingPointIndex % i_matrix.size() != i_matrix.size() - 1)
-		result.insert(Move::Right);
+		result.push_back(Move::Right);
 	if (movingPointIndex / i_matrix.size() != 0)
-		result.insert(Move::Up);
+		result.push_back(Move::Up);
 	if (movingPointIndex / i_matrix.size() != i_matrix.size() - 1)
-		result.insert(Move::Down);
+		result.push_back(Move::Down);
 	return result;
 }
 
