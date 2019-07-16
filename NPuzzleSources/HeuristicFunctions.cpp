@@ -45,7 +45,6 @@ CountCorrectPositions::CountCorrectPositions(const Matrix& i_solution)
 {
 }
 
-// TODO: test
 std::size_t CountCorrectPositions::operator()(const Matrix& i_matrix, const std::size_t i) const
 {
 	return m_solution[i] != i_matrix[i];
@@ -54,4 +53,34 @@ std::size_t CountCorrectPositions::operator()(const Matrix& i_matrix, const std:
 std::string CountCorrectPositions::getName() const
 {
 	return "CountCorrectPositions";
+}
+
+IsNearCorrectPosition::IsNearCorrectPosition(const Matrix& i_solution)
+	: m_solution(i_solution)
+{
+}
+
+// TODO: test
+std::size_t IsNearCorrectPosition::operator()(const Matrix& i_matrix, const std::size_t i) const
+{
+	if (m_solution[i] == i_matrix[i])
+		return 0;
+	if (i % i_matrix.size() != 0)
+		if (m_solution[i - 1] == i_matrix[i])
+			return 0;
+	if (i % i_matrix.size() != i_matrix.size() - 1)
+		if (m_solution[i + 1] == i_matrix[i])
+			return 0;
+	if (i / i_matrix.size() != 0)
+		if (m_solution[i - i_matrix.size()] == i_matrix[i])
+			return 0;
+	if (i / i_matrix.size() != i_matrix.size() - 1)
+		if (m_solution[i + i_matrix.size()] == i_matrix[i])
+			return 0;
+	return 1;
+}
+
+std::string IsNearCorrectPosition::getName() const
+{
+	return "IsNearCorrectPosition";
 }

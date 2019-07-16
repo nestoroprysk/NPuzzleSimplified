@@ -10,21 +10,6 @@ class Queue;
 
 class Set;
 
-namespace {
-
-Move oppositeMove(Move i_move)
-{
-	switch (i_move){
-		case Move::Left: return Move::Right;
-		case Move::Right: return Move::Left;
-		case Move::Up: return Move::Down;
-		case Move::Down: return Move::Up;
-		default: throw std::logic_error("oppositeMove(), invalid move type");
-	}
-}
-
-}
-
 // TODO: test
 auto Utils::possibleMoves(const Matrix& i_matrix) -> std::unordered_set<Move>
 {
@@ -202,4 +187,15 @@ std::size_t Utils::updateCost(const Matrix& i_old, const Matrix& i_new,
 	const auto newCostA = i_heuristic_function(i_new, oldMovingPointIndex);
 	const auto newCostB = i_heuristic_function(i_new, newMovingPointIndex);
 	return oldCost - oldCostA + newCostA - oldCostB + newCostB;
+}
+
+Move Utils::oppositeMove(Move i_move)
+{
+	switch (i_move){
+		case Move::Left: return Move::Right;
+		case Move::Right: return Move::Left;
+		case Move::Up: return Move::Down;
+		case Move::Down: return Move::Up;
+		default: throw std::logic_error("oppositeMove(), invalid move type");
+	}
 }

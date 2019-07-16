@@ -42,4 +42,6 @@ std::size_t accumulateHeuristicCost(const Matrix& i_matrix, const HeuristicFunct
 std::size_t updateCost(const Matrix& i_old, const Matrix& i_new,
 	const HeuristicFunction& i_heuristic_function, const std::size_t i_old_cost);
 
+Move oppositeMove(Move i_move);
+
 }

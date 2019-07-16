@@ -26,3 +26,13 @@ public:
 private:
 	const Matrix m_solution;
 };
+
+class IsNearCorrectPosition
+{
+public:
+	IsNearCorrectPosition(const Matrix& i_solution);
+	std::size_t operator()(const Matrix& i_matrix, const std::size_t i) const;
+	std::string getName() const;
+private:
+	const Matrix m_solution;
+};
