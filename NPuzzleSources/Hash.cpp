@@ -4,13 +4,14 @@
 
 namespace {
 
+// the following hash is the copy of boost::hash_combine
 std::size_t hash(const State& i_state)
 {
     std::hash<std::size_t> hasher;
     auto result = std::size_t(0);;
     const auto& array = Utils::data(i_state);
-    for(std::size_t i = 0; i < array.sizeSquared(); ++i)
-        result = (result << 1) ^ hasher(array[i]);
+    for (std::size_t i = 0; i < array.sizeSquared(); ++i)
+        result ^= hasher(array[i]) + 0x9e3779b9 + (result << 6) + (result >> 2);
     return result;
 }
 
