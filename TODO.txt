@@ -28,3 +28,10 @@ Dependencies:
 - TestingFramework <- NPuzzle
 - UnitTests <- TestingFramework + NPuzzle
 - RandomTestsRunner <- Generator + TestingFramework
+
+Mandatory:
+1. Parsing maps
+2. Parsing argc/argv
+3. Snake solution generator
+4. isSolvable() for even(N)
+5. Random map generator
