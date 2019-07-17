@@ -12,26 +12,26 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wextra")
 
 set(NPuzzleDir ${CMAKE_CURRENT_SOURCE_DIR}/NPuzzleSources)
 
-file(GLOB NPuzzleSources	${NPuzzleDir}/Set.hpp
-				${NPuzzleDir}/Set.cpp
-				${NPuzzleDir}/Solver.hpp
-				${NPuzzleDir}/State.hpp
-				${NPuzzleDir}/State.cpp
-				${NPuzzleDir}/Types.hpp
-				${NPuzzleDir}/Utils.hpp
-	 			${NPuzzleDir}/Utils.cpp
-	 			${NPuzzleDir}/HeuristicFunctions.hpp
-	 			${NPuzzleDir}/HeuristicFunctions.cpp
-	 			${NPuzzleDir}/Hash.hpp
-	 			${NPuzzleDir}/Hash.cpp
-	 			${NPuzzleDir}/Queue.hpp
-	 			${NPuzzleDir}/Matrix.hpp
-	 			${NPuzzleDir}/Matrix.cpp
-	 			${NPuzzleDir}/Move.hpp
-	 			${NPuzzleDir}/SolverConfiguration.hpp
-	 			${NPuzzleDir}/Comparator.hpp
-	 			${NPuzzleDir}/Result.hpp
-	 			${NPuzzleDir}/Printer.hpp
+file(GLOB NPuzzleSources    ${NPuzzleDir}/Set.hpp
+                            ${NPuzzleDir}/Set.cpp
+                            ${NPuzzleDir}/Solver.hpp
+                            ${NPuzzleDir}/State.hpp
+                            ${NPuzzleDir}/State.cpp
+                            ${NPuzzleDir}/Types.hpp
+                            ${NPuzzleDir}/Utils.hpp
+                            ${NPuzzleDir}/Utils.cpp
+                            ${NPuzzleDir}/HeuristicFunctions.hpp
+                            ${NPuzzleDir}/HeuristicFunctions.cpp
+                            ${NPuzzleDir}/Hash.hpp
+                            ${NPuzzleDir}/Hash.cpp
+                            ${NPuzzleDir}/Queue.hpp
+                            ${NPuzzleDir}/Matrix.hpp
+                            ${NPuzzleDir}/Matrix.cpp
+                            ${NPuzzleDir}/Move.hpp
+                            ${NPuzzleDir}/SolverConfiguration.hpp
+                            ${NPuzzleDir}/Comparator.hpp
+                            ${NPuzzleDir}/Result.hpp
+                            ${NPuzzleDir}/Printer.hpp
 )
 
 add_library(NPuzzle STATIC ${NPuzzleSources})
@@ -62,8 +62,8 @@ target_include_directories(RunTests PUBLIC ${NPuzzleDir})
 
 set(UnitTestsDir ${CMAKE_CURRENT_SOURCE_DIR}/UnitTests)
 file(GLOB UnitTestsSources      ${UnitTestsDir}/main.cpp
-        			${UnitTestsDir}/Utils.cpp
-        			${UnitTestsDir}/Solver.cpp
+                                ${UnitTestsDir}/Utils.cpp
+                                ${UnitTestsDir}/Solver.cpp
 )
 
 add_executable(RunUnitTests ${UnitTestsSources})

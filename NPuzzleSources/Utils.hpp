@@ -32,13 +32,13 @@ std::list<Move> collectMoves(const State& i_state);
 
 bool isInverted(const ValueToPosition& i_mapper, const char l, const char r);
 std::list<Move> collectMovesImpl(const State& i_state,
-								 const StateSP& i_opt_predecessor,
-								 std::list<Move> o_result = std::list<Move>());
+                                 const StateSP& i_opt_predecessor,
+                                 std::list<Move> o_result = std::list<Move>());
 ValueToPosition map(const Matrix& i_solution);
 
 std::size_t accumulateHeuristicCost(const Matrix& i_matrix, const HeuristicFunction& i_h);
 std::size_t updateCost(const Matrix& i_old, const Matrix& i_new,
-	const HeuristicFunction& i_heuristic_function, const std::size_t i_old_cost);
+    const HeuristicFunction& i_heuristic_function, const std::size_t i_old_cost);
 
 Move oppositeMove(Move i_move);
 

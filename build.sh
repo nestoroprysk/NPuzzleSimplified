@@ -1,5 +1,5 @@
 if [ ! -f Tests/catch.hpp ]; then
-	cd UnitTests
+    cd UnitTests
     curl -o catch.hpp -L https://github.com/catchorg/Catch2/releases/download/v2.4.1/catch.hpp
     cd ..
 fi

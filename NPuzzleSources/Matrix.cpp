@@ -3,66 +3,66 @@
 #include <cmath>
 
 Matrix::Matrix(std::string i_args)
-	: m_data(std::move(i_args))
-	, m_moving_point_index(std::distance(m_data.cbegin(),
-		std::find(m_data.cbegin(), m_data.cend(), 0)))
-	, m_size(std::floor(std::sqrt(m_data.size())))
+    : m_data(std::move(i_args))
+    , m_moving_point_index(std::distance(m_data.cbegin(),
+        std::find(m_data.cbegin(), m_data.cend(), 0)))
+    , m_size(std::floor(std::sqrt(m_data.size())))
 {
 }
 
 std::size_t Matrix::operator[](const std::size_t i) const
 {
-	return static_cast<std::size_t>(m_data[i]);
+    return static_cast<std::size_t>(m_data[i]);
 }
 
 std::size_t Matrix::getMovingPointIndex() const
 {
-	return m_moving_point_index;
+    return m_moving_point_index;
 }
 
 void Matrix::move(Move i_move)
 {
-	switch (i_move){
-		case Move::Left:{
-			std::swap(m_data[m_moving_point_index],
-				m_data[m_moving_point_index - 1]);
-			m_moving_point_index -= 1;
-			break;
-		}
-		case Move::Right:{
-			std::swap(m_data[m_moving_point_index],
-				m_data[m_moving_point_index + 1]);
-			m_moving_point_index += 1;
-			break;
-		}
-		case Move::Up:{
-			std::swap(m_data[m_moving_point_index],
-				m_data[m_moving_point_index - size()]);
-			m_moving_point_index -= size();
-			break;
-		}
-		case Move::Down:{
-			std::swap(m_data[m_moving_point_index],
-				m_data[m_moving_point_index + size()]);
-			m_moving_point_index += size();
-			break;
-		}
-		default:
-			throw std::logic_error("Invalid move type");
-	}
+    switch (i_move){
+        case Move::Left:{
+            std::swap(m_data[m_moving_point_index],
+                m_data[m_moving_point_index - 1]);
+            m_moving_point_index -= 1;
+            break;
+        }
+        case Move::Right:{
+            std::swap(m_data[m_moving_point_index],
+                m_data[m_moving_point_index + 1]);
+            m_moving_point_index += 1;
+            break;
+        }
+        case Move::Up:{
+            std::swap(m_data[m_moving_point_index],
+                m_data[m_moving_point_index - size()]);
+            m_moving_point_index -= size();
+            break;
+        }
+        case Move::Down:{
+            std::swap(m_data[m_moving_point_index],
+                m_data[m_moving_point_index + size()]);
+            m_moving_point_index += size();
+            break;
+        }
+        default:
+            throw std::logic_error("Invalid move type");
+    }
 }
 
 const std::string& Matrix::data() const
 {
-	return m_data;
+    return m_data;
 }
 
 std::size_t Matrix::size() const
 {
-	return m_size;
+    return m_size;
 }
 
 std::size_t Matrix::sizeSquared() const
 {
-	return m_size * m_size;
+    return m_size * m_size;
 }

@@ -6,33 +6,33 @@
 class Manhattan
 {
 public:
-	Manhattan(const Matrix& i_solution);
-	std::size_t operator()(const Matrix& i_matrix, const std::size_t i) const;
-	std::string getName() const;
+    Manhattan(const Matrix& i_solution);
+    std::size_t operator()(const Matrix& i_matrix, const std::size_t i) const;
+    std::string getName() const;
 private:
-	std::size_t distanceX(const Matrix& i_matrix, const std::size_t i) const;
-	std::size_t distanceY(const Matrix& i_matrix, const std::size_t i) const;
+    std::size_t distanceX(const Matrix& i_matrix, const std::size_t i) const;
+    std::size_t distanceY(const Matrix& i_matrix, const std::size_t i) const;
 
 private:
-	const ValueToPosition m_mapper;
+    const ValueToPosition m_mapper;
 };
 
 class IsInCorrectPositions
 {
 public:
-	IsInCorrectPositions(const Matrix& i_solution);
-	std::size_t operator()(const Matrix& i_matrix, const std::size_t i) const;
-	std::string getName() const;
+    IsInCorrectPositions(const Matrix& i_solution);
+    std::size_t operator()(const Matrix& i_matrix, const std::size_t i) const;
+    std::string getName() const;
 private:
-	const Matrix m_solution;
+    const Matrix m_solution;
 };
 
 class IsNearCorrectPosition
 {
 public:
-	IsNearCorrectPosition(const Matrix& i_solution);
-	std::size_t operator()(const Matrix& i_matrix, const std::size_t i) const;
-	std::string getName() const;
+    IsNearCorrectPosition(const Matrix& i_solution);
+    std::size_t operator()(const Matrix& i_matrix, const std::size_t i) const;
+    std::string getName() const;
 private:
-	const Matrix m_solution;
+    const Matrix m_solution;
 };
