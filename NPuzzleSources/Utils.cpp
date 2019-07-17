@@ -4,6 +4,8 @@
 
 #include <unordered_set>
 #include <deque>
+#include <random>
+#include <chrono>
 
 template <typename Container>
 class Queue;
@@ -224,7 +226,13 @@ Matrix Utils::generateSnakeSolution(std::size_t)
     throw "Unimplemented";
 }
 
-Matrix Utils::generateRandomMap(std::size_t)
+Matrix Utils::generateRandomMap(std::size_t i_n)
 {
-    throw "Unimplemented";
+    auto result = std::vector<std::size_t>(i_n * i_n, 0);
+    for (std::size_t i = 0; i < result.size(); ++i)
+        result[i] = i;
+    const auto seed = std::chrono::system_clock::now().time_since_epoch().count();
+    auto random_engine = std::default_random_engine{static_cast<unsigned>(seed)};
+    std::shuffle(std::begin(result), std::end(result), random_engine);
+    return result;
 }

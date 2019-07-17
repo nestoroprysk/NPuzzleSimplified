@@ -19,4 +19,7 @@ private:
 Matrix parseFile(const std::string& i_file_name);
 Matrix parseContent(const std::vector<std::string>& i_content);
 
+// Expects N and only then the body of the matrix
+void validate(const std::vector<std::size_t>& i_numbers);
+
 }

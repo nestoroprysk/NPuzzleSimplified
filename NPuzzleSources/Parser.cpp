@@ -62,7 +62,23 @@ std::string toString(const std::vector<std::size_t>& i_numbers){
     return result;
 }
 
-void validate(const std::vector<std::size_t>& i_numbers){
+}
+
+Matrix Parser::parseFile(const std::string& i_file_name)
+{
+    const auto lines = readContent(i_file_name);
+    return parseContent(lines);
+}
+
+Matrix Parser::parseContent(const std::vector<std::string>& i_content)
+{
+    const auto pureLines = purifyLines(i_content);
+    const auto numbers = extractNumbers(pureLines);
+    validate(numbers);
+    return std::vector<std::size_t>{ std::next(numbers.cbegin()), numbers.cend() };
+}
+
+void Parser::validate(const std::vector<std::size_t>& i_numbers){
     if (i_numbers.empty())
         throw Parser::ParseError("Failed to extract numbers");
     const auto n = i_numbers[0];
@@ -83,20 +99,4 @@ void validate(const std::vector<std::size_t>& i_numbers){
     if (!std::all_of(expectedNumbers.cbegin(), expectedNumbers.cend(),
             [](const auto i_nb){ return i_nb == 1; }))
         throw Parser::ParseError("Invalid numbers of the matrix: [ " + toString(i_numbers) + ']');
-}
-
-}
-
-Matrix Parser::parseFile(const std::string& i_file_name)
-{
-    const auto lines = readContent(i_file_name);
-    return parseContent(lines);
-}
-
-Matrix Parser::parseContent(const std::vector<std::string>& i_content)
-{
-    const auto pureLines = purifyLines(i_content);
-    const auto numbers = extractNumbers(pureLines);
-    validate(numbers);
-    return std::vector<std::size_t>{ std::next(numbers.cbegin()), numbers.cend() };
 }
