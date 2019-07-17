@@ -218,3 +218,13 @@ bool Utils::isCorrectlySolved(Matrix i_initial, const Matrix& i_desired, const S
 {
     return isCorrectlySolvedImpl(std::move(i_initial), i_desired, i_solution.cbegin(), i_solution.cend());
 }
+
+Matrix Utils::generateSnakeSolution(std::size_t)
+{
+    throw "Unimplemented";
+}
+
+Matrix Utils::generateRandomMap(std::size_t)
+{
+    throw "Unimplemented";
+}

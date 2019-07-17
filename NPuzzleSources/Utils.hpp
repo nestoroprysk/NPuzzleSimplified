@@ -8,6 +8,8 @@ namespace Utils {
 
 static constexpr auto g_step_cost = 1;
 static constexpr auto g_bucket_count = 8;
+static constexpr auto g_min_n = 3;
+static constexpr auto g_max_n = 11;
 
 auto possibleMoves(const Matrix& i_state) -> std::vector<Move>;
 MatrixSP move(const MatrixSP& ip_matrix, Move i_move);
@@ -43,5 +45,8 @@ std::size_t updateCost(const Matrix& i_old, const Matrix& i_new,
 Move oppositeMove(Move i_move);
 
 bool isCorrectlySolved(Matrix i_initial, const Matrix& i_desired, const Solution& i_solution);
+
+Matrix generateSnakeSolution(std::size_t n);
+Matrix generateRandomMap(std::size_t n);
 
 }

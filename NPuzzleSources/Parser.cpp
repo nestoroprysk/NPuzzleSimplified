@@ -1,4 +1,5 @@
 #include "Parser.hpp"
+#include "Utils.hpp"
 
 #include <fstream>
 #include <sstream>
@@ -65,11 +66,10 @@ void validate(const std::vector<std::size_t>& i_numbers){
     if (i_numbers.empty())
         throw Parser::ParseError("Failed to extract numbers");
     const auto n = i_numbers[0];
-    const auto maxCellValue = std::numeric_limits<char>::max();
-    if (n > maxCellValue || n * n >= maxCellValue)
+    if (n < Utils::g_min_n || n > Utils::g_max_n)
         throw Parser::ParseError("The provided N is " + std::to_string(n) +
-            ", N shouldn't be greater than " +
-                std::to_string(static_cast<std::size_t>(std::sqrt(maxCellValue))));
+            ", N should be in the range [" + std::to_string(Utils::g_min_n) +
+                ", " + std::to_string(Utils::g_max_n) + ']');
     if (i_numbers.size() != n * n + 1)
         throw Parser::ParseError("Trying to parse matrix " +
             std::to_string(n) + '*' + std::to_string(n) + ", got " +
