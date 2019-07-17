@@ -9,7 +9,7 @@ namespace Utils {
 static constexpr auto g_step_cost = 1;
 static constexpr auto g_bucket_count = 8;
 static constexpr auto g_min_n = 3;
-static constexpr auto g_max_n = 11;
+static constexpr auto g_max_n = 500;
 
 auto possibleMoves(const Matrix& i_state) -> std::vector<Move>;
 MatrixSP move(const MatrixSP& ip_matrix, Move i_move);
@@ -32,7 +32,7 @@ const StateSP& predecessor(const State& i_state);
 StateSP& predecessor(State& i_state);
 std::list<Move> collectMoves(const State& i_state);
 
-bool isInverted(const ValueToPosition& i_mapper, const char l, const char r);
+bool isInverted(const ValueToPosition& i_mapper, const std::size_t l, const std::size_t r);
 std::list<Move> collectMovesImpl(const State& i_state,
                                  const StateSP& i_opt_predecessor,
                                  std::list<Move> o_result = std::list<Move>());

@@ -142,7 +142,7 @@ std::list<Move> Utils::collectMoves(const State& i_state)
     return collectMovesImpl(i_state, predecessor(i_state));
 }
 
-bool Utils::isInverted(const ValueToPosition& i_mapper, const char l, const char r)
+bool Utils::isInverted(const ValueToPosition& i_mapper, const std::size_t l, const std::size_t r)
 {
     return i_mapper.at(l) > i_mapper.at(r);
 }

@@ -28,11 +28,11 @@ void test(const SolverConfiguration& i_config, const Matrix& i_input)
 
 TEST_CASE("<3x3><Set><Manhattan><h=1><g=1>")
 {
-    const auto desired_solution = Matrix{{{
+    const auto desired_solution = Matrix{{
         1, 2, 3,
         8, 0, 4,
         7, 6, 5
-    }}};
+    }};
     const auto heuristic_function = Manhattan(desired_solution);
     const auto h = [&heuristic_function](const auto& i_matrix, const std::size_t i)
             { return heuristic_function(i_matrix, i); };
@@ -40,21 +40,21 @@ TEST_CASE("<3x3><Set><Manhattan><h=1><g=1>")
     const auto distance_weight = double(1);
     const auto configuration = SolverConfiguration{"Test 0", desired_solution, h,
         heuristic_function.getName(), heuristic_function_weight, distance_weight};
-    const auto input = Matrix{{{
+    const auto input = Matrix{{
         5, 2, 4,
         6, 0, 1,
         8, 3, 7
-    }}};
+    }};
     test<Set>(configuration, input);
 }
 
 TEST_CASE("<3x3><QueueOnVector><Manhattan><h=1><g=1>")
 {
-    const auto desired_solution = Matrix{{{
+    const auto desired_solution = Matrix{{
         1, 2, 3,
         8, 0, 4,
         7, 6, 5
-    }}};
+    }};
     const auto heuristic_function = Manhattan(desired_solution);
     const auto h = [&heuristic_function](const auto& i_matrix, const std::size_t i)
             { return heuristic_function(i_matrix, i); };
@@ -62,21 +62,21 @@ TEST_CASE("<3x3><QueueOnVector><Manhattan><h=1><g=1>")
     const auto distance_weight = double(1);
     const auto configuration = SolverConfiguration{"Test 0", desired_solution, h,
         heuristic_function.getName(), heuristic_function_weight, distance_weight};
-    const auto input = Matrix{{{
+    const auto input = Matrix{{
         5, 2, 4,
         6, 0, 1,
         8, 3, 7
-    }}};
+    }};
     test<Queue<std::vector<State>>>(configuration, input);
 }
 
 TEST_CASE("<3x3><QueueOnDeque><IsInCorrectPositions><h=1><g=1>")
 {
-    const auto desired_solution = Matrix{{{
+    const auto desired_solution = Matrix{{
         1, 2, 3,
         8, 0, 4,
         7, 6, 5
-    }}};
+    }};
     const auto heuristic_function = IsInCorrectPositions(desired_solution);
     const auto h = [&heuristic_function](const auto& i_matrix, const std::size_t i)
             { return heuristic_function(i_matrix, i); };
@@ -84,21 +84,21 @@ TEST_CASE("<3x3><QueueOnDeque><IsInCorrectPositions><h=1><g=1>")
     const auto distance_weight = double(1);
     const auto configuration = SolverConfiguration{"Test 0", desired_solution, h,
         heuristic_function.getName(), heuristic_function_weight, distance_weight};
-    const auto input = Matrix{{{
+    const auto input = Matrix{{
         5, 2, 4,
         6, 0, 1,
         8, 3, 7
-    }}};
+    }};
     test<Queue<std::deque<State>>>(configuration, input);
 }
 
 TEST_CASE("<3x3><QueueOnDeque><IsNearCorrectPosition><h=1><g=1>")
 {
-    const auto desired_solution = Matrix{{{
+    const auto desired_solution = Matrix{{
         1, 2, 3,
         8, 0, 4,
         7, 6, 5
-    }}};
+    }};
     const auto heuristic_function = IsNearCorrectPosition(desired_solution);
     const auto h = [&heuristic_function](const auto& i_matrix, const std::size_t i)
             { return heuristic_function(i_matrix, i); };
@@ -106,10 +106,10 @@ TEST_CASE("<3x3><QueueOnDeque><IsNearCorrectPosition><h=1><g=1>")
     const auto distance_weight = double(1);
     const auto configuration = SolverConfiguration{"Test 0", desired_solution, h,
         heuristic_function.getName(), heuristic_function_weight, distance_weight};
-    const auto input = Matrix{{{
+    const auto input = Matrix{{
         5, 2, 4,
         6, 0, 1,
         8, 3, 7
-    }}};
+    }};
     test<Queue<std::deque<State>>>(configuration, input);
 }

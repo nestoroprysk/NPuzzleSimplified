@@ -85,13 +85,6 @@ void validate(const std::vector<std::size_t>& i_numbers){
         throw Parser::ParseError("Invalid numbers of the matrix: [ " + toString(i_numbers) + ']');
 }
 
-std::string toChars(const std::vector<std::size_t>& i_numbers){
-    auto result = std::string();
-    for (auto it = std::next(i_numbers.cbegin()); it != i_numbers.cend(); ++it)
-        result += static_cast<char>(*it);
-    return result;
-}
-
 }
 
 Matrix Parser::parseFile(const std::string& i_file_name)
@@ -105,5 +98,5 @@ Matrix Parser::parseContent(const std::vector<std::string>& i_content)
     const auto pureLines = purifyLines(i_content);
     const auto numbers = extractNumbers(pureLines);
     validate(numbers);
-    return toChars(numbers);
+    return std::vector<std::size_t>{ std::next(numbers.cbegin()), numbers.cend() };
 }

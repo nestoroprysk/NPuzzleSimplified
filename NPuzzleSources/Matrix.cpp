@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-Matrix::Matrix(std::string i_args)
+Matrix::Matrix(std::vector<std::size_t> i_args)
     : m_data(std::move(i_args))
     , m_moving_point_index(std::distance(m_data.cbegin(),
         std::find(m_data.cbegin(), m_data.cend(), 0)))
@@ -50,11 +50,6 @@ void Matrix::move(Move i_move)
         default:
             throw std::logic_error("Invalid move type");
     }
-}
-
-const std::string& Matrix::data() const
-{
-    return m_data;
 }
 
 std::size_t Matrix::size() const
