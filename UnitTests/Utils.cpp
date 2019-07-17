@@ -4,6 +4,6 @@
 #include <State.hpp>
 #include <Utils.hpp>
 
-TEST_CASE("Test Utils")
+TEST_CASE("<Utils>")
 {
 }

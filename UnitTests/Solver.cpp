@@ -20,7 +20,6 @@ void test(const SolverConfiguration& i_config, const Matrix& i_input)
     auto result_ptr = std::unique_ptr<Result<Container>>();
     REQUIRE_NOTHROW(result_ptr = std::make_unique<Result<Container>>(solver.solve(i_input)));
     REQUIRE(result_ptr);
-    Printer<Container>::printShort(std::cout, *result_ptr); std::cout << std::endl;
     REQUIRE(result_ptr->m_opt_solution);
     REQUIRE(Utils::isCorrectlySolved(i_input, i_config.m_desired_solution, *result_ptr->m_opt_solution));
 }

@@ -32,6 +32,8 @@ file(GLOB NPuzzleSources    ${NPuzzleDir}/Set.hpp
                             ${NPuzzleDir}/Comparator.hpp
                             ${NPuzzleDir}/Result.hpp
                             ${NPuzzleDir}/Printer.hpp
+                            ${NPuzzleDir}/Parser.hpp
+                            ${NPuzzleDir}/Parser.cpp
 )
 
 add_library(NPuzzle STATIC ${NPuzzleSources})
@@ -63,6 +65,7 @@ target_include_directories(RunTests PUBLIC ${NPuzzleDir})
 set(UnitTestsDir ${CMAKE_CURRENT_SOURCE_DIR}/UnitTests)
 file(GLOB UnitTestsSources      ${UnitTestsDir}/main.cpp
                                 ${UnitTestsDir}/Utils.cpp
+                                ${UnitTestsDir}/Parser.cpp
                                 ${UnitTestsDir}/Solver.cpp
 )
 
