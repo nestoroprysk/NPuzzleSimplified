@@ -4,7 +4,6 @@
 #include <HeuristicFunctions.hpp>
 #include <Set.hpp>
 #include <Queue.hpp>
-#include <Tester.hpp>
 #include <Printer.hpp>
 
 #include <iostream>
@@ -23,7 +22,7 @@ void test(const SolverConfiguration& i_config, const Matrix& i_input)
 	REQUIRE(result_ptr);
 	Printer<Container>::printShort(std::cout, *result_ptr); std::cout << std::endl;
 	REQUIRE(result_ptr->m_opt_solution);
-	REQUIRE(Tester::isCorrectlySolved(i_input, i_config.m_desired_solution, *result_ptr->m_opt_solution));
+	REQUIRE(Utils::isCorrectlySolved(i_input, i_config.m_desired_solution, *result_ptr->m_opt_solution));
 }
 
 }

@@ -42,4 +42,6 @@ std::size_t updateCost(const Matrix& i_old, const Matrix& i_new,
 
 Move oppositeMove(Move i_move);
 
+bool isCorrectlySolved(Matrix i_initial, const Matrix& i_desired, const Solution& i_solution);
+
 }

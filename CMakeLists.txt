@@ -36,18 +36,6 @@ file(GLOB NPuzzleSources	${NPuzzleDir}/Set.hpp
 
 add_library(NPuzzle STATIC ${NPuzzleSources})
 
-# Tester library
-
-set(TesterDir ${CMAKE_CURRENT_SOURCE_DIR}/TesterSources)
-
-file(GLOB TesterSources		${TesterDir}/Tester.hpp
-				${TesterDir}/Tester.cpp
-)
-
-add_library(Tester STATIC ${TesterSources})
-
-target_include_directories(Tester PUBLIC ${NPuzzleDir})
-
 # Run executable
 
 set(RunnerDir ${CMAKE_CURRENT_SOURCE_DIR}/NPuzzleRunner)
@@ -66,9 +54,9 @@ file(GLOB TestsRunnerSources ${TestsRunnerDir}/main.cpp)
 
 add_executable(RunTests ${TestsRunnerSources})
 
-target_link_libraries(RunTests NPuzzle Tester)
+target_link_libraries(RunTests NPuzzle)
 
-target_include_directories(RunTests PUBLIC ${NPuzzleDir} ${TesterDir})
+target_include_directories(RunTests PUBLIC ${NPuzzleDir})
 
 # RunUnitTests executable
 
@@ -80,6 +68,6 @@ file(GLOB UnitTestsSources      ${UnitTestsDir}/main.cpp
 
 add_executable(RunUnitTests ${UnitTestsSources})
 
-target_link_libraries(RunUnitTests NPuzzle Tester)
+target_link_libraries(RunUnitTests NPuzzle)
 
-target_include_directories(RunUnitTests PUBLIC ${NPuzzleDir} ${TesterDir})
+target_include_directories(RunUnitTests PUBLIC ${NPuzzleDir})
