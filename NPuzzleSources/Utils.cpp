@@ -75,12 +75,11 @@ bool Utils::cmp(const Matrix& i_lhs, const Matrix& i_rhs)
 
 bool Utils::solvable(const Matrix& i_matrix, const Matrix& i_solution)
 {
-    if (i_matrix.size() % 2 != 0){
-        return countInversions(i_matrix, map(i_solution)) % 2 == 0;
-    }
-    else{
-        throw "Unimplemented";
-    }
+    const auto evenInversions = countInversions(i_matrix, map(i_solution)) % 2 == 0;
+    const auto evenRowFromBottom = (i_matrix.size() -
+        (i_matrix.getMovingPointIndex() % i_matrix.size()))
+            % 2 == 0;
+    return i_matrix.size() % 2 != 0 ? evenInversions : evenRowFromBottom != evenInversions;
 }
 
 std::size_t Utils::countInversions(const Matrix& i_matrix, const ValueToPosition& i_mapper)
