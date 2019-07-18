@@ -16,11 +16,11 @@ TEST_CASE("<Parser><Valid>")
     };
     auto p_matrix = std::unique_ptr<Matrix>();
     REQUIRE_NOTHROW(p_matrix = std::make_unique<Matrix>(Parser::parseContent(content)));
-    REQUIRE(Utils::eq(*p_matrix, Matrix{{{
+    REQUIRE(Utils::eq(*p_matrix, Matrix{{
         7, 1, 6,
         5, 0, 4,
         3, 8, 2
-    }}}));
+    }}));
 }
 
 TEST_CASE("<Parser><Invalid><Empty>")

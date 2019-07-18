@@ -221,12 +221,136 @@ bool Utils::isCorrectlySolved(Matrix i_initial, const Matrix& i_desired, const S
     return isCorrectlySolvedImpl(std::move(i_initial), i_desired, i_solution.cbegin(), i_solution.cend());
 }
 
-Matrix Utils::generateSnakeSolution(std::size_t)
+namespace {
+
+class SnakeIterator
 {
-    throw "Unimplemented";
+public:
+    SnakeIterator(const std::size_t i_n)
+        : m_data(i_n, std::vector<bool>(i_n, false)){}
+    std::size_t operator*() const{return m_val;}
+    void operator++(){
+        m_data[m_at.i][m_at.j] = true;
+        ++m_val;
+        move();
+    }
+    std::size_t at() const{
+        return m_at.i * m_data.size() + m_at.j;
+    }
+private:
+    enum class Direction { Right, Down, Left, Up };
+    static Direction getNext(const Direction i_direction){
+        switch (i_direction){
+            case Direction::Right: return Direction::Down;
+            case Direction::Down: return Direction::Left;
+            case Direction::Left: return Direction::Up;
+            case Direction::Up: return Direction::Right;
+            default: throw std::logic_error("getNext(), invalid direction");
+        };
+    }
+    void move(){
+        const auto ms = possibleMoves();
+        if (ms.empty())
+            throw std::logic_error("move(), no moves left");
+        if (ms.size() == 1){
+            move(ms[0]);
+            return;
+        }
+        while (!move(m_direction, ms))
+            m_direction = getNext(m_direction);
+    }
+    std::vector<Move> possibleMoves() const{
+        auto result = std::vector<Move>();
+        if (m_at.j != m_data.size() - 1 && !m_data[m_at.i][m_at.j + 1])
+            result.push_back(Move::Right);
+        if (m_at.i != m_data.size() - 1 && !m_data[m_at.i + 1][m_at.j])
+            result.push_back(Move::Down);
+        if (m_at.j != 0 && !m_data[m_at.i][m_at.j - 1])
+            result.push_back(Move::Left);
+        if (m_at.i != 0 && !m_data[m_at.i - 1][m_at.j])
+            result.push_back(Move::Up);
+        return result;
+    }
+    void move(const Move i_move){
+        switch (i_move){
+            case Move::Right: {
+                ++m_at.j;
+                break;
+            }
+            case Move::Down: {
+                ++m_at.i;
+                break;
+            }
+            case Move::Left: {
+                --m_at.j;
+                break;
+            }
+            case Move::Up: {
+                --m_at.i;
+                break;
+            }
+            default: throw std::logic_error("move(m), invalid move");
+        }
+    }
+    bool move(const Direction i_direction, std::vector<Move> i_ms){
+        switch (i_direction){
+            case Direction::Right: {
+                if (std::none_of(i_ms.cbegin(), i_ms.cend(),
+                    [](const auto i_m){ return i_m == Move::Right; }))
+                        return false;
+                ++m_at.j;
+                return true;
+            }
+            case Direction::Down: {
+                if (std::none_of(i_ms.cbegin(), i_ms.cend(),
+                    [](const auto i_m){ return i_m == Move::Down; }))
+                        return false;
+                ++m_at.i;
+                return true;
+            }
+            case Direction::Left: {
+                if (std::none_of(i_ms.cbegin(), i_ms.cend(),
+                    [](const auto i_m){ return i_m == Move::Left; }))
+                        return false;
+                --m_at.j;
+                return true;
+            }
+            case Direction::Up: {
+                if (std::none_of(i_ms.cbegin(), i_ms.cend(),
+                    [](const auto i_m){ return i_m == Move::Up; }))
+                        return false;
+                --m_at.i;
+                return true;
+            }
+            default: throw std::logic_error("move(direction, moves), invalid direction");
+        }
+    }
+private:
+    std::vector<std::vector<bool>> m_data;
+    struct {
+        std::size_t i = 0;
+        std::size_t j = 0;
+    } m_at;
+    std::size_t m_val = 1;
+    Direction m_direction = Direction::Right;
+};
+
 }
 
-Matrix Utils::generateRandomMap(std::size_t i_n)
+Matrix Utils::generateSnakeSolution(const std::size_t i_n)
+{
+    if (i_n < g_min_n || i_n > g_max_n)
+        throw std::logic_error("generateSnakeSolution(n), invalid n");
+    auto result = std::vector<std::size_t>(i_n * i_n, 0);
+    auto it = SnakeIterator(i_n);
+    for (std::size_t i = 0; i < result.size() - 1; ++i){
+        result[it.at()] = *it;
+        ++it;
+    }
+    return result;
+}
+
+Matrix Utils::generateRandomMap(const std::size_t i_n)
 {
     auto result = std::vector<std::size_t>(i_n * i_n, 0);
     for (std::size_t i = 0; i < result.size(); ++i)

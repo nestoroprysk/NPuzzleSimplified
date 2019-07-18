@@ -46,7 +46,7 @@ Move oppositeMove(Move i_move);
 
 bool isCorrectlySolved(Matrix i_initial, const Matrix& i_desired, const Solution& i_solution);
 
-Matrix generateSnakeSolution(std::size_t n);
-Matrix generateRandomMap(std::size_t n);
+Matrix generateSnakeSolution(const std::size_t i_n);
+Matrix generateRandomMap(const std::size_t i_n);
 
 }

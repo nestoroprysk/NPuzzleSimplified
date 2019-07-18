@@ -31,9 +31,9 @@ Dependencies:
 
 Mandatory:
 2. Parsing argc/argv
-3. Snake solution generator
 4. isSolvable() for even(N)
 
 1. Parsing maps DONE
 6. Enable bigger maps DONE
 5. Random map generator DONE
+3. Snake solution generator DONE
