@@ -46,6 +46,13 @@ Result<Container> Solver<Container>::solve(const Matrix& i_matrix) const
         accumulateHeuristicCost(i_matrix, m_configuration.m_heuristic_function)));
     open_states_hash.push(open.top());
     while (!open.empty()){
+        if (static_cast<size_t>(std::chrono::duration_cast<std::chrono::seconds>
+                        (std::chrono::steady_clock::now() - t0).count()) >= m_configuration.m_time_limit)
+            return Result<Container>{ m_configuration, i_matrix,
+                number_of_selected_states, max_number_of_states_in_memory,
+                    static_cast<size_t>(std::chrono::duration_cast<std::chrono::milliseconds>
+                        (std::chrono::steady_clock::now() - t0).count()),
+                            nullptr, true };
         ++number_of_selected_states;
         auto e = open.top();
         if (!h(e) && eq(data(e), m_configuration.m_desired_solution))

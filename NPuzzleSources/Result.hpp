@@ -12,4 +12,5 @@ struct Result
     const std::size_t m_max_number_of_states_in_memory;
     const std::size_t m_execution_time;
     const MaybeSolution m_opt_solution;
+    const bool m_time_limit_exceeded = false;
 };

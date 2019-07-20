@@ -30,12 +30,14 @@ Dependencies:
 - RandomTestsRunner <- Generator + TestingFramework
 
 Mandatory:
-2. Parsing argc/argv
-3. Time limit
 4. Test is solvable rigirously
+5. support generator run
+6. support run from file
 
 1. Parsing maps DONE
 6. Enable bigger maps DONE
 5. Random map generator DONE
 3. Snake solution generator DONE
 4. isSolvable() for even(N) DONE
+2. Parsing argc/argv DONE
+3. Time limit DONE

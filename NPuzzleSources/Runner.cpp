@@ -239,7 +239,9 @@ void Runner::defineRunner()
 {
     m_runner = [this]{
         const auto configuration = SolverConfiguration{*mp_desired_solution,
-            m_heuristic_function, m_heuristic_function_name, m_heuristic_function_weight, m_distance_weight};
+            m_heuristic_function, m_heuristic_function_name,
+                m_heuristic_function_weight, m_distance_weight,
+                    Utils::generateTestName(), m_time_limit};
         static constexpr auto correspondingTag = "-c";
         if (m_tag_to_value.find(correspondingTag) == m_tag_to_value.end() ||
                 m_tag_to_value[correspondingTag] == "Set"){

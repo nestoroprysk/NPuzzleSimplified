@@ -36,13 +36,13 @@ void Printer<Container>::printFull(std::ostream& o_stream, const Result<Containe
 template <typename Container>
 void Printer<Container>::printShort(std::ostream& o_stream, const Result<Container>& i_result)
 {
+    o_stream << "<input>";
     printConfig(o_stream, i_result.m_config);
-    printContainer(o_stream);
+    printContainer(o_stream); o_stream << "<output>";
     o_stream << '[' << i_result.m_number_of_selected_states << " selected states]";
     o_stream << '[' << i_result.m_max_number_of_states_in_memory << " max states in memory]";
     o_stream << '[' << i_result.m_execution_time << " milliseconds]";
     printSolution(o_stream, i_result);
-    printResult(o_stream, i_result);
 }
 
 template <typename Container>
@@ -79,6 +79,7 @@ void Printer<Container>::printConfig(std::ostream& o_stream, const SolverConfigu
     o_stream << '[' << i_config.m_heuristic_function_name << ']';
     o_stream << '[' << i_config.m_heuristic_function_weight << " h weight]";
     o_stream << '[' << i_config.m_distance_weight << " g weight]";
+    o_stream << '[' << i_config.m_time_limit << " seconds time limit]";
 }
 
 template <typename Container>
@@ -104,6 +105,10 @@ void Printer<Container>::printMove(std::ostream& o_stream, Move i_move)
 template <typename Container>
 void Printer<Container>::printSolution(std::ostream& o_stream, const Result<Container>& i_result)
 {
+    if (i_result.m_time_limit_exceeded){
+        o_stream << "[time limit exceeded]";
+        return;
+    }
     if (!i_result.m_opt_solution){
         o_stream << "[unsolvable]";
         return;
@@ -114,6 +119,10 @@ void Printer<Container>::printSolution(std::ostream& o_stream, const Result<Cont
 template <typename Container>
 void Printer<Container>::printSolutionDetails(std::ostream& o_stream, const Result<Container>& i_result)
 {
+    if (i_result.m_time_limit_exceeded){
+        o_stream << "[time limit exceeded]";
+        return;
+    }
     if (!i_result.m_opt_solution){
         o_stream << "[no solution details]";
         return;
