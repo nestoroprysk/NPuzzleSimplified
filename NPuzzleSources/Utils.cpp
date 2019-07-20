@@ -73,6 +73,7 @@ bool Utils::cmp(const Matrix& i_lhs, const Matrix& i_rhs)
     return false;
 }
 
+// the formula is taken from https://www.cs.bham.ac.uk/~mdr/teaching/modules04/java2/TilesSolvability.html
 bool Utils::solvable(const Matrix& i_matrix, const Matrix& i_solution)
 {
     if (countInversions(i_solution, map(i_solution)) != 0)
