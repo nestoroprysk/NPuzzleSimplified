@@ -171,9 +171,10 @@ void Runner::defineDistanceWeight()
         return;
     try{
         m_distance_weight = std::stod(m_tag_to_value[correspondingTag]);
-        if (m_distance_weight < Utils::g_min_weight || m_random_map_size > Utils::g_max_weight)
+        if (m_distance_weight < Utils::g_min_weight || m_distance_weight > Utils::g_max_weight)
             throw ConfigurationError("The option -gc expects numbers within the range [" +
-                std::to_string(Utils::g_min_weight) + ", " + std::to_string(Utils::g_max_weight) + ']');
+                std::to_string(Utils::g_min_weight) + ", " + std::to_string(Utils::g_max_weight) +
+                    "], got " + std::to_string(m_distance_weight));
     }
     catch (const std::invalid_argument&){
         throw ConfigurationError("Invalid argument of the option -gc [" +
@@ -228,6 +229,7 @@ void print(std::unordered_map<std::string, std::string>& i_tag_to_value,
         Printer<Container>::printFull(o_output_stream, i_result); o_output_stream << std::endl;
         return;
     }
+    // TODO: move to printer
     if (i_tag_to_value[correspondingTag] == "result"){
         if (!i_result.m_opt_solution){
             o_output_stream << "[Unsolvable]" << std::endl;

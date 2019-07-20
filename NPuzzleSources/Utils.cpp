@@ -75,18 +75,22 @@ bool Utils::cmp(const Matrix& i_lhs, const Matrix& i_rhs)
 
 bool Utils::solvable(const Matrix& i_matrix, const Matrix& i_solution)
 {
-    const auto evenInversions = countInversions(i_matrix, map(i_solution)) % 2 == 0;
-    const auto evenRowFromBottom = (i_matrix.size() -
-        (i_matrix.getMovingPointIndex() % i_matrix.size()))
-            % 2 == 0;
-    return i_matrix.size() % 2 != 0 ? evenInversions : evenRowFromBottom != evenInversions;
+    if (countInversions(i_solution, map(i_solution)) != 0)
+        throw std::logic_error("solvable(), a solution must have zero inversions");
+    const auto gridWidthOdd = i_matrix.size() % 2 != 0;
+    const auto inversionsEven = countInversions(i_matrix, map(i_solution)) % 2 == 0;
+    if (gridWidthOdd && inversionsEven)
+        return true;
+    const auto blankRow = i_matrix.getMovingPointIndex() / i_matrix.size();
+    const auto blankOnOddRowFromButtom = (i_matrix.size() - 1 - blankRow) % 2 != 0;
+    return !gridWidthOdd && blankOnOddRowFromButtom == inversionsEven;
 }
 
 std::size_t Utils::countInversions(const Matrix& i_matrix, const ValueToPosition& i_mapper)
 {
     // TODO: test
     auto result = 0;
-    for (std::size_t i = 0; i < i_matrix.sizeSquared(); ++i)
+    for (std::size_t i = 0; i < i_matrix.sizeSquared() - 1; ++i)
         for (std::size_t j = i + 1; j < i_matrix.sizeSquared(); ++j)
             if (isInverted(i_mapper, i_matrix[i], i_matrix[j]))
                 ++result;
@@ -145,6 +149,8 @@ std::list<Move> Utils::collectMoves(const State& i_state)
 
 bool Utils::isInverted(const ValueToPosition& i_mapper, const std::size_t l, const std::size_t r)
 {
+    if (l == 0 || r == 0)
+        return false;
     return i_mapper.at(l) > i_mapper.at(r);
 }
 

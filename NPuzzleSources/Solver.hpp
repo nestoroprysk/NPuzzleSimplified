@@ -81,5 +81,5 @@ Result<Container> Solver<Container>::solve(const Matrix& i_matrix) const
             std::max(max_number_of_states_in_memory,
                 open.size() + open_states_hash.size() + closed_states_hash.size());
     }
-    throw std::logic_error("isSolvable() failed to detect an unsolvable puzzle");
+    throw std::logic_error("isSolvable(), failed to detect an unsolvable puzzle");
 }

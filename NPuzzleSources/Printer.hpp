@@ -101,6 +101,10 @@ void Printer<Container>::printSolution(std::ostream& o_stream, const Result<Cont
 template <typename Container>
 void Printer<Container>::printSolutionDetails(std::ostream& o_stream, const Result<Container>& i_result)
 {
+    if (!i_result.m_opt_solution) {
+        o_stream << "No solution provided";
+        return;
+    }
     const auto& moves = *i_result.m_opt_solution;
     auto matrix = i_result.m_input;
     for (auto m : moves){
