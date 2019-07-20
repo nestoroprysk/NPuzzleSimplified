@@ -18,6 +18,8 @@ static constexpr auto g_default_random_map_size = 3;
 static constexpr auto g_default_weight = 1;
 static constexpr auto g_min_weight = 0.0;
 static constexpr auto g_max_weight = 1.0;
+static constexpr auto g_number_of_runs_limit = 100000;
+static constexpr auto g_max_time_limit = 100000;
 
 auto possibleMoves(const Matrix& i_state) -> std::vector<Move>;
 MatrixSP move(const MatrixSP& ip_matrix, Move i_move);

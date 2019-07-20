@@ -9,7 +9,7 @@ namespace {
 static constexpr auto g_usage = R"(
 NPuzzle by omykolai & noprysk, 2019
 usage:
-  Run options
+  ./Run options
 
 where options are:
   -c <Set|QueueOnVector|QueueOnDequeue> select container
@@ -23,6 +23,15 @@ where options are:
   -t <'time' in seconds>                set time limit
   -d <filename>                         set custom desired solution
 )";
+
+
+
+void print(const std::string& i_error)
+{
+    static constexpr auto g_error_format = "\033[1;31m";
+    static constexpr auto g_normal_format = "\033[0m";
+    std::cout << g_error_format << i_error << g_normal_format << std::endl;
+}
 
 }
 
@@ -39,19 +48,19 @@ int main(const int argc, const char** argv)
                 runner.run();
             }
             catch (const std::logic_error& e){
-                std::cout << "Unexpected logic error: " << e.what() << std::endl;
+                print(std::string("Unexpected logic error: ") + e.what());
             }
         } while (runner.hasSomethingToRun());
     }
     catch (const Parser::ParseError& e){
-        std::cout << e.what() << std::endl;
+        print(e.what());
     }
     catch (const Runner::ConfigurationError& e){
-      std::cout << e.what() << std::endl;
+      print(e.what());
       std::cout << g_usage << std::endl;
     }
     catch (...){
-      std::cout << "Unexpected exception met" << std::endl;
+        print("Unexpected exception met");
     }
     return 0;
 }

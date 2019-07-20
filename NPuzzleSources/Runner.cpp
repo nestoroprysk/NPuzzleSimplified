@@ -66,15 +66,19 @@ void Runner::defineNumberOfRuns()
     if (m_tag_to_value.find(correspondingTag) == m_tag_to_value.end())
         return;
     try{
-        m_number_of_runs = std::stoll(m_tag_to_value[correspondingTag]);
+        m_number_of_runs = std::stoull(m_tag_to_value[correspondingTag]);
+        if (!m_number_of_runs || m_number_of_runs > Utils::g_number_of_runs_limit)
+            throw std::out_of_range("");
     }
     catch (const std::invalid_argument&){
         throw ConfigurationError("Invalid argument of the option -n [" +
-            m_tag_to_value[correspondingTag] + ']');
+            m_tag_to_value[correspondingTag] + "], number expected");
     }
     catch (const std::out_of_range&){
         throw ConfigurationError("Invalid number for the option -n [" +
-            m_tag_to_value[correspondingTag] + ']');
+            m_tag_to_value[correspondingTag] + "], one to "+
+                std::to_string(Utils::g_number_of_runs_limit) +
+                    " runs expected");
     }
 }
 
@@ -84,15 +88,19 @@ void Runner::defineTimeLimit()
     if (m_tag_to_value.find(correspondingTag) == m_tag_to_value.end())
         return;
     try{
-        m_time_limit = std::stoll(m_tag_to_value[correspondingTag]);
+        m_time_limit = std::stoull(m_tag_to_value[correspondingTag]);
+        if (!m_time_limit || m_time_limit > Utils::g_max_time_limit)
+            throw std::out_of_range("");
     }
     catch (const std::invalid_argument&){
         throw ConfigurationError("Invalid argument of the option -t [" +
-            m_tag_to_value[correspondingTag] + ']');
+            m_tag_to_value[correspondingTag] + "], number expected");
     }
     catch (const std::out_of_range&){
         throw ConfigurationError("Invalid number for the option -t [" +
-            m_tag_to_value[correspondingTag] + ']');
+            m_tag_to_value[correspondingTag] + "], one to "+
+                std::to_string(Utils::g_number_of_runs_limit) +
+                    " seconds expected");
     }
 }
 
@@ -102,7 +110,7 @@ void Runner::defineRandomMapSize()
     if (m_tag_to_value.find(correspondingTag) == m_tag_to_value.end())
         return;
     try{
-        m_random_map_size = std::stoll(m_tag_to_value[correspondingTag]);
+        m_random_map_size = std::stoull(m_tag_to_value[correspondingTag]);
         if (m_random_map_size < Utils::g_min_n || m_random_map_size > Utils::g_max_n)
             throw ConfigurationError("The option -g expects numbers within the range [" +
                 std::to_string(Utils::g_min_n) + ", " + std::to_string(Utils::g_max_n) + ']');
@@ -150,7 +158,7 @@ void Runner::defineHeuristicFunctionWeight()
         return;
     try{
         m_heuristic_function_weight = std::stod(m_tag_to_value[correspondingTag]);
-        if (m_heuristic_function_weight < Utils::g_min_weight || m_random_map_size > Utils::g_max_weight)
+        if (m_heuristic_function_weight < Utils::g_min_weight || m_heuristic_function_weight > Utils::g_max_weight)
             throw ConfigurationError("The option -hc expects numbers within the range [" +
                 std::to_string(Utils::g_min_weight) + ", " + std::to_string(Utils::g_max_weight) + ']');
     }
@@ -208,6 +216,8 @@ void Runner::defineHeuristicFunction()
         m_heuristic_function_name = IsNearCorrectPosition::getName();
         return;
     }
+    throw ConfigurationError("Invalid argument for the option -h [" +
+            m_tag_to_value[correspondingTag] + "], expected Manhattan, InPos, or NearPos");
 }
 
 namespace {
@@ -231,6 +241,8 @@ void print(std::unordered_map<std::string, std::string>& i_tag_to_value,
         Printer<Container>::printResult(o_output_stream, i_result); o_output_stream << std::endl;
         return;
     }
+    throw Runner::ConfigurationError("Invalid argument for the option -v [" +
+            i_tag_to_value[correspondingTag] + "], expected short, long, or result");
 }
 
 }
@@ -267,5 +279,7 @@ void Runner::defineRunner()
             print<Queue<std::deque<State>>>(m_tag_to_value, std::cout, result);
             return;
         }
+        throw ConfigurationError("Invalid argument for the option -c [" +
+            m_tag_to_value[correspondingTag] + "], Set, QueueOnVector, or QueueOnDequeue expected");
     };
 }
