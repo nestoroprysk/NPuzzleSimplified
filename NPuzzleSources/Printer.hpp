@@ -49,6 +49,13 @@ template <typename Container>
 void Printer<Container>::printResult(std::ostream& o_stream, const Result<Container>& i_result)
 {
     if (!i_result.m_opt_solution){
+        if (i_result.m_config.m_opt_solvable){
+            if (*i_result.m_config.m_opt_solvable)
+                o_stream << "[ko]";
+            else
+                o_stream << "[ok]";
+            return;
+        }
         o_stream << "[na]";
         return;
     }
@@ -119,11 +126,7 @@ void Printer<Container>::printSolution(std::ostream& o_stream, const Result<Cont
 template <typename Container>
 void Printer<Container>::printSolutionDetails(std::ostream& o_stream, const Result<Container>& i_result)
 {
-    if (i_result.m_time_limit_exceeded){
-        o_stream << "[time limit exceeded]";
-        return;
-    }
-    if (!i_result.m_opt_solution){
+    if (i_result.m_time_limit_exceeded || !i_result.m_opt_solution){
         o_stream << "[no solution details]";
         return;
     }

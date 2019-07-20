@@ -32,6 +32,7 @@ private:
     void defineHeuristicFunction();
     void defineRunner();
     void defineOutputFile();
+    void tryGetSolvable();
 private:
     std::unordered_map<std::string, std::string> m_tag_to_value;
     std::size_t m_number_of_runs = Utils::g_default_number_of_runs;
@@ -48,4 +49,5 @@ private:
         []{throw std::logic_error("m_runner(), uninitialized");};
     std::unique_ptr<std::ofstream> m_opt_output_file;
     std::streambuf* m_opt_saved_stream = nullptr;
+    std::shared_ptr<bool> m_opt_solvable;
 };

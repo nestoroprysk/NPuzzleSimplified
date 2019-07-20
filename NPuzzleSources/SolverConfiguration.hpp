@@ -12,4 +12,5 @@ struct SolverConfiguration
     const double m_distance_weight;
     const std::string m_name = Utils::generateTestName();
     const std::size_t m_time_limit = Utils::g_default_time_limit;
+    const std::shared_ptr<bool> m_opt_solvable = nullptr;
 };

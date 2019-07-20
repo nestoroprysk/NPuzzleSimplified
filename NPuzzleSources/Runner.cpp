@@ -48,6 +48,7 @@ Runner::Runner(const int argc, const char** argv)
     defineHeuristicFunction();
     defineRunner();
     defineOutputFile();
+    tryGetSolvable();
 }
 
 Runner::~Runner()
@@ -268,7 +269,7 @@ void Runner::defineRunner()
         const auto configuration = SolverConfiguration{*mp_desired_solution,
             m_heuristic_function, m_heuristic_function_name,
                 m_heuristic_function_weight, m_distance_weight,
-                    Utils::generateTestName(), m_time_limit};
+                    Utils::generateTestName(), m_time_limit, m_opt_solvable};
         static constexpr auto correspondingTag = "-c";
         if (m_tag_to_value.find(correspondingTag) == m_tag_to_value.end() ||
                 m_tag_to_value[correspondingTag] == "Set"){
@@ -305,5 +306,25 @@ void Runner::defineOutputFile()
         if (!(*m_opt_output_file))
             throw ConfigurationError("Invalid argument for the option -o [" +
             m_tag_to_value[correspondingTag] + "], cannot open the file");
+    }
+}
+
+void Runner::tryGetSolvable()
+{
+    static constexpr auto correspondingTag = "-f";
+    if (m_tag_to_value.find(correspondingTag) == m_tag_to_value.end())
+        return;
+    auto file = std::ifstream(m_tag_to_value[correspondingTag]);
+    if (!file)
+        return;
+    for (std::string line; std::getline(file, line);){
+        if (line.find("# This puzzle is solvable") != std::string::npos){
+            m_opt_solvable = std::make_shared<bool>(true);
+            return;
+        }
+        if (line.find("# This puzzle is unsolvable") != std::string::npos){
+            m_opt_solvable = std::make_shared<bool>(false);
+            return;
+        }
     }
 }
