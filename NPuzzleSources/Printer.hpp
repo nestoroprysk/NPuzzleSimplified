@@ -23,7 +23,7 @@ private:
 template <typename Container>
 void Printer<Container>::printFull(std::ostream& o_stream, const Result<Container>& i_result)
 {
-    printShort(o_stream, i_result);
+    printShort(o_stream, i_result); o_stream << std::endl;
     printSolutionDetails(o_stream, i_result);
 }
 

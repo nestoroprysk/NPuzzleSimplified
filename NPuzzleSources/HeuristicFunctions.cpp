@@ -35,7 +35,7 @@ std::size_t Manhattan::distanceY(const Matrix& i_matrix, const std::size_t i) co
     return diff(yPosActual, yPosExpected);
 }
 
-std::string Manhattan::getName() const
+std::string Manhattan::getName()
 {
     return "Manhattan";
 }
@@ -50,7 +50,7 @@ std::size_t IsInCorrectPositions::operator()(const Matrix& i_matrix, const std::
     return m_solution[i] != i_matrix[i];
 }
 
-std::string IsInCorrectPositions::getName() const
+std::string IsInCorrectPositions::getName()
 {
     return "IsInCorrectPositions";
 }
@@ -80,7 +80,7 @@ std::size_t IsNearCorrectPosition::operator()(const Matrix& i_matrix, const std:
     return 1;
 }
 
-std::string IsNearCorrectPosition::getName() const
+std::string IsNearCorrectPosition::getName()
 {
     return "IsNearCorrectPosition";
 }

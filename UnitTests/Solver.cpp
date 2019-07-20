@@ -20,7 +20,6 @@ void test(const SolverConfiguration& i_config, const Matrix& i_input)
     auto result_ptr = std::unique_ptr<Result<Container>>();
     REQUIRE_NOTHROW(result_ptr = std::make_unique<Result<Container>>(solver.solve(i_input)));
     REQUIRE(result_ptr);
-    Printer<Container>::printShort(std::cout, *result_ptr); std::cout << std::endl;
     REQUIRE(result_ptr->m_opt_solution);
     REQUIRE(Utils::isCorrectlySolved(i_input, i_config.m_desired_solution, *result_ptr->m_opt_solution));
 }
@@ -39,7 +38,7 @@ TEST_CASE("<3x3><Set><Manhattan><h=1><g=1>")
             { return heuristic_function(i_matrix, i); };
     const auto heuristic_function_weight = double(1);
     const auto distance_weight = double(1);
-    const auto configuration = SolverConfiguration{"Test 0", desired_solution, h,
+    const auto configuration = SolverConfiguration{desired_solution, h,
         heuristic_function.getName(), heuristic_function_weight, distance_weight};
     const auto input = Matrix{{
         5, 2, 4,
@@ -61,7 +60,7 @@ TEST_CASE("<3x3><QueueOnVector><Manhattan><h=1><g=1>")
             { return heuristic_function(i_matrix, i); };
     const auto heuristic_function_weight = double(1);
     const auto distance_weight = double(1);
-    const auto configuration = SolverConfiguration{"Test 0", desired_solution, h,
+    const auto configuration = SolverConfiguration{desired_solution, h,
         heuristic_function.getName(), heuristic_function_weight, distance_weight};
     const auto input = Matrix{{
         5, 2, 4,
@@ -83,7 +82,7 @@ TEST_CASE("<3x3><QueueOnDeque><IsInCorrectPositions><h=1><g=1>")
             { return heuristic_function(i_matrix, i); };
     const auto heuristic_function_weight = double(1);
     const auto distance_weight = double(1);
-    const auto configuration = SolverConfiguration{"Test 0", desired_solution, h,
+    const auto configuration = SolverConfiguration{desired_solution, h,
         heuristic_function.getName(), heuristic_function_weight, distance_weight};
     const auto input = Matrix{{
         5, 2, 4,
@@ -105,7 +104,7 @@ TEST_CASE("<3x3><QueueOnDeque><IsNearCorrectPosition><h=1><g=1>")
             { return heuristic_function(i_matrix, i); };
     const auto heuristic_function_weight = double(1);
     const auto distance_weight = double(1);
-    const auto configuration = SolverConfiguration{"Test 0", desired_solution, h,
+    const auto configuration = SolverConfiguration{desired_solution, h,
         heuristic_function.getName(), heuristic_function_weight, distance_weight};
     const auto input = Matrix{{
         5, 2, 4,

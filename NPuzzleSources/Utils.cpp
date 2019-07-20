@@ -359,3 +359,9 @@ Matrix Utils::generateRandomMap(const std::size_t i_n)
     std::shuffle(std::begin(result), std::end(result), random_engine);
     return result;
 }
+
+std::string Utils::generateTestName()
+{
+    static std::size_t n = 0;
+    return "Test " + std::to_string(++n);
+}

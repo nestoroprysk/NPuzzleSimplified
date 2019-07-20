@@ -2,6 +2,8 @@
 
 #include "Types.hpp"
 
+#include <string>
+
 struct SolverConfiguration;
 
 namespace Utils {
@@ -10,6 +12,12 @@ static constexpr auto g_step_cost = 1;
 static constexpr auto g_bucket_count = 8;
 static constexpr auto g_min_n = 3;
 static constexpr auto g_max_n = 500;
+static constexpr auto g_default_time_limit = 20;
+static constexpr auto g_default_number_of_runs = 1;
+static constexpr auto g_default_random_map_size = 3;
+static constexpr auto g_default_weight = 1;
+static constexpr auto g_min_weight = 0.0;
+static constexpr auto g_max_weight = 1.0;
 
 auto possibleMoves(const Matrix& i_state) -> std::vector<Move>;
 MatrixSP move(const MatrixSP& ip_matrix, Move i_move);
@@ -48,5 +56,7 @@ bool isCorrectlySolved(Matrix i_initial, const Matrix& i_desired, const Solution
 
 Matrix generateSnakeSolution(const std::size_t i_n);
 Matrix generateRandomMap(const std::size_t i_n);
+
+std::string generateTestName();
 
 }

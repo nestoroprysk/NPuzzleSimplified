@@ -31,6 +31,8 @@ Dependencies:
 
 Mandatory:
 2. Parsing argc/argv
+3. Time limit
+4. Test is solvable rigirously
 
 1. Parsing maps DONE
 6. Enable bigger maps DONE
