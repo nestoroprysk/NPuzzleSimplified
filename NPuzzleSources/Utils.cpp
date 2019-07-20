@@ -369,5 +369,5 @@ Matrix Utils::generateRandomMap(const std::size_t i_n)
 std::string Utils::generateTestName()
 {
     static std::size_t n = 0;
-    return "Test " + std::to_string(++n);
+    return "test " + std::to_string(++n);
 }

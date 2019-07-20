@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Utils.hpp"
 #include "Result.hpp"
 
 #include <ostream>
@@ -10,6 +11,7 @@ class Printer
 public:
     static void printFull(std::ostream& o_stream, const Result<Container>& i_result);
     static void printShort(std::ostream& o_stream, const Result<Container>& i_result);
+    static void printResult(std::ostream& o_stream, const Result<Container>& i_result);
 private:
     Printer() = delete;
     static void printMatrix(std::ostream& o_stream, const Matrix& i_matrix);
@@ -24,23 +26,36 @@ template <typename Container>
 void Printer<Container>::printFull(std::ostream& o_stream, const Result<Container>& i_result)
 {
     printShort(o_stream, i_result); o_stream << std::endl;
+    o_stream << "[desired solution]" << std::endl;
+    printMatrix(o_stream, i_result.m_config.m_desired_solution); o_stream << std::endl;
+    o_stream << "[input]" << std::endl;
+    printMatrix(o_stream, i_result.m_input); o_stream << std::endl;
     printSolutionDetails(o_stream, i_result);
 }
 
 template <typename Container>
 void Printer<Container>::printShort(std::ostream& o_stream, const Result<Container>& i_result)
 {
-    o_stream << "===Solver Configuration===" << std::endl;
-    printConfig(o_stream, i_result.m_config); o_stream << std::endl;
-    o_stream << "Container: "; printContainer(o_stream); o_stream << std::endl;
-    o_stream << "===Input===" << std::endl;
-    printMatrix(o_stream, i_result.m_input); o_stream << std::endl;
-    o_stream << "===Results Collected===" << std::endl;
-    o_stream << "Number of states selected: " << i_result.m_number_of_selected_states << std::endl;
-    o_stream << "Max number of states in memory: " << i_result.m_max_number_of_states_in_memory << std::endl;
-    o_stream << "Execution time: " << i_result.m_execution_time << " milliseconds" << std::endl;
-    o_stream << "===Solution===" << std::endl;
+    printConfig(o_stream, i_result.m_config);
+    printContainer(o_stream);
+    o_stream << '[' << i_result.m_number_of_selected_states << " selected states]";
+    o_stream << '[' << i_result.m_max_number_of_states_in_memory << " max states in memory]";
+    o_stream << '[' << i_result.m_execution_time << " milliseconds]";
     printSolution(o_stream, i_result);
+    printResult(o_stream, i_result);
+}
+
+template <typename Container>
+void Printer<Container>::printResult(std::ostream& o_stream, const Result<Container>& i_result)
+{
+    if (!i_result.m_opt_solution){
+        o_stream << "[na]";
+        return;
+    }
+    o_stream << (Utils::isCorrectlySolved(i_result.m_input, i_result.m_config.m_desired_solution,
+                                                                    *i_result.m_opt_solution)
+        ? "[ok]"
+        : "[ko]");
 }
 
 template <typename Container>
@@ -60,12 +75,10 @@ void Printer<Container>::printMatrix(std::ostream& o_stream, const Matrix& i_mat
 template <typename Container>
 void Printer<Container>::printConfig(std::ostream& o_stream, const SolverConfiguration& i_config)
 {
-    o_stream << "Test name: " << i_config.m_name << std::endl;
-    o_stream << "Desired solution:" << std::endl;
-    printMatrix(o_stream, i_config.m_desired_solution); o_stream << std::endl;
-    o_stream << "Heuristic function: " << i_config.m_heuristic_function_name << std::endl;
-    o_stream << "Heuristic function weight: " << i_config.m_heuristic_function_weight << std::endl;
-    o_stream << "Distance weight: " << i_config.m_distance_weight;
+    o_stream << '[' << i_config.m_name << ']';
+    o_stream << '[' << i_config.m_heuristic_function_name << ']';
+    o_stream << '[' << i_config.m_heuristic_function_weight << " h weight]";
+    o_stream << '[' << i_config.m_distance_weight << " g weight]";
 }
 
 template <typename Container>
@@ -73,16 +86,16 @@ void Printer<Container>::printMove(std::ostream& o_stream, Move i_move)
 {
     switch (i_move){
         case Move::Up:
-            o_stream << "Up";
+            o_stream << "[up]";
             break;
         case Move::Down:
-            o_stream << "Down";
+            o_stream << "[down]";
             break;
         case Move::Left:
-            o_stream << "Left";
+            o_stream << "[left]";
             break;
         case Move::Right:
-            o_stream << "Right";
+            o_stream << "[right]";
             break;
         default: throw std::logic_error("<<(move), Invalid move");
     }
@@ -92,24 +105,25 @@ template <typename Container>
 void Printer<Container>::printSolution(std::ostream& o_stream, const Result<Container>& i_result)
 {
     if (!i_result.m_opt_solution){
-        o_stream << "The puzzle is unsolvable";
+        o_stream << "[unsolvable]";
         return;
     }
-    o_stream << "Number of moves: " << i_result.m_opt_solution->size();
+    o_stream << '[' << i_result.m_opt_solution->size() << " moves]";
 }
 
 template <typename Container>
 void Printer<Container>::printSolutionDetails(std::ostream& o_stream, const Result<Container>& i_result)
 {
-    if (!i_result.m_opt_solution) {
-        o_stream << "No solution provided";
+    if (!i_result.m_opt_solution){
+        o_stream << "[no solution details]";
         return;
     }
+    o_stream << "[moves]";
     const auto& moves = *i_result.m_opt_solution;
     auto matrix = i_result.m_input;
     for (auto m : moves){
         matrix.move(m);
-        o_stream << m << std::endl;
+        printMove(o_stream, m); o_stream << std::endl;
         o_stream << matrix << std::endl;
     }
 }
@@ -118,17 +132,17 @@ void Printer<Container>::printSolutionDetails(std::ostream& o_stream, const Resu
 template <>
 inline void Printer<Set>::printContainer(std::ostream& o_stream)
 {
-    o_stream << "Set";
+    o_stream << "[set]";
 }
 
 template <>
 inline void Printer<Queue<std::vector<State>>>::printContainer(std::ostream& o_stream)
 {
-    o_stream << "queue on vector";
+    o_stream << "[queue on vector]";
 }
 
 template <>
 inline void Printer<Queue<std::deque<State>>>::printContainer(std::ostream& o_stream)
 {
-    o_stream << "queue on deque";
+    o_stream << "[queue on deque]";
 }

@@ -215,9 +215,7 @@ namespace {
 template <typename Container>
 void print(std::unordered_map<std::string, std::string>& i_tag_to_value,
                 std::ostream& o_output_stream,
-                const Result<Container>& i_result,
-                const Matrix& i_input,
-                const SolverConfiguration& i_configuration)
+                const Result<Container>& i_result)
 {
     static constexpr auto correspondingTag = "-v";
     if (i_tag_to_value.find(correspondingTag) == i_tag_to_value.end() ||
@@ -229,14 +227,8 @@ void print(std::unordered_map<std::string, std::string>& i_tag_to_value,
         Printer<Container>::printFull(o_output_stream, i_result); o_output_stream << std::endl;
         return;
     }
-    // TODO: move to printer
     if (i_tag_to_value[correspondingTag] == "result"){
-        if (!i_result.m_opt_solution){
-            o_output_stream << "[Unsolvable]" << std::endl;
-            return;
-        }
-        const auto ok = Utils::isCorrectlySolved(i_input, i_configuration.m_desired_solution, *i_result.m_opt_solution);
-        o_output_stream << (ok ? "[OK]" : "[KO]" ) << std::endl;
+        Printer<Container>::printResult(o_output_stream, i_result); o_output_stream << std::endl;
         return;
     }
 }
@@ -254,7 +246,7 @@ void Runner::defineRunner()
             const auto solver = Solver<Set>(configuration);
             const auto input = m_input_provider();
             const auto result = solver.solve(input);
-            print<Set>(m_tag_to_value, std::cout, result, input, configuration);
+            print<Set>(m_tag_to_value, std::cout, result);
             return;
         }
         if (m_tag_to_value.find(correspondingTag) == m_tag_to_value.end() ||
@@ -262,7 +254,7 @@ void Runner::defineRunner()
             const auto solver = Solver<Queue<std::vector<State>>>(configuration);
             const auto input = m_input_provider();
             const auto result = solver.solve(input);
-            print<Queue<std::vector<State>>>(m_tag_to_value, std::cout, result, input, configuration);
+            print<Queue<std::vector<State>>>(m_tag_to_value, std::cout, result);
             return;
         }
         if (m_tag_to_value.find(correspondingTag) == m_tag_to_value.end() ||
@@ -270,7 +262,7 @@ void Runner::defineRunner()
             const auto solver = Solver<Queue<std::deque<State>>>(configuration);
             const auto input = m_input_provider();
             const auto result = solver.solve(input);
-            print<Queue<std::deque<State>>>(m_tag_to_value, std::cout, result, input, configuration);
+            print<Queue<std::deque<State>>>(m_tag_to_value, std::cout, result);
             return;
         }
     };
