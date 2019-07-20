@@ -46,7 +46,7 @@ TEST_CASE("<Runner>")
         "-f", file.c_str()
     };
     REQUIRE_NOTHROW(Runner(argc, argv));
-    auto runner = Runner(argc, argv);
+    Runner runner(argc, argv);
     REQUIRE_NOTHROW(runner.run());
     REQUIRE(!runner.hasSomethingToRun());
 }
@@ -61,7 +61,7 @@ TEST_CASE("<Runner><-v><short>")
         "-f", file.c_str()
     };
     REQUIRE_NOTHROW(Runner(argc, argv));
-    auto runner = Runner(argc, argv);
+    Runner runner(argc, argv);
     REQUIRE_NOTHROW(runner.run());
     REQUIRE(!runner.hasSomethingToRun());
 }
@@ -76,7 +76,7 @@ TEST_CASE("<Runner><-v><long>")
         "-f", file.c_str()
     };
     REQUIRE_NOTHROW(Runner(argc, argv));
-    auto runner = Runner(argc, argv);
+    Runner runner(argc, argv);
     REQUIRE_NOTHROW(runner.run());
     REQUIRE(!runner.hasSomethingToRun());
 }
@@ -91,7 +91,7 @@ TEST_CASE("<Runner><-v><result>")
         "-f", file.c_str()
     };
     REQUIRE_NOTHROW(Runner(argc, argv));
-    auto runner = Runner(argc, argv);
+    Runner runner(argc, argv);
     REQUIRE_NOTHROW(runner.run());
     REQUIRE(!runner.hasSomethingToRun());
 }

@@ -4,11 +4,13 @@
 #include "Matrix.hpp"
 
 #include <unordered_map>
+#include <fstream>
 
 class Runner
 {
 public:
     Runner(const int argc, const char** argv);
+    ~Runner();
     void run();
     bool hasSomethingToRun() const;
 public:
@@ -29,6 +31,7 @@ private:
     void defineDistanceWeight();
     void defineHeuristicFunction();
     void defineRunner();
+    void defineOutputFile();
 private:
     std::unordered_map<std::string, std::string> m_tag_to_value;
     std::size_t m_number_of_runs = Utils::g_default_number_of_runs;
@@ -43,4 +46,6 @@ private:
     std::string m_heuristic_function_name;
     std::function<void()> m_runner =
         []{throw std::logic_error("m_runner(), uninitialized");};
+    std::unique_ptr<std::ofstream> m_opt_output_file;
+    std::streambuf* m_opt_saved_stream = nullptr;
 };

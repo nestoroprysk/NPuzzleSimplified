@@ -17,7 +17,7 @@
 namespace {
 
 const auto g_set_of_tags = std::set<std::string>{
-    "-c", "-f", "-g", "-v", "-h", "-gc", "-hc", "-n", "-t", "-d"
+    "-c", "-f", "-g", "-v", "-h", "-gc", "-hc", "-n", "-t", "-d", "-o"
 };
 
 std::unordered_map<std::string, std::string> parseArgcArgv(const int argc, const char** argv)
@@ -47,12 +47,27 @@ Runner::Runner(const int argc, const char** argv)
     defineDistanceWeight();
     defineHeuristicFunction();
     defineRunner();
+    defineOutputFile();
+}
+
+Runner::~Runner()
+{
+    if (m_opt_saved_stream)
+        std::cout.rdbuf(m_opt_saved_stream);
 }
 
 void Runner::run()
 {
     --m_number_of_runs;
+    if (m_opt_output_file && *m_opt_output_file){
+        m_opt_saved_stream = std::cout.rdbuf();
+        auto* fileBuf = m_opt_output_file->rdbuf();
+        if (fileBuf)
+            std::cout.rdbuf(fileBuf);
+    }
     m_runner();
+    if (m_opt_saved_stream)
+        std::cout.rdbuf(m_opt_saved_stream);
 }
 
 bool Runner::hasSomethingToRun() const
@@ -263,16 +278,14 @@ void Runner::defineRunner()
             print<Set>(m_tag_to_value, std::cout, result);
             return;
         }
-        if (m_tag_to_value.find(correspondingTag) == m_tag_to_value.end() ||
-                m_tag_to_value[correspondingTag] == "QueueOnVector"){
+        if (m_tag_to_value[correspondingTag] == "QueueOnVector"){
             const auto solver = Solver<Queue<std::vector<State>>>(configuration);
             const auto input = m_input_provider();
             const auto result = solver.solve(input);
             print<Queue<std::vector<State>>>(m_tag_to_value, std::cout, result);
             return;
         }
-        if (m_tag_to_value.find(correspondingTag) == m_tag_to_value.end() ||
-                m_tag_to_value[correspondingTag] == "QueueOnDequeue"){
+        if (m_tag_to_value[correspondingTag] == "QueueOnDequeue"){
             const auto solver = Solver<Queue<std::deque<State>>>(configuration);
             const auto input = m_input_provider();
             const auto result = solver.solve(input);
@@ -282,4 +295,15 @@ void Runner::defineRunner()
         throw ConfigurationError("Invalid argument for the option -c [" +
             m_tag_to_value[correspondingTag] + "], Set, QueueOnVector, or QueueOnDequeue expected");
     };
+}
+
+void Runner::defineOutputFile()
+{
+    static constexpr auto correspondingTag = "-o";
+    if (m_tag_to_value.find(correspondingTag) != m_tag_to_value.end()){
+        m_opt_output_file = std::make_unique<std::ofstream>(m_tag_to_value[correspondingTag]);
+        if (!(*m_opt_output_file))
+            throw ConfigurationError("Invalid argument for the option -o [" +
+            m_tag_to_value[correspondingTag] + "], cannot open the file");
+    }
 }
