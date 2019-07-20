@@ -51,17 +51,6 @@ target_link_libraries(Run NPuzzle)
 
 target_include_directories(Run PUBLIC ${NPuzzleDir})
 
-# RunTests executable
-
-set(TestsRunnerDir ${CMAKE_CURRENT_SOURCE_DIR}/TestsRunner)
-file(GLOB TestsRunnerSources ${TestsRunnerDir}/main.cpp)
-
-add_executable(RunTests ${TestsRunnerSources})
-
-target_link_libraries(RunTests NPuzzle)
-
-target_include_directories(RunTests PUBLIC ${NPuzzleDir})
-
 # RunUnitTests executable
 
 set(UnitTestsDir ${CMAKE_CURRENT_SOURCE_DIR}/UnitTests)

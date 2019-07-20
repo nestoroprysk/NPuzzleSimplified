@@ -33,6 +33,7 @@ Mandatory:
 4. Test is solvable rigirously
 5. support generator run
 6. support run from file
+7. test flags rigorously
 
 1. Parsing maps DONE
 6. Enable bigger maps DONE
