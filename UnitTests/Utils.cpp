@@ -240,3 +240,93 @@ TEST_CASE("<Solvable><6><Unolvable>")
     REQUIRE_NOTHROW(Utils::solvable(*p_matrix, *p_solution));
     REQUIRE(!Utils::solvable(*p_matrix, *p_solution));
 }
+
+TEST_CASE("<Solvable><7><Solvable>")
+{
+    static constexpr auto n = 7;
+    const auto content = std::vector<std::string>{
+        {"# This puzzle is solvable"},
+        {"7"},
+        {"35 18 25  6 24 31 32"},
+        {" 2 27 22 10 30 45 12"},
+        {"29 23 26 20 42 39  7"},
+        {"44  5 13 17 40 34  4"},
+        {"16  3  0 47 38 37  8"},
+        {"15 28 33 43  1 48  9"},
+        {"14 11 21 19 46 41 36"}
+    };
+    auto p_matrix = std::unique_ptr<Matrix>();
+    REQUIRE_NOTHROW(p_matrix = std::make_unique<Matrix>(Parser::parseContent(content)));
+    auto p_solution = std::unique_ptr<Matrix>();
+    REQUIRE_NOTHROW(p_solution = std::make_unique<Matrix>(Utils::generateSnakeSolution(n)));
+    REQUIRE_NOTHROW(Utils::solvable(*p_matrix, *p_solution));
+    REQUIRE(Utils::solvable(*p_matrix, *p_solution));
+}
+
+TEST_CASE("<Solvable><7><Unolvable>")
+{
+    static constexpr auto n = 7;
+    const auto content = std::vector<std::string>{
+        {"# This puzzle is unsolvable"},
+        {"7"},
+        {"36 21 17 14 42 30 12"},
+        {" 2  7  6 46 28  9 26"},
+        {" 5 23 15 31 43 27 24"},
+        {"34 33 45 41 29 10 35"},
+        {"32 47 20  1 37  4 25"},
+        {"22 18 48  0 38  8 19"},
+        {"44  3 16 40 13 39 11"}
+    };
+    auto p_matrix = std::unique_ptr<Matrix>();
+    REQUIRE_NOTHROW(p_matrix = std::make_unique<Matrix>(Parser::parseContent(content)));
+    auto p_solution = std::unique_ptr<Matrix>();
+    REQUIRE_NOTHROW(p_solution = std::make_unique<Matrix>(Utils::generateSnakeSolution(n)));
+    REQUIRE_NOTHROW(Utils::solvable(*p_matrix, *p_solution));
+    REQUIRE(!Utils::solvable(*p_matrix, *p_solution));
+}
+
+TEST_CASE("<Solvable><8><Solvable>")
+{
+    static constexpr auto n = 8;
+    const auto content = std::vector<std::string>{
+        {"# This puzzle is solvable"},
+        {"8"},
+        {"17  1 13 51  8 46 24 49"},
+        {"57 41 30 55  0 21 11 48"},
+        {" 6 27 14 32 33 23 28  2"},
+        {"39  3  7 15 10 56 34 60"},
+        {"44 61 54 37 36  4 19 59"},
+        {"52  5 26 53 31 45 47 42"},
+        {"62 22 25  9 18 58 63 35"},
+        {"12 20 43 38 29 50 16 40"}
+    };
+    auto p_matrix = std::unique_ptr<Matrix>();
+    REQUIRE_NOTHROW(p_matrix = std::make_unique<Matrix>(Parser::parseContent(content)));
+    auto p_solution = std::unique_ptr<Matrix>();
+    REQUIRE_NOTHROW(p_solution = std::make_unique<Matrix>(Utils::generateSnakeSolution(n)));
+    REQUIRE_NOTHROW(Utils::solvable(*p_matrix, *p_solution));
+    REQUIRE(Utils::solvable(*p_matrix, *p_solution));
+}
+
+TEST_CASE("<Solvable><8><Unolvable>")
+{
+    static constexpr auto n = 8;
+    const auto content = std::vector<std::string>{
+        {"# This puzzle is unsolvable"},
+        {"8"},
+        {"28  1 62 31 51 11 49 18"},
+        {"27 45  0 30 26  7 37 43"},
+        {"40 41 60 22 50 32 12 16"},
+        {" 2 23 39 59  4 57  5 29"},
+        {"54 15  3 10 14 58 63 42"},
+        {"24 21 52 48 33 35 61 20"},
+        {"19  9 17 34 36  8 46 55"},
+        {"53 44 13  6 47 25 38 56"}
+    };
+    auto p_matrix = std::unique_ptr<Matrix>();
+    REQUIRE_NOTHROW(p_matrix = std::make_unique<Matrix>(Parser::parseContent(content)));
+    auto p_solution = std::unique_ptr<Matrix>();
+    REQUIRE_NOTHROW(p_solution = std::make_unique<Matrix>(Utils::generateSnakeSolution(n)));
+    REQUIRE_NOTHROW(Utils::solvable(*p_matrix, *p_solution));
+    REQUIRE(!Utils::solvable(*p_matrix, *p_solution));
+}

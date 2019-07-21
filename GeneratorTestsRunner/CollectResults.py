@@ -8,7 +8,7 @@ while True:
     if not line:
         break
     read += 1
-    if line.find('[ok]') != -1:
+    if 'ok' in line:
         correct += 1
 
 print '[' + str(correct) + '/' + str(read) + ']'
