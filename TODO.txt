@@ -30,8 +30,6 @@ Dependencies:
 - RandomTestsRunner <- Generator + TestingFramework
 
 Mandatory:
-4. Test is solvable rigirously
-5. support generator run
 7. test flags rigorously
 
 1. Parsing maps DONE
@@ -42,3 +40,5 @@ Mandatory:
 2. Parsing argc/argv DONE
 3. Time limit DONE
 6. support run into file DONE
+4. Test is solvable rigorously DONE
+5. support generator run DONE
