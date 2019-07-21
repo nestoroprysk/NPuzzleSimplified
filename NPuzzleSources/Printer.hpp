@@ -130,13 +130,13 @@ void Printer<Container>::printSolutionDetails(std::ostream& o_stream, const Resu
         o_stream << "[no solution details]";
         return;
     }
-    o_stream << "[moves]";
+    o_stream << "[moves]" << std::endl;
     const auto& moves = *i_result.m_opt_solution;
     auto matrix = i_result.m_input;
     for (auto m : moves){
         matrix.move(m);
         printMove(o_stream, m); o_stream << std::endl;
-        o_stream << matrix << std::endl;
+        printMatrix(o_stream, matrix); o_stream << std::endl;
     }
 }
 

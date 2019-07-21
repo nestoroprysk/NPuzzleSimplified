@@ -15,7 +15,6 @@ Manhattan::Manhattan(const Matrix& i_solution)
 {
 }
 
-// TODO: test
 std::size_t Manhattan::operator()(const Matrix& i_matrix, const std::size_t i) const
 {
     return distanceX(i_matrix, i) + distanceY(i_matrix, i);
@@ -60,7 +59,6 @@ IsNearCorrectPosition::IsNearCorrectPosition(const Matrix& i_solution)
 {
 }
 
-// TODO: test
 std::size_t IsNearCorrectPosition::operator()(const Matrix& i_matrix, const std::size_t i) const
 {
     if (m_solution[i] == i_matrix[i])

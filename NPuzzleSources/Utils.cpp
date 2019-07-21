@@ -12,7 +12,6 @@ class Queue;
 
 class Set;
 
-// TODO: test
 auto Utils::possibleMoves(const Matrix& i_matrix) -> std::vector<Move>
 {
     auto result = std::vector<Move>();
@@ -89,7 +88,6 @@ bool Utils::solvable(const Matrix& i_matrix, const Matrix& i_solution)
 
 std::size_t Utils::countInversions(const Matrix& i_matrix, const ValueToPosition& i_mapper)
 {
-    // TODO: test
     auto result = 0;
     for (std::size_t i = 0; i < i_matrix.sizeSquared() - 1; ++i)
         for (std::size_t j = i + 1; j < i_matrix.sizeSquared(); ++j)
@@ -183,7 +181,6 @@ std::size_t Utils::accumulateHeuristicCost(const Matrix& i_matrix, const Heurist
     return result;
 }
 
-// TODO: test
 std::size_t Utils::updateCost(const Matrix& i_old, const Matrix& i_new,
         const HeuristicFunction& i_heuristic_function, const std::size_t i_old_cost)
 {

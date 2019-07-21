@@ -88,5 +88,9 @@ Result<Container> Solver<Container>::solve(const Matrix& i_matrix) const
             std::max(max_number_of_states_in_memory,
                 open.size() + open_states_hash.size() + closed_states_hash.size());
     }
-    throw std::logic_error("isSolvable(), failed to detect an unsolvable puzzle");
+    return Result<Container>{ m_configuration, i_matrix,
+                number_of_selected_states, max_number_of_states_in_memory,
+                    static_cast<size_t>(std::chrono::duration_cast<std::chrono::milliseconds>
+                        (std::chrono::steady_clock::now() - t0).count()),
+                            nullptr };
 }
