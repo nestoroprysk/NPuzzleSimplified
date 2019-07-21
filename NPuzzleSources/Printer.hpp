@@ -50,7 +50,7 @@ void Printer<Container>::printResult(std::ostream& o_stream, const Result<Contai
 {
     if (!i_result.m_opt_solution){
         if (i_result.m_config.m_opt_solvable){
-            if (*i_result.m_config.m_opt_solvable)
+            if (*i_result.m_config.m_opt_solvable || i_result.m_time_limit_exceeded)
                 o_stream << "[ko]";
             else
                 o_stream << "[ok]";
