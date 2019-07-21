@@ -31,6 +31,7 @@ Dependencies:
 
 Mandatory:
 7. test flags rigorously
+8. test isSolvable() for 6x6
 
 1. Parsing maps DONE
 6. Enable bigger maps DONE
