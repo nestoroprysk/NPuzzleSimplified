@@ -40,10 +40,11 @@ TEST_CASE("<Runner><NoValueForFile>")
 TEST_CASE("<Runner>")
 {
     const auto file = matrixFileFullPath("Solvable3x3.txt");
-    const auto argc = 3;
+    const auto argc = 5;
     const char* argv[] = {
         "./Runner",
-        "-f", file.c_str()
+        "-f", file.c_str(),
+        "-o", "test.txt"
     };
     REQUIRE_NOTHROW(Runner(argc, argv));
     Runner runner(argc, argv);
@@ -54,11 +55,12 @@ TEST_CASE("<Runner>")
 TEST_CASE("<Runner><-v><short>")
 {
     const auto file = matrixFileFullPath("Solvable3x3.txt");
-    const auto argc = 5;
+    const auto argc = 7;
     const char* argv[] = {
         "./Runner",
         "-v", "short",
-        "-f", file.c_str()
+        "-f", file.c_str(),
+        "-o", "test.txt"
     };
     REQUIRE_NOTHROW(Runner(argc, argv));
     Runner runner(argc, argv);
@@ -69,11 +71,12 @@ TEST_CASE("<Runner><-v><short>")
 TEST_CASE("<Runner><-v><long>")
 {
     const auto file = matrixFileFullPath("Solvable3x3.txt");
-    const auto argc = 5;
+    const auto argc = 7;
     const char* argv[] = {
         "./Runner",
         "-v", "long",
-        "-f", file.c_str()
+        "-f", file.c_str(),
+        "-o", "test.txt"
     };
     REQUIRE_NOTHROW(Runner(argc, argv));
     Runner runner(argc, argv);
@@ -84,11 +87,28 @@ TEST_CASE("<Runner><-v><long>")
 TEST_CASE("<Runner><-v><result>")
 {
     const auto file = matrixFileFullPath("Solvable3x3.txt");
-    const auto argc = 5;
+    const auto argc = 7;
     const char* argv[] = {
         "./Runner",
         "-v", "result",
-        "-f", file.c_str()
+        "-f", file.c_str(),
+        "-o", "test.txt"
+    };
+    REQUIRE_NOTHROW(Runner(argc, argv));
+    Runner runner(argc, argv);
+    REQUIRE_NOTHROW(runner.run());
+    REQUIRE(!runner.hasSomethingToRun());
+}
+
+TEST_CASE("<Runner><4x4>")
+{
+    const auto file = matrixFileFullPath("Solvable4x4.txt");
+    const auto argc = 7;
+    const char* argv[] = {
+        "./Runner",
+        "-f", file.c_str(),
+        "-gc", "0",
+        "-o", "test.txt"
     };
     REQUIRE_NOTHROW(Runner(argc, argv));
     Runner runner(argc, argv);

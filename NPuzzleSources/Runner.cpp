@@ -160,7 +160,7 @@ void Runner::defineDesiredSolution()
     static constexpr auto correspondingTag = "-d";
     if (m_tag_to_value.find(correspondingTag) == m_tag_to_value.end()){
         mp_desired_solution = std::make_unique<Matrix>(
-            Utils::generateSnakeSolution(m_random_map_size));
+            Utils::generateSnakeSolution(m_input_provider().size()));
         return;
     }
     mp_desired_solution = std::make_unique<Matrix>(
@@ -302,7 +302,7 @@ void Runner::defineOutputFile()
 {
     static constexpr auto correspondingTag = "-o";
     if (m_tag_to_value.find(correspondingTag) != m_tag_to_value.end()){
-        m_opt_output_file = std::make_unique<std::ofstream>(m_tag_to_value[correspondingTag]);
+        m_opt_output_file = std::make_unique<std::ofstream>(m_tag_to_value[correspondingTag], std::fstream::out | std::ofstream::app);
         if (!(*m_opt_output_file))
             throw ConfigurationError("Invalid argument for the option -o [" +
             m_tag_to_value[correspondingTag] + "], cannot open the file");
