@@ -22,6 +22,7 @@ where options are:
   -n <number>                           run n times
   -t <'time' in seconds>                set time limit
   -d <filename>                         set custom desired solution
+  -o <filename>                         redirect output to file
 )";
 
 
@@ -42,7 +43,7 @@ int main(const int argc, const char** argv)
         return 1;
     }
     try{
-        auto runner = Runner(argc, argv);
+        Runner runner(argc, argv);
         do {
             try{
                 runner.run();
@@ -61,6 +62,7 @@ int main(const int argc, const char** argv)
     }
     catch (...){
         print("Unexpected exception met");
+        return 2;
     }
     return 0;
 }
