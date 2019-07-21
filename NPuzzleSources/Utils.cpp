@@ -80,7 +80,9 @@ bool Utils::solvable(const Matrix& i_matrix, const Matrix& i_solution)
     if (gridWidthOdd && inversionsEven)
         return true;
     const auto blankRow = i_matrix.getMovingPointIndex() / i_matrix.size();
-    const auto blankOnOddRowFromButtom = (i_matrix.size() - 1 - blankRow) % 2 != 0;
+    const auto blankIndexInSolution = i_solution.getMovingPointIndex();
+    const auto blankRowInSolution = blankIndexInSolution / i_solution.size();
+    const auto blankOnOddRowFromButtom = (i_matrix.size() - 1 - blankRow + blankRowInSolution) % 2 != 0;
     return !gridWidthOdd && blankOnOddRowFromButtom == inversionsEven;
 }
 
